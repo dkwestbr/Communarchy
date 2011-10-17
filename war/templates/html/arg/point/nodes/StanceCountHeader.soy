@@ -1,0 +1,15 @@
+{namespace communarchy.templates.html.pov.nodes}
+
+/**
+ *  View used to indicate a count of people supporting a view
+ *
+ *  @param personImg css class for person
+ *  @param stanceCount the count of people supporting the targeted stance
+ */
+{template .stanceCountHeader}
+<div class="main-width">
+	<div class="float-left person-{$personImg}"></div>
+	<div class="float-left person-count">{$stanceCount}</div>
+	<div class="clear"></div>
+</div>
+{/template}

@@ -1,0 +1,14 @@
+{namespace communarchy.templates.html.arg.branches}
+
+/**
+ *  Conroller to get argBar depending on if user is logged in or not
+ *
+ *  @param argBar Collection containing all parameters needed to construct the argBar
+ */
+{template .getArgBar}
+{if $argBar.logoutUrl}
+	{call communarchy.templates.html.argComponents.argLeaves.authenticatedArgBar data="$argBar" /}
+{else}
+	{call communarchy.templates.html.argComponents.argLeaves.argBar data="$argBar" /}
+{/if}
+{/template}

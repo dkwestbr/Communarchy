@@ -1,0 +1,29 @@
+{namespace communarchy.templates.html.arg.nodes}
+
+/**
+ *  Persistent navigation bar for arguments
+ *
+ *  @param createArgAction Url to go to when user want to create argument
+ *  @param mainAction Url to go to when loading main page
+ *  @param userDisplayName The user's display name
+ *  @param userHref The Url of the user's page
+ *  @param logoutUrl The Url provided so that the user can log out
+ */
+{template .authenticatedArgBar}
+<div id="top" class="main-header main-border">
+	<div class="center">
+		<a class="btn main-btn center" href="{$mainAction}">Current Discussions</a>
+	</div>
+	<div class="arg-control-panel">
+		<div class="user float-left">
+			<a id="login-container" class="user-text" href="{$userHref}">{$userDisplayName}</a>
+		</div>
+		<div class="user float-left">(<a class="user-text" href="{$logoutUrl}">sign out</a>)</div>
+		<div class="float-right">
+			<a class="btn main-btn" href="{$createArgAction}">Create New Discussion</a>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<div class="v-spacer"><!-- LEAVE EMPTY --></div>
+{/template}

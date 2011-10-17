@@ -1,0 +1,16 @@
+{namespace communarchy.templates.html.point.nodes}
+
+/**
+ *  View for individual points within an argument
+ *
+ *  @param pointSet All points of an arugment
+ *  @param pointInputSet Contains all params for input
+ */
+{template .points}
+	{call communarchy.templates.html.controllers.PointViewController.getPoints}
+		{param pointSet: $pointSet /}
+	{/call}
+	<div class="create-point">
+		{call .newPoint data="$pointInputSet" /}
+	</div>
+{/template}

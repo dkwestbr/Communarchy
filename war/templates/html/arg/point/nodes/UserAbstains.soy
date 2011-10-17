@@ -1,0 +1,15 @@
+{namespace communarchy.templates.html.point.nodes}
+
+/**
+ *  View for individual points of view within an argument
+ *
+ *  @param povs povs associated with this stance
+ *  @param povRoot css class used to give a selector based on its parent
+ */
+{template .userAbstains}
+	<div class="float-left {$povRoot} pov-column pov-top abstains">
+		<div class="pov-container">
+		    {call communarchy.templates.html.controllers.PovViewController.getUnsupportedPov data="$povs" /}
+		</div>
+	</div>
+{/template}

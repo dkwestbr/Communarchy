@@ -1,0 +1,15 @@
+{namespace communarchy.templates.html.pov.branches}
+
+/**
+ *  Calls the proper flag view
+ *
+ *  @param flags set of flags to construct a view for
+ */
+{template .getFlags}
+{foreach $flag in $flags}
+	{call communarchy.templates.html.argComponents.povCuration.flag data="$flag" /}
+	{if not isLast($flag)}
+		{call communarchy.templates.html.argComponents.povCuration.flagSpacer /}
+	{/if}
+{/foreach}
+{/template}

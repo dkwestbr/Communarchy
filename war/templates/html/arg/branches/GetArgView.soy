@@ -1,0 +1,19 @@
+{namespace communarchy.templates.html.arg.branches}
+
+/**
+ *  Used to get the proper view for the argument.
+ *
+ *  @param? createArgAction Action url which is present if this rendering
+ *          is meant to render a new argument input
+ *  @param? titleErrors present if there are errors in title the user tried to enter
+ *  @param? contentErrors present if there are errors on content the user tried to enter
+ */
+{template .getArgView}
+{if $titleErrors or $contentErrors}
+	{call communarchy.templates.html.arg.newArgWithErrors data="all" /}
+{elseif $createArgAction}
+	{call communarchy.templates.html.arg.newArg data="all" /}
+{else}
+	{call communarchy.templates.html.arg.view data="all" /}
+{/if}
+{/template}

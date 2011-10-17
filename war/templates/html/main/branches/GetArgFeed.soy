@@ -1,0 +1,12 @@
+{namespace communarchy.templates.html.main.branches}
+
+/**
+ *  Default page arg feed.
+ *
+ *  @param args List of maps of arguments to be displayed to the user
+ */
+{template .GetArgFeed}
+	{foreach $arg in $args}
+		{call communarchy.templates.html.argComponents.argLeaves.argFeedElement data="$arg" /}
+	{/foreach}
+{/template}

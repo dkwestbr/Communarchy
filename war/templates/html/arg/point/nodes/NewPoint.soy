@@ -1,0 +1,32 @@
+{namespace communarchy.templates.html.point.nodes}
+
+/**
+ *  Default view for an individual argument.
+ *
+ *  @param newPointAction Action handler for this point
+ *
+ */
+{template .newPoint}
+	<form method="post" action="{$newPointAction}">
+	    <div class="suggestion-box">
+    		<div class="suggestion">What do you think?</div>
+    		<div class="new-point-wrapper">
+				<input type="text" name="point" class="required new-point-input" title="Point"></input>
+			</div>
+		</div>
+		<div class="first-pov-wrapper">
+			<div class="suggestion">Why?</div>
+			<div class="new-point-container">
+				<div class="new-point float-left">
+					<textarea  name="pov" class="point-text-area"></textarea>
+				</div>
+				<div class="float-left">
+					<div class="arg-btn-container">
+						<input class="btn point-btn" type="submit" value="Submit your point"></input>
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+	</form>
+{/template}

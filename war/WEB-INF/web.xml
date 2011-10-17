@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	
+	<!-- FILTERS -->
+	<filter>
+		<filter-name>IgnoreFilter</filter-name>
+		<filter-class>communarchy.filters.IgnoreFilter</filter-class>
+	</filter>
+	<filter-mapping>
+  		<filter-name>AuthenticationFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- Uncomment before push to production 
+	<filter>
+		<filter-name>DevelopmentWallFilter</filter-name>
+		<filter-class>communarchy.filters.DevelopmentWallFilter</filter-class>
+	</filter>
+	<filter-mapping>
+  		<filter-name>DevelopmentWallFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	 -->
+	<filter>
+		<filter-name>AuthenticationFilter</filter-name>
+		<filter-class>communarchy.filters.AuthenticationFilter</filter-class>
+	</filter>
+	<filter-mapping>
+  		<filter-name>AuthenticationFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>SessionFilter</filter-name>
+		<filter-class>communarchy.filters.SessionFilter</filter-class>
+	</filter>
+	<filter-mapping>
+  		<filter-name>SessionFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- END FILTERS -->
+
+	<!-- LISTENERS -->
+	<listener>
+		<listener-class>communarchy.listeners.StartUpContextListener</listener-class>
+	</listener>
+	<!-- END LISTENERS  -->
+
+	<!-- SERVLETS -->	
+	<servlet>
+		<servlet-name>Main</servlet-name>
+		<servlet-class>communarchy.controllers.Main</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Main</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>Login</servlet-name>
+		<servlet-class>communarchy.controllers.LogIn</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Login</servlet-name>
+		<url-pattern>/login</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>Logout</servlet-name>
+		<servlet-class>communarchy.controllers.LogOut</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Logout</servlet-name>
+		<url-pattern>/logout</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>NewArg</servlet-name>
+		<servlet-class>communarchy.controllers.NewArg</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>NewArg</servlet-name>
+		<url-pattern>/arg/new</url-pattern>
+	</servlet-mapping>
+	<!-- END SERVLETS -->
+
+</web-app>

@@ -1,0 +1,14 @@
+{namespace communarchy.templates.html.global.nodes}
+
+/**
+ *  How to render account management when user is
+ *  authenticated.
+ *
+ *  @param userHref Url which will go the the user's account page
+ *  @param userDisplayName The user's display name
+ */
+{template .UnauthenticatedUser}
+	<div class="user">
+		<a class="user-text" href="{$userHref}">{$userDisplayName}</a>
+	</div>
+{/template}

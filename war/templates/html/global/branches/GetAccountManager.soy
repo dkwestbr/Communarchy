@@ -1,0 +1,16 @@
+{namespace communarchy.templates.html.global.branches}
+
+/**
+ *  Get the buttons/links/etc that will allow user to 
+ *  login/logout/edit account
+ *
+ *  @param isAuthenticated
+ *  @param userParams
+ */
+{template .GetAccountManager}
+	{if $isAuthenticated}
+		{call communarchy.templates.html.global.nodes.AuthenticatedUser data="$userParams" /}
+	{else}
+		{call communarchy.templates.html.global.nodes.UnauthenticatedUser data="$userParams" /}
+	{/if}
+{/template}

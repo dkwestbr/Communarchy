@@ -1,0 +1,12 @@
+{namespace communarchy.templates.html.login.branches}
+
+/**
+ *  Controls logic to get message for login
+ *
+ *  @param? message Message informing user of something being wrong with login
+ */
+{template .GetMessage}
+	{if $message}
+		{call communarchy.templates.html.login.nodes.Message data="$message" /}
+	{/if}
+{/template}

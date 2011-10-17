@@ -1,0 +1,14 @@
+{namespace communarchy.templates.html.pov.nodes}
+
+/**
+ *  Active view for upvote form
+ *
+ *  @param upvoteAction Action to perform an upvote\
+ */
+{template .upvoteActiveDisabled}
+<form method="post" action="{$upvoteAction}">
+	<div class="pov-upvote-container">
+		<input disabled="disabled" class="upvote-active-nh" type="submit"></input>
+	</div>
+</form>
+{/template}

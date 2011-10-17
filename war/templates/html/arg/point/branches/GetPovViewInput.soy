@@ -1,0 +1,14 @@
+{namespace communarchy.templates.html.point.branches}
+
+/**
+ *  Input for new povs.  Only visible when user has taken a stance
+ *
+ *  @param newPov Called when you want to render pov with no errs
+ */
+{template .getPovViewInput}
+	{if $newPov.povErrs}
+		{call communarchy.templates.html.argComponents.pov.povInputWithErrs data="$newPov" /}
+	{elseif $newPov.action}
+		{call communarchy.templates.html.argComponents.pov.povInput data="$newPov" /}
+	{/if}
+{/template}

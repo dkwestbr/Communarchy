@@ -1,0 +1,15 @@
+{namespace communarchy.templates.html.pov.nodes}
+
+/**
+ *  View for flag button
+ *
+ *  @param flagAction action to perform when user would like to flag a pov
+ *  @param flagLabel label for the flag
+ */
+{template .flag}
+	<div>
+		<form method="post" action="{$flagAction}">
+			<input class="flag-text" type="submit" value="{$flagLabel}"></input>
+		</form>
+	</div>
+{/template}

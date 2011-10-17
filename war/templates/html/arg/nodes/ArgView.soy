@@ -1,0 +1,27 @@
+{namespace communarchy.templates.html.arg.nodes}
+
+/**
+ *  Default view for an individual argument.
+ *
+ *  @param id Id for the argument
+ *  @param title Title for the argument
+ *  @param content Content for the argument
+ *  @param pointSet Of this argument
+ */
+{template .view autoescape="false"}
+<div class="arg-container center">
+	<div id="arg-{$id}" class="arg">
+		<div>
+			<div class="arg-header">
+				{$title}
+			</div>
+			<div class="arg-content">
+				{$content}
+			</div>
+			<div class="arg-border"></div>
+		</div>
+		{call communarchy.templates.html.controllers.ArgViewController.getPointView data="$pointSet" /}
+		<div class="arg-border"></div>
+	</div>
+</div>
+{/template}

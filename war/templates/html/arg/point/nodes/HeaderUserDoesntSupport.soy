@@ -1,0 +1,17 @@
+{namespace communarchy.templates.html.pov.nodes}
+
+/**
+ *  View for individual points of view within an argument
+ *
+ *  @param takeStanceAction action to perform when user wants to align with this stance
+ *  @param stance Stance represented by this pov
+ */
+{template .headerUserDoesntSupport}
+	<div class="float-left stance pov-column pov-header">
+		<form method="post" action="{$takeStanceAction}">
+			<div>
+				<input class="take-stance-btn" type="submit" value="{$stance}"></input>
+			</div>
+		</form>
+	</div>
+{/template}

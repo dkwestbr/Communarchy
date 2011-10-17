@@ -1,0 +1,15 @@
+{namespace communarchy.templates.html.main.nodes}
+
+/**
+ *  HTML view for an individual feed element in an argument feed
+ *
+ *  @param id Id for argument contained in this element
+ *  @param bgColor background color for the argument in this element
+ *  @param title The title of the argument in this element
+ *  @param href The url to visit the argument within this element
+ */
+{template .ArgFeedElement}
+	<div id="argument-{$id}" class="{$bgColor}">
+		<a href="{$href}" class="arg-feed-el">{$title}</a>
+	</div>
+{/template}

@@ -1,0 +1,15 @@
+{namespace communarchy.templates.html.global.nodes}
+
+/**
+ *  When user input is invalid, this is the template used to
+ *  structure error messages that are displayed to them.
+ *
+ *  @param message Message indicating what input errors pertain to
+ *  @param errors List of errors found during validation
+ */
+{template .validationErrors}
+	<div class="arg-errors-header">{$message}</div>
+	{foreach $error in $errors}
+		<div class="arg-errors-content">{$error}</div>
+	{/foreach}
+{/template}

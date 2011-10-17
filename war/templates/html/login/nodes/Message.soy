@@ -1,0 +1,12 @@
+{namespace communarchy.templates.html.login.nodes}
+
+/**
+ *  View for login message
+ *
+ *  @param message Message displayed to user when they're redirected
+ *                  to login page instead of the page they intended due
+ *                  to the fact that they aren't authenticated.
+ */
+{template .Message}
+	<div class="login-message">{$message}</div>
+{/template}

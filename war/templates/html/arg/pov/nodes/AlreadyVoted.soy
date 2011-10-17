@@ -1,0 +1,12 @@
+{namespace communarchy.templates.html.pov.nodes}
+
+/**
+ *  Vote button when the user already cast a vote
+ *
+ *  @param upvoteParams parameters for rendering upvote button
+ *  @param reclaimVoteParams parameters for rendering reclaim vote button
+ */
+{template .alreadyVoted}
+	{call communarchy.templates.html.argComponents.povCuration.upvoteInactive data="$upvoteParams" /}
+	{call communarchy.templates.html.argComponents.povCuration.reclaimVoteActive data="$reclaimVoteParams" /}
+{/template}

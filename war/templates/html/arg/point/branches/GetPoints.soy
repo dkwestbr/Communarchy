@@ -1,0 +1,12 @@
+{namespace communarchy.templates.html.point.branches}
+
+/**
+ *  Get the main content for all points in an argument
+ *
+ *  @param pointSet The set of all points associated with a given argument
+ */
+{template .getPoints}
+{foreach $point in $pointSet}
+	{call communarchy.templates.html.argComponents.pointLeaves.pointContent data="$point" /}
+{/foreach}
+{/template}

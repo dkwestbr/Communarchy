@@ -1,0 +1,64 @@
+body {
+	text-align: center;
+	min-width: 1000px;
+}
+
+.center {
+	margin-left: auto; 
+	margin-right: auto;
+	display: block;
+}
+
+.btn {
+	background-color: #DEB236;
+	cursor: pointer;
+	color: #FFFFFF;
+	text-align: center;
+	text-decoration: underline;
+	border: solid 2px #000;
+}
+
+.btn:hover {
+	background-color: #3658DE;
+}
+
+.request-waiting {
+	cursor: progress;
+}
+
+.request-finished {
+	cursor: auto;
+}
+
+.float-left {
+	float:left;
+}
+
+.float-right {
+	float:right;
+}
+
+.clear {
+	clear:both;
+}
+
+.dotted-border-top {
+	border-top: dashed 1px;
+}
+
+.arg-errors {
+	padding-top: 5px;
+	color: #FF0000;
+}
+
+.arg-errors-header {
+	font-weight: bold;
+}
+
+.arg-errors-content {
+	padding-left: 20px;
+}
+
+.logout-text {
+	font-size: 10px;
+}

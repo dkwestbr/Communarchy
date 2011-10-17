@@ -1,0 +1,40 @@
+{namespace communarchy.templates.html.newarg.nodes}
+
+/**
+ *  Content component of /Subjective/main page used when user is
+ *  on page to create new arguments
+ *
+ *  @param createArgAction Url for new argument to be posted to
+ *  @param title User input title.  Use when giving user back their invalid input
+ *  @param content User input content.  Use when giving user back their invalid input
+ *  @param titleErrors List of problems with argument header
+ *  @param contentErrors List of problems with argument content
+ */
+{template .NewArgWith}
+<div class="new-arg-container">
+	<div class="new-arg-header">
+		<div class="new-arg-text">
+			What would you like to discuss?
+		</div>
+		<form method="post" action="{$createArgAction}">
+			<div class="new-arg-title">
+				<input type="text" name="title" class="required new-arg-input" title="Title" value="{$title}"></input>
+			</div>
+			<div class="errors-wrapper">
+				{call communarchy.templates.html.global.validationErrors data="$titleErrors" /}
+			</div>
+			<div class="new-arg-content">
+				<textarea name="content" class="new-arg-text-area">
+					{$content}
+				</textarea>
+			</div>
+			<div class="errors-wrapper">
+				{call communarchy.templates.html.global.validationErrors data="$contentErrors" /}
+			</div>
+			<div>
+				<input class="btn new-arg-btn" type="submit" value="Post your discussion"></input>
+			</div>
+		</form>		
+	</div>
+</div>
+{/template}

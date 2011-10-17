@@ -1,0 +1,33 @@
+{namespace communarchy.templates.html.login}
+
+/**
+ *  /login Root
+ *
+ *  @param action Url to post login request to
+ *  @param headerParams Parameters for the html head element
+ *  @param messageParams Parameters for the login message
+ */
+{template .Root}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Communarchy</title>
+		{call communarchy.templates.html.global.branches.Head.getView data="$headerParams" /}
+	</head>
+	<body>
+		<div id="container" class="login-container">
+			<div class="login-wrapper">
+				<div class="login-input">
+					<form action="{$action}" method="post">
+						<input type="text" name="user"></input>
+						<div>
+							<input class="btn login-btn" type="submit" value="PUSH ME TO LOG IN AND DO STUFF"></input>
+						</div>
+					</form>	
+				</div>
+				{call communarchy.templates.html.login.branches.GetMessage data="$messageParams" /}
+			</div>
+		</div>
+	</body>
+	</html>
+{/template}

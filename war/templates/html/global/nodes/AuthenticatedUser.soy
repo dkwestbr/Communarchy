@@ -1,0 +1,19 @@
+{namespace communarchy.templates.html.global.nodes}
+
+/**
+ *  How to render account management when user is
+ *  authenticated.
+ *
+ *  @param userHref Url which will go the the user's account page
+ *  @param logoutUrl Url which will allow the user to log out
+ *  @param userDisplayName The user's display name
+ */
+{template .AuthenticatedUser}
+	<div class="user float-left">
+		<a class="user-text" href="{$userHref}">{$userDisplayName}</a>
+	</div>
+	<div class="user float-left">
+		<a class="logout-text" href="{$logoutUrl}">(log off)</a>
+	</div>
+	<div class="clear"></div>
+{/template}
