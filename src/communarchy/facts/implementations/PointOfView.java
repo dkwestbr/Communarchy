@@ -1,0 +1,70 @@
+package communarchy.facts.implementations;
+
+import java.io.Serializable;
+
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
+import com.google.appengine.api.datastore.Key;
+
+import communarchy.facts.interfaces.IPointOfView;
+
+@PersistenceCapable
+public class PointOfView implements IPointOfView, Serializable {
+	
+	private static transient final long serialVersionUID = 1L;
+
+	@PrimaryKey
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private Key povId;
+	
+	@Persistent
+	private Key posterId;
+	
+	@Persistent
+	private Key parentPointId;
+	
+	@Persistent
+	private int stance;
+	
+	@Persistent
+	private String pov;
+	
+	public PointOfView(){}
+	
+	public PointOfView(Key parent_point_id, Key poster_id, String pov, Integer stance) {
+		if(parent_point_id == null || poster_id == null) {
+			throw new NullPointerException("To preserve integrity, params of type " 
+					+ Key.class.getCanonicalName() + " must not be null");
+		}
+		
+		this.posterId = poster_id;
+		this.parentPointId = parent_point_id;
+		this.pov = pov;
+		this.stance = stance;
+	}
+	
+	public Key getParentPointId() {
+		return parentPointId;
+	}
+	
+	public int getStance() {
+		return stance;
+	}
+	
+	public String getPov() {
+		return pov;
+	}
+
+	@Override
+	public Key getPosterId() {
+		return posterId;
+	}
+
+	@Override
+	public Key getPovId() {
+		return povId;
+	}
+}
