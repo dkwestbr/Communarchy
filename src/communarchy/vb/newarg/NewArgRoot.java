@@ -20,6 +20,7 @@ import communarchy.vb.arg.branches.GetArgView;
 import communarchy.vb.global.branches.HeaderWrapper;
 import communarchy.vb.global.nodes.NavigationBarWrapper;
 
+// testing change from eclipse
 public class NewArgRoot extends AbstractTemplateWrapper implements IRootTemplate, IResourceTemplateWrapper<IArgument> {
 	
 	private static NewArgRoot INSTANCE;
