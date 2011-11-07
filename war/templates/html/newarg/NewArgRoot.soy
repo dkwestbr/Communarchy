@@ -1,24 +1,24 @@
-{namespace communarchy.templates.html.arg.Root}
+{namespace communarchy.templates.html.newArg}
 
 /**
  *  Specific view
  *
  *  @param argBarData tee hee
  *  @param headerParams parameters to head element
- *  @param viewData wrapper for parameters for aggregate view
+ *  @param newArgData wrapper for parameters for aggregate view
  */
-{template .getView autoescape="false"}
+{template .Root autoescape="false"}
 <!DOCTYPE html>
 <html>
 	<head>
-	<title>Communarchy</title>
-		{call communarchy.templates.html.global.branches.Head.getView data="$headerParams" /}
+		<title>Communarchy</title>
+		{call communarchy.templates.html.global.branches.Head data="$headerParams" /}
 	</head>
 	<body>
 		<div class="main-container">
-			{call communarchy.templates.html.global.nodes.NavigationBar.view data="$argBarData" /}
+			{call communarchy.templates.html.global.nodes.NavigationBar data="$argBarData" /}
 			<div>
-				{call communarchy.templates.html.arg.branches.ArgView.getView data="$viewData" /}
+				{call communarchy.templates.html.newarg.nodes.NewArg data="$newArgData" /}
 			</div>
 		</div>
 	</body>

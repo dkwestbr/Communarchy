@@ -7,8 +7,9 @@
  *  @param title Title for the argument
  *  @param content Content for the argument
  *  @param pointSet Of this argument
+ *  @param borderSet
  */
-{template .view autoescape="false"}
+{template .ArgView autoescape="false"}
 <div class="arg-container center">
 	<div id="arg-{$id}" class="arg">
 		<div>
@@ -20,8 +21,8 @@
 			</div>
 			<div class="arg-border"></div>
 		</div>
-		{call communarchy.templates.html.controllers.ArgViewController.getPointView data="$pointSet" /}
-		<div class="arg-border"></div>
+		{call communarchy.templates.html.global.nodes.ThickBorder data="$borderSet" /}
+		{call communarchy.templates.html.arg.point.branches.GetPointView data="$pointSet" /}
 	</div>
 </div>
 {/template}

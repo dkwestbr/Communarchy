@@ -1,0 +1,16 @@
+{namespace communarchy.templates.html.newarg.nodes}
+
+/**
+ *  The title w/errors view for a new argument
+ *
+ *  @param title Value for existing errors
+ *  @param titleErrors 
+ */
+{template .TitleWithErrors}
+	{call .Title}
+		{param title : $title /}
+	{/call}
+	<div class="errors-wrapper">
+		{call communarchy.templates.html.global.branches.GetErrorsView data="$titleErrors" /}
+	</div>
+{/template}

@@ -1,0 +1,12 @@
+{namespace communarchy.templates.html.arg.point.pov.nodes}
+
+/**
+ *  How to render the vote buttons when user is allowed to cast a vote
+ *
+ *  @param upvoteParams parameters for rendering vote/up button
+ *  @param reclaimvoteParams parameters for rendering reclaim vote button
+ */
+{template .AllowVote}
+	{call communarchy.templates.html.arg.point.pov.nodes.UpvoteActive data="$upvoteParams" /}
+	{call communarchy.templates.html.arg.point.pov.nodes.ReclaimVoteInactive data="$reclaimvoteParams" /}
+{/template}

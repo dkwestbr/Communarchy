@@ -1,22 +1,18 @@
-{namespace communarchy.templates.html.point.branches}
+{namespace communarchy.templates.html.arg.point.branches}
 
 /**
  *  Coordinates which child artifact view to render based
  *  on situation specified by mapper.
  *
- *  @param pointSet Called when you want to render point with no errs
+ *  @param hasErrors Called when you want to render point with no errs
+ *  @param pointSet Contains info for rendering existing points
  *  @param pointInputSet Contains info for rendering new point input
  */
-{template .getPointView}
-	{if $pointInputSet.pointMessage or $pointInputSet.povMessage}
-		{call communarchy.templates.html.argComponents.point.pointsWithErrors}
-			{param pointSet: $pointSet /}
-			{param pointInputSet: $pointInputSet /}
-		{/call}
+{template .GetPointView}
+	{call communarchy.templates.html.arg.point.branches.GetPoints data="$pointSet" /}
+	{if $hasErrors}
+		{call communarchy.templates.html.arg.point.nodes.NewPointWithErrors data="$pointInputSet" /}
 	{else}
-		{call communarchy.templates.html.argComponents.point.points}
-			{param pointSet: $pointSet /}
-			{param pointInputSet: $pointInputSet /}
-		{/call}
+		{call communarchy.templates.html.arg.point.nodes.NewPoint data="$pointInputSet" /}
 	{/if}
 {/template}

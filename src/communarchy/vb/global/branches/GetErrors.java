@@ -12,6 +12,7 @@ import communarchy.facts.PMSession;
 import communarchy.facts.interfaces.IUser;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
+import communarchy.vb.global.nodes.ErrorView;
 
 public class GetErrors extends AbstractTemplateWrapper implements
 		IResourceTemplateWrapper<List<String>> {
@@ -22,6 +23,7 @@ public class GetErrors extends AbstractTemplateWrapper implements
 	public static GetErrors get() {
 		if(INSTANCE == null) {
 			INSTANCE = new GetErrors();
+			INSTANCE.possiblePaths.add(ErrorView.get());
 		}
 		
 		return INSTANCE;
@@ -37,7 +39,7 @@ public class GetErrors extends AbstractTemplateWrapper implements
 		SoyListData errors = new SoyListData();
 		
 		for(String err : scopedResource) {
-			errors.add(err);
+			errors.add(ErrorView.get().getParams(pmSession, user, request, err));
 		}
 		
 		pMap.put(P_ERRORS, errors);

@@ -1,28 +1,26 @@
 package communarchy.vb.newarg.nodes;
 
-
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import com.google.template.soy.data.SoyMapData;
 
 import communarchy.constants.IHttpSessionConstants;
 import communarchy.facts.PMSession;
-import communarchy.facts.interfaces.IArgument;
 import communarchy.facts.interfaces.IUser;
-import communarchy.inputValidation.ValidationResult;
 import communarchy.vb.AbstractTemplateWrapper;
-import communarchy.vb.IResourceTemplateWrapper;
-import communarchy.vb.global.branches.GetErrors;
+import communarchy.vb.IParamBuilder;
+import communarchy.vb.newarg.branches.GetArgContent;
+import communarchy.vb.newarg.branches.GetArgTitle;
 
-public class NewArgView extends AbstractTemplateWrapper implements IResourceTemplateWrapper<IArgument> {
+public class NewArgView extends AbstractTemplateWrapper implements IParamBuilder {
 
 	private static NewArgView INSTANCE;
 	
 	public static NewArgView get() {
 		if(INSTANCE == null) {
 			INSTANCE = new NewArgView();
+			INSTANCE.possiblePaths.add(GetArgContent.get());
+			INSTANCE.possiblePaths.add(GetArgTitle.get());
 		}
 		
 		return INSTANCE;
@@ -32,22 +30,20 @@ public class NewArgView extends AbstractTemplateWrapper implements IResourceTemp
 	public String getTemplate() {
 		return "./templates/html/newarg/nodes/NewArg.soy";
 	}
-	
+
 	private static final String P_CREATE_ARG_ACTION = "createArgAction";
-	
+	private static final String P_TITLE_PARAMS = "titleParams";
+	private static final String P_CONTENT_PARAMS = "contentParams";
+
 	@Override
-	@SuppressWarnings("unchecked")
-	public SoyMapData getParams(PMSession pmSession, IUser user, HttpServletRequest request,
-			IArgument scopedResource) {
-		
+	public SoyMapData getParams(PMSession pmSession, IUser user,
+			HttpServletRequest request) {
 		SoyMapData paramMap = new SoyMapData();
-		paramMap.put(P_CREATE_ARG_ACTION, "/arg/new");
 		
-		List<ValidationResult> results = (List<ValidationResult>) request.getAttribute(IHttpSessionConstants.VALIDATION_RESULTS_NEW_ARG);
-		for(ValidationResult result : results) {
-			paramMap.put(result.getName(), result.getContent());
-			paramMap.put(String.format("%sErrors", result.getName()), GetErrors.get().getParams(pmSession, user, request, result.getErrors()));
-		}
+		paramMap.put(P_CREATE_ARG_ACTION, "/arg/new");
+		paramMap.put(P_TITLE_PARAMS, GetArgTitle.get().getParams(pmSession, user, request));
+		paramMap.put(P_CONTENT_PARAMS, GetArgContent.get().getParams(pmSession, user, request));
+		request.getSession().removeAttribute(IHttpSessionConstants.VALIDATION_RESULTS_NEW_ARG);
 		
 		return paramMap;
 	}

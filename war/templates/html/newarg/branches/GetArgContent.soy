@@ -1,0 +1,15 @@
+{namespace communarchy.templates.html.newarg.branches}
+
+/**
+ *	View controller for aggregating new arg content view
+ *
+ *  @param hasErrors flag indicating existence of errors
+ *  @param contentParams parameters for the content view
+ */
+{template .GetArgContent}
+{if $hasErrors}
+	{call communarchy.templates.html.newarg.nodes.ContentWithErrors data="$contentParams" /}
+{else}
+	{call communarchy.templates.html.newarg.nodes.Content data="$contentParams" /}
+{/if}
+{/template}

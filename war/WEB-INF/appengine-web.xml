@@ -6,6 +6,8 @@
 	<static-files>
 		<include path="/**.css" />
         <include path="/**.xml" />
+        <include path="/**.ico" />
+        <include path="/**.png" />
     </static-files>
 	
 	<!-- Configure java.util.logging -->

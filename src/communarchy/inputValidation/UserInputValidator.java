@@ -1,10 +1,6 @@
 package communarchy.inputValidation;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class UserInputValidator implements IUserInputValidator {
 
@@ -38,11 +34,10 @@ public class UserInputValidator implements IUserInputValidator {
 		if(content == null) {
 			throw new IOException("Content must not be null");
 		}
-		return validate(content, input.getMinLength(), input.getMaxLength(), input.htmlAllowed(), input.getContentName());
+		return validate(content, input.getMinLength(), input.getMaxLength(), input.htmlAllowed(), input.getContentName(), input.getDisplayName());
 	}
 	
-	private static ValidationResult validate(String input, int min, int max, boolean htmlAllowed, String name) {
-		Map<String, Object> validationMessages = new HashMap<String, Object>();
+	private static ValidationResult validate(String input, int min, int max, boolean htmlAllowed, String name, String displayName) {
 		
 		if(htmlAllowed) {	
 			// TODO: protect from xss with html exclusion
@@ -52,18 +47,18 @@ public class UserInputValidator implements IUserInputValidator {
 		
 		ValidationResult result = new ValidationResult(name, input);
 		if(input == null) {
-			result.addError(String.format("%s%s", name, NULL_OR_EMPTY));
+			result.addError(String.format("%s%s", displayName, NULL_OR_EMPTY));
 			return result;
 		}
 		
 		if(input.length() > max) {
 			if(input.length() > TOO_LONG_TO_SHOW_LIMIT) {
-				result.addError(String.format("%s%s", name, TOO_LONG_DONT_SHOW_CHAR_LIMIT));
+				result.addError(String.format("%s%s", displayName, TOO_LONG_DONT_SHOW_CHAR_LIMIT));
 			} else {
-				result.addError(String.format("%s%s%d%s", name, TOO_LONG, max, TOO_LONG_END));
+				result.addError(String.format("%s%s%d%s", displayName, TOO_LONG, max, TOO_LONG_END));
 			}
 		} else if(input.length() <= min) {
-			result.addError(String.format("%s%s%d%s", name, TOO_SHORT, min, TOO_SHORT_END));
+			result.addError(String.format("%s%s%d%s", displayName, TOO_SHORT, min, TOO_SHORT_END));
 		}
 		
 		return result;

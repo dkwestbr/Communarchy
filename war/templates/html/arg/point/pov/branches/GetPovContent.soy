@@ -1,0 +1,16 @@
+{namespace communarchy.templates.html.arg.point.pov.branches}
+
+/**
+ *  Handles filling pov content.  If pov is flagged, then a flag appears.
+ *
+ *  @param povContent Wrapper for pov content parameters
+ */
+{template .GetPovContent}
+	{if $povContent.flags}
+		{foreach $flag in $povContent.flags}
+			{call communarchy.templates.html.arg.point.pov.nodes.FlaggedPovContent data="$flag" /}
+		{/foreach}
+	{else}
+		{$povContent.pov}
+	{/if}
+{/template}

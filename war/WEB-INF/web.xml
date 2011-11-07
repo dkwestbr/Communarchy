@@ -6,15 +6,19 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	
 	<!-- FILTERS -->
+	
+	<!-- 
 	<filter>
 		<filter-name>IgnoreFilter</filter-name>
 		<filter-class>communarchy.filters.IgnoreFilter</filter-class>
 	</filter>
 	<filter-mapping>
-  		<filter-name>AuthenticationFilter</filter-name>
+  		<filter-name>IgnoreFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	<!-- Uncomment before push to production 
+	 -->
+	 
+	<!-- Uncomment before push to production --> 
 	<filter>
 		<filter-name>DevelopmentWallFilter</filter-name>
 		<filter-class>communarchy.filters.DevelopmentWallFilter</filter-class>
@@ -23,7 +27,8 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
   		<filter-name>DevelopmentWallFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	 -->
+	<!-- Uncomment before push to production -->
+	
 	<filter>
 		<filter-name>AuthenticationFilter</filter-name>
 		<filter-class>communarchy.filters.AuthenticationFilter</filter-class>
@@ -50,6 +55,46 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 
 	<!-- SERVLETS -->	
 	<servlet>
+		<servlet-name>ArgController</servlet-name>
+		<servlet-class>communarchy.controllers.handlers.input.ArgController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ArgController</servlet-name>
+		<url-pattern>/arg/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>NewPointController</servlet-name>
+		<servlet-class>communarchy.controllers.handlers.input.NewPointController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>NewPointController</servlet-name>
+		<url-pattern>/arg/point/new/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>NewPovController</servlet-name>
+		<servlet-class>communarchy.controllers.handlers.input.NewPovController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>NewPovController</servlet-name>
+		<url-pattern>/point/pov/new/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>PovVoteHandler</servlet-name>
+		<servlet-class>communarchy.controllers.handlers.actions.PovVoteHandler</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PovVoteHandler</servlet-name>
+		<url-pattern>/pov/vote/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>TakeStanceHandler</servlet-name>
+		<servlet-class>communarchy.controllers.handlers.actions.TakeStanceHandler</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TakeStanceHandler</servlet-name>
+		<url-pattern>/point/takestance/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>Main</servlet-name>
 		<servlet-class>communarchy.controllers.Main</servlet-class>
 	</servlet>
@@ -75,7 +120,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>NewArg</servlet-name>
-		<servlet-class>communarchy.controllers.NewArg</servlet-class>
+		<servlet-class>communarchy.controllers.handlers.input.NewArgController</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>NewArg</servlet-name>

@@ -1,6 +1,7 @@
 package communarchy.facts.implementations;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
@@ -32,6 +33,12 @@ public class Argument implements IArgument, Serializable {
 	@Persistent
 	private String content;
 	
+	@Persistent
+	private Date createDate;
+	
+	@Persistent
+	private Date updateDate;
+	
 	public Argument(){}
 	
 	public Argument(Key poster_id, String title, String content) {
@@ -43,6 +50,8 @@ public class Argument implements IArgument, Serializable {
 		this.posterId = poster_id;
 		this.title = title;
 		this.content = content;
+		this.createDate = new Date();
+		this.updateDate = createDate;
 	}
 
 	@Override
@@ -63,5 +72,20 @@ public class Argument implements IArgument, Serializable {
 	@Override
 	public Key getPosterId() {
 		return posterId;
+	}
+
+	@Override
+	public Date getPostDate() {
+		return createDate;
+	}
+
+	@Override
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	@Override
+	public String getWebFriendlyTitle() {
+		return title.replaceAll("[^A-Za-z0-9 ]", "").replaceAll(" ", "-");
 	}
 }

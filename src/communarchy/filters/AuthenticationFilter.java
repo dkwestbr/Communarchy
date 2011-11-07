@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import communarchy.constants.IHttpSessionConstants;
 import communarchy.constants.IServletConstants;
+import communarchy.constants.ISessionConstants;
 import communarchy.facts.implementations.UnauthenticatedUser;
 import communarchy.facts.interfaces.IUser;
 
@@ -45,9 +46,13 @@ public class AuthenticationFilter implements Filter {
 		
 		if(request.getMethod().equals("POST")
 				&& !user.isAuthenticated()
-				&& !request.getRequestURI().equals("/login")) {
+				&& !request.getRequestURI().equals("/login")
+				&& request.getSession().getAttribute(ISessionConstants.FRONTLINE) == null) {
 			
 			session.setAttribute(IHttpSessionConstants.LOGIN_MESSAGE, IServletConstants.LOGIN_REQUIRED);
+			if(!request.getParameterMap().isEmpty()) {
+				session.setAttribute(IHttpSessionConstants.CALL_BACK_PARAMS, request.getParameterMap());
+			}
 			
 			response.sendRedirect("/login");
 			response.flushBuffer();

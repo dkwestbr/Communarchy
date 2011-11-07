@@ -2,16 +2,16 @@ package communarchy.vb.main.branches;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.google.appengine.api.datastore.Entity;
 import com.google.template.soy.data.SoyMapData;
 
 import communarchy.facts.PMSession;
+import communarchy.facts.implementations.Argument;
 import communarchy.facts.interfaces.IUser;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 
 public class ArgFeedElement extends AbstractTemplateWrapper implements
-		IResourceTemplateWrapper<Entity> {
+		IResourceTemplateWrapper<Argument> {
 
 	private static ArgFeedElement INSTANCE;
 	private ArgFeedElement() {}
@@ -35,13 +35,13 @@ public class ArgFeedElement extends AbstractTemplateWrapper implements
 
 	@Override
 	public SoyMapData getParams(PMSession pmSession, IUser user,
-			HttpServletRequest request, Entity scopedResource) {
+			HttpServletRequest request, Argument scopedResource) {
 		
 		SoyMapData pMap = new SoyMapData();
 		
-		pMap.put(P_ID, scopedResource.getProperty("arg_id"));
-		pMap.put(P_TITLE, scopedResource.getProperty("title"));
-		pMap.put(P_HREF, String.format("/arg/%s", scopedResource.getProperty("arg_id")));
+		pMap.put(P_ID, scopedResource.getArgId().getId());
+		pMap.put(P_TITLE, scopedResource.getTitle());
+		pMap.put(P_HREF, String.format("/arg/%s/%s", scopedResource.getArgId().getId(), scopedResource.getWebFriendlyTitle()));
 		
 		return pMap;
 	}

@@ -1,0 +1,12 @@
+{namespace communarchy.templates.html.arg.point.branches}
+
+/**
+ *  Get the headers which show how many people have taken a certain stance
+ *
+ *  @param stanceCountSets
+ */
+{template .GetStanceCountHeaders}
+	{foreach $set in $stanceCountSets}
+		{call communarchy.templates.html.arg.point.nodes.StanceCountHeader data="$set" /}
+	{/foreach}
+{/template}

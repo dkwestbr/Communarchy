@@ -2,14 +2,14 @@ package communarchy.vb.main.branches;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.QueryResultList;
 import com.google.template.soy.data.SoyListData;
 import com.google.template.soy.data.SoyMapData;
 
 import communarchy.facts.PMSession;
+import communarchy.facts.implementations.Argument;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.mappers.ArgumentMapper;
+import communarchy.facts.results.PageSet;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IParamBuilder;
 
@@ -41,9 +41,9 @@ public class GetArgFeed extends AbstractTemplateWrapper implements IParamBuilder
 		SoyMapData pMap = new SoyMapData();
 		
 		SoyListData argList = new SoyListData();
-		QueryResultList<Entity> args = pmSession.getMapper(ArgumentMapper.class).buildArgFeed(20, null);
+		PageSet<Argument> pageSet = pmSession.getMapper(ArgumentMapper.class).buildPostFeeed(20, null);
 		
-		for(Entity arg : args) {
+		for(Argument arg : pageSet.getPages()) {
 			argList.add(ArgFeedElement.get().getParams(pmSession, user, request, arg));
 		}
 		

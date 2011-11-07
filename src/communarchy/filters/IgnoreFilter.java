@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class IgnoreFilter implements Filter {
 
@@ -20,8 +21,11 @@ public class IgnoreFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 		
 		HttpServletRequest request = (HttpServletRequest) req;
+		HttpServletResponse response = (HttpServletResponse) resp;
 		if(!request.getRequestURI().equals("/flavicon.ico")) {
 			chain.doFilter(req, resp);
+		} else {
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
 

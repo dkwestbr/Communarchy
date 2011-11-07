@@ -1,31 +1,29 @@
 package communarchy.facts.mappers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import com.google.appengine.api.datastore.Cursor;
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.QueryResultList;
+import org.datanucleus.store.appengine.query.JDOCursorHelper;
 
+import com.google.appengine.api.datastore.Cursor;
+import com.google.appengine.api.datastore.Key;
 import communarchy.facts.implementations.Argument;
 import communarchy.facts.implementations.Point;
-import communarchy.facts.interfaces.IArgument;
 import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.mappers.interfaces.AbstractMapper;
 import communarchy.facts.mappers.interfaces.IArgMapper;
+import communarchy.facts.results.PageSet;
 
 public class ArgumentMapper extends AbstractMapper<ArgumentMapper> implements IArgMapper {
 	
 	public ArgumentMapper() {}
 
 	@Override
-	public void insertNewPost(IArgument post) {
+	public void insertNewPost(Argument post) {
 		pmSession.getPM().makePersistent(post);
 	}
 
@@ -46,23 +44,27 @@ public class ArgumentMapper extends AbstractMapper<ArgumentMapper> implements IA
 	}
 
 	@Override
-	public QueryResultList<Entity> buildArgFeed(int numArgs, String startCursor) {
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        com.google.appengine.api.datastore.Query q = new com.google.appengine.api.datastore.Query(Argument.class.getName());
-        PreparedQuery pq = datastore.prepare(q);
-        int pageSize = 15;
-        FetchOptions fetchOptions = FetchOptions.Builder.withLimit(pageSize);
-        if (startCursor != null) {
-            fetchOptions.startCursor(Cursor.fromWebSafeString(startCursor));
+	@SuppressWarnings("unchecked")
+	public PageSet<Argument> buildPostFeeed(int numArgs, String startCursor) {
+		
+		PersistenceManager pm = pmSession.getPM();
+        Query query = pm.newQuery(Argument.class);
+        query.setRange(0, numArgs);
+        query.setOrdering("createDate desc");
+        
+        if(startCursor != null) {
+        	Map<String, Object> extensionMap = new HashMap<String, Object>();
+            extensionMap.put(JDOCursorHelper.CURSOR_EXTENSION, Cursor.fromWebSafeString(startCursor));
+            query.setExtensions(extensionMap);
         }
         
-        QueryResultList<Entity> results = pq.asQueryResultList(fetchOptions);
+        List<Argument> results = (List<Argument>) query.execute();
 
-        return results;
+        return new PageSet<Argument>(results, startCursor, JDOCursorHelper.getCursor(results).toWebSafeString());
 	}
 
 	@Override
-	public IArgument selectPostById(Key id) {
+	public Argument selectPostById(Key id) {
 		return pmSession.getPM().getObjectById(Argument.class, id);
 	}
 }

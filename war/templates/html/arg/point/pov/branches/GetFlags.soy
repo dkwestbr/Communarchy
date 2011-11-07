@@ -1,0 +1,15 @@
+{namespace communarchy.templates.html.arg.point.pov.branches}
+
+/**
+ *  Calls the proper flag view
+ *
+ *  @param flags set of flags to construct a view for
+ */
+{template .GetFlags}
+{foreach $flag in $flags}
+	{call communarchy.templates.html.arg.point.pov.nodes.Flag data="$flag" /}
+	{if not isLast($flag)}
+		{call communarchy.templates.html.arg.point.pov.nodes.FlagSpacer /}
+	{/if}
+{/foreach}
+{/template}

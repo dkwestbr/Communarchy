@@ -1,4 +1,4 @@
-{namespace communarchy.templates.html.global.branches.Head}
+{namespace communarchy.templates.html.global.branches}
 
 /**
  *  Calls proper global templates to build html head element
@@ -6,7 +6,7 @@
  *  @param scripts Information on the javascript links to include in the head element
  *  @param styleSheets Information on the css style links to include in the head element
  */
-{template .getView}
+{template .Head}
 {foreach $script in $scripts}
 	{call communarchy.templates.html.global.nodes.Script data="$script" /}
 {/foreach}

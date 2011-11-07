@@ -1,33 +1,34 @@
 package communarchy.vb.arg.nodes;
 
-import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.google.template.soy.data.SoyMapData;
 
-import communarchy.constants.ISessionConstants;
+import communarchy.constants.IHttpSessionConstants;
 import communarchy.facts.PMSession;
-import communarchy.facts.interfaces.IArgument;
 import communarchy.facts.interfaces.IUser;
-import communarchy.inputValidation.UserInputValidator;
-import communarchy.inputValidation.messanger.NewArgMessenger;
+import communarchy.inputValidation.ValidationResult;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
+import communarchy.vb.global.branches.GetErrors;
+import communarchy.vb.global.nodes.ThickBorder;
 
 public class NewPointWithErrors extends AbstractTemplateWrapper implements
-		IResourceTemplateWrapper<IArgument> {
+		IResourceTemplateWrapper<ValidationResult> {
 
 	private static NewPointWithErrors INSTANCE;
 	private NewPointWithErrors() {}
 	
-	private static String PARAM_NEW_POINT_ACTION = "newPointAction";
-	
 	public static NewPointWithErrors get() {
 		if(INSTANCE == null) {
 			INSTANCE = new NewPointWithErrors();
+			INSTANCE.possiblePaths.add(ThickBorder.get());
+			INSTANCE.possiblePaths.add(GetErrors.get());
 		}
 		
 		return INSTANCE;
@@ -35,37 +36,37 @@ public class NewPointWithErrors extends AbstractTemplateWrapper implements
 	
 	@Override
 	public String getTemplate() {
-		return "./templates/html/point/nodes/NewPointWithErrors.soy";
+		return "./templates/html/arg/point/nodes/NewPointWithErrors.soy";
 	}
 
+	private static final String PARAM_NEW_POINT_ACTION = "newPointAction";
+	private static final String PARAM_BORDER_SET = "borderSet";
+	private static final String PARAM_POINT = "point";
+	private static final String PARAM_POINT_ERRORS = "pointErrors";
+	
 	@Override
 	@SuppressWarnings("unchecked")
 	public SoyMapData getParams(PMSession pmSession, IUser user,
-			HttpServletRequest request, IArgument scopedResource) {
+			HttpServletRequest request, ValidationResult scopedResource) {
 	
+		Pattern argIdPattern = Pattern.compile("/arg/([0-9]+)");
+		Matcher argIdMatcher = argIdPattern.matcher(request.getRequestURI());
+		Long id = null;
+		if(argIdMatcher.find()) {
+			id = Long.parseLong(argIdMatcher.group(1));
+		}
+		
 		SoyMapData paramMap = new SoyMapData();
-		paramMap.put(PARAM_NEW_POINT_ACTION, String.format("/arg/%s", scopedResource.getArgId().toString()));
+		paramMap.put(PARAM_NEW_POINT_ACTION, String.format("/arg/point/new/%d", id));
 		
 		HttpSession session = request.getSession();
 		
-		Map<String, String> requiredParamMap = (Map<String, String>) session.getAttribute(ISessionConstants.REQ_MAP);
-		for(String key : requiredParamMap.keySet()) {
-			paramMap.put(key, requiredParamMap.get(key));
-		}
+		Map<String, ValidationResult> requiredParamMap = (Map<String, ValidationResult>) session.getAttribute(IHttpSessionConstants.VALIDATION_RESULTS_NEW_POINT);
+		ValidationResult pointErrors = requiredParamMap.get("point");
 		
-		Map<String, Map<String, Object>> errors = (Map<String, Map<String, Object>>) session.getAttribute(ISessionConstants.ERRS_FOUND);
-		for(String key : errors.keySet()) {
-			Map<String, Object> errSet = errors.get(key);
-			
-			String messageKey = String.format("%s%s", errSet.get(UserInputValidator.RESOURCE_KEY), "Message");
-			String errorsKey = String.format("%s%s", errSet.get(UserInputValidator.RESOURCE_KEY), "Errors");
-			paramMap.put(messageKey, errSet
-					.get(UserInputValidator.MESSAGE_KEY));
-			paramMap.put(errorsKey,
-					NewArgMessenger
-							.toSoyListData((List<String>) errSet
-									.get(UserInputValidator.ERROR_KEY)));
-		}
+		paramMap.put(PARAM_POINT_ERRORS, GetErrors.get().getParams(pmSession, user, request, pointErrors.getErrors()));
+		paramMap.put(PARAM_POINT, pointErrors.getContent());
+		paramMap.put(PARAM_BORDER_SET, ThickBorder.get().getParams(pmSession, user, request));
 		
 		return paramMap;
 	}

@@ -1,0 +1,145 @@
+.main-container {
+	text-align: left;
+	width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.main-header {
+	height:80px;
+}
+
+.main-border {
+	border-style:solid;
+	border-width:2px;
+}
+
+.arg-control-panel {
+	padding-top: 36px;
+}
+
+.east-container {
+	height:1000px;
+	width:190px;
+}
+
+.content-container {
+	height: 1200px;
+}
+
+.v-spacer {
+	padding-top:20px;
+}
+
+.h-spacer {
+	padding-right:5px;
+}
+
+.tArea-v-sep {
+	height:15px;
+}
+
+.new-arg-container {
+	width: 675px;
+	padding-left: 40px;
+}
+
+.new-arg-header {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.new-arg-content {
+	padding-bottom: 5px;
+	padding-top: 25px;
+}
+
+.new-arg-text {
+	padding-bottom: 7px;
+}
+
+.new-arg-text-area {
+	width: 100%;
+	height: 400px;
+	resize: none;
+}
+
+.new-arg-input {
+	width: 500px;
+}
+
+.user {
+	padding-left: 3px;
+	padding-top: 2px;
+	cursor: pointer;
+}
+
+.user-text {
+	font-size: 14px;
+	color: #00F;
+	text-decoration: underline;
+}
+
+/*
+.post-arg-btn {
+	width: 160px;
+	border-style:solid;
+	border-width:2px;
+	border-color:#000;
+}
+*/
+
+.login-redirect {
+	font-size: 14px;
+}
+
+.render-header {
+	padding-top: 15px;
+}
+
+.render-area {
+	border-style: dotted;
+	background-color: #CCFFFF;
+}
+
+.render-contents {
+	padding-left: 10px;
+	font-size: 12px;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+}
+
+.args-append-point {
+	border-top: solid 1px;
+}
+
+.arg-feed-el {
+	border-bottom: 1px solid;
+	padding-bottom: 15px;
+	padding-left: 15px;
+	padding-top: 15px;
+	display: block;
+	font-size: 16px;
+}
+
+.arg-feed-el:hover {
+	background-color: #DEB236;
+	font-size: 20px;
+	padding-top: 13px;
+	padding-bottom: 13px;
+}
+
+.main-btn {
+	width: 260px;
+}
+
+.bg-even {
+	background-color: #6FF;
+}
+
+.bg-odd {
+	background-color: #CFF;
+}
+
+.arg-feed-text {
+	
+}

@@ -3,13 +3,16 @@ package communarchy.facts.mappers;
 import java.util.Collections;
 import java.util.List;
 import javax.jdo.Query;
+import javax.jdo.Transaction;
 
 import com.google.appengine.api.datastore.Key;
 
 import communarchy.exceptions.CommunarchyPersistenceException;
 import communarchy.facts.actions.interfaces.IVote;
-import communarchy.facts.counters.StanceCounter;
+import communarchy.facts.implementations.Argument;
+import communarchy.facts.implementations.Point;
 import communarchy.facts.implementations.PointOfView;
+import communarchy.facts.implementations.Stance;
 import communarchy.facts.implementations.UserStance;
 import communarchy.facts.interfaces.IArgument;
 import communarchy.facts.interfaces.IPoint;
@@ -17,6 +20,7 @@ import communarchy.facts.interfaces.IPointOfView;
 import communarchy.facts.interfaces.IUserStance;
 import communarchy.facts.mappers.interfaces.AbstractMapper;
 import communarchy.facts.mappers.interfaces.IPointMapper;
+import communarchy.facts.results.PageSet;
 import communarchy.rankingStrategies.TopPointStrategy;
 
 @SuppressWarnings("unchecked")
@@ -25,7 +29,7 @@ public class PointMapper extends AbstractMapper<PointMapper> implements IPointMa
 	public PointMapper() {}
 
 	@Override
-	public void insertNewPost(IPoint post) {
+	public void insertNewPost(Point post) {
 		pmSession.getPM().makePersistent(post);
 	}
 
@@ -46,21 +50,21 @@ public class PointMapper extends AbstractMapper<PointMapper> implements IPointMa
 
 	@Override
 	public Integer getPointAgreeCount(Key pointId) {
-		return getCountByStance(StanceCounter.buildKey(pointId, UserStance.STANCE_AGREE));
+		return getCountByStance(new Stance(pointId, UserStance.STANCE_AGREE));
 	}
 
 	@Override
 	public Integer getPointNeutralCount(Key pointId) {
-		return getCountByStance(StanceCounter.buildKey(pointId, UserStance.STANCE_NEUTRAL));
+		return getCountByStance(new Stance(pointId, UserStance.STANCE_NEUTRAL));
 	}
 
 	@Override
 	public Integer getPointDisagreeCount(Key pointId) {
-		return getCountByStance(StanceCounter.buildKey(pointId, UserStance.STANCE_DISAGREE));
+		return getCountByStance(new Stance(pointId, UserStance.STANCE_DISAGREE));
 	}
 	
-	private Integer getCountByStance(String resource) {
-		return pmSession.getMapper(ShardMapper.class).getCount(resource, StanceCounter.class);
+	private Integer getCountByStance(Stance stance) {
+		return pmSession.getMapper(StanceCountMapper.class).getCount(stance);
 	}
 
 	@Override
@@ -77,16 +81,26 @@ public class PointMapper extends AbstractMapper<PointMapper> implements IPointMa
 	}
 
 	@Override
-	public void updateStance(IUserStance stance) throws CommunarchyPersistenceException {
+	public void updateStance(IUserStance stance, Integer oldStance) throws CommunarchyPersistenceException {
 		
-		// TODO: Make into transaction
-		pmSession.getPM().makePersistent(stance);
-		pmSession.getMapper(ShardMapper.class).decrement(StanceCounter.buildKey(stance.getPointId(), stance.getStance()), StanceCounter.class);
+		Transaction tx = pmSession.getPM().currentTransaction();
+		
+		try {	
+			tx.begin();
+			pmSession.getPM().makePersistent(stance);
+			pmSession.getMapper(StanceCountMapper.class).decrement(new Stance(stance.getPoint(), oldStance));
+			pmSession.getMapper(StanceCountMapper.class).increment(stance);
+			tx.commit();
+		} finally {
+			if(tx.isActive()) {
+				tx.rollback();
+			}
+		}
 	}
 
 	@Override
 	public void reclaimAllVotes(IUserStance stance) throws CommunarchyPersistenceException {
-		List<IVote> votes = pmSession.getMapper(PovMapper.class).selectAllVotes(stance.getPointId(), stance.getUserId());
+		List<IVote> votes = pmSession.getMapper(PovMapper.class).selectAllVotes(stance.getPoint(), stance.getUser());
 		for(IVote vote : votes) {
 			pmSession.getMapper(PovMapper.class).reclaimVote(vote.getPovKey(), vote.getUserKey());
 		}
@@ -96,23 +110,23 @@ public class PointMapper extends AbstractMapper<PointMapper> implements IPointMa
 
 	@Override
 	public void insertNewStance(IUserStance stance) throws CommunarchyPersistenceException {
-		pmSession.getPM().makePersistent(stance);
-		pmSession.getMapper(ShardMapper.class).increment(StanceCounter.buildKey(stance.getPointId(), stance.getStance()), StanceCounter.class);
+		Transaction tx = pmSession.getPM().currentTransaction();
+		
+		try {
+			tx.begin();
+			pmSession.getPM().makePersistent(stance);
+			pmSession.getMapper(StanceCountMapper.class).increment(stance);
+			tx.commit();
+		} finally {
+			if(tx.isActive()) {
+				tx.rollback();
+			}
+		}
 	}
 
 	@Override
-	public IPoint selectPostById(Key id) {
-		IPoint point;
-		Query q = pmSession.getPM().newQuery(PointOfView.class);
-		try {
-			q.setFilter("pointId == idParam");
-			q.declareParameters(Key.class.getName() + " idParam");
-			point = (IPoint) q.execute(id);	
-		} finally {
-			q.closeAll();
-		}
-		
-		return point;
+	public Point selectPostById(Key id) {
+		return pmSession.getPM().getObjectById(Point.class, id);
 	}
 
 	@Override
@@ -126,23 +140,27 @@ public class PointMapper extends AbstractMapper<PointMapper> implements IPointMa
 	}
 
 	@Override
-	public IUserStance selectStance(Key pointKey, Key userKey) {
-		IUserStance userStance;
-		Query q = pmSession.getPM().newQuery(PointOfView.class);
+	public UserStance selectStance(Key pointKey, Key userKey) {
+		if(pointKey == null || userKey == null) {
+			return null;
+		}
+		
+		Query q = pmSession.getPM().newQuery(UserStance.class);
+		List<UserStance> results = null;
 		try {
-			q.setFilter("pointId == pointIdParam && posterId == userIdParam");
-			q.declareParameters(String.format("%s pointIdParam, %s userIdParam", Key.class.getName(), Key.class.getName()));
-			userStance = (IUserStance) q.execute(pointKey, userKey);	
+			q.setFilter("user == userParam && point == pointParam");
+			q.declareParameters(String.format("%s userParam, %s pointParam", Key.class.getName(), Key.class.getName()));
+			results = (List<UserStance>) q.execute(userKey, pointKey);	
 		} finally {
 			q.closeAll();
 		}
 		
-		return userStance;
+		return results == null ? null : (results.isEmpty() ? null : results.get(0));
 	}
 
 	@Override
 	public Integer getPointCountByStance(Key pointKey, Integer stance) {
-		return getCountByStance(StanceCounter.buildKey(pointKey, stance));
+		return getCountByStance(new Stance(pointKey, stance));
 	}
 
 	@Override
@@ -157,9 +175,15 @@ public class PointMapper extends AbstractMapper<PointMapper> implements IPointMa
 
 	@Override
 	public Integer getMaxVoteCount(Key pointKey, int stance) {
-		int count = pmSession.getMapper(ShardMapper.class).getCount(StanceCounter.buildKey(pointKey, stance), StanceCounter.class);
+		int count = pmSession.getMapper(StanceCountMapper.class).getCount(new Stance(pointKey, stance));
 		double firstRoot = Math.sqrt(count);
 		
 		return (int) Math.floor(firstRoot);
+	}
+
+	@Override
+	public PageSet<Argument> buildPostFeeed(int numArgs, String startCursor) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

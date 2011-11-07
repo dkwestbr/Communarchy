@@ -10,7 +10,8 @@ import communarchy.facts.interfaces.IArgument;
 import communarchy.facts.interfaces.IUser;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
-import communarchy.vb.point.branches.PointViewController;
+import communarchy.vb.arg.point.branches.GetPointView;
+import communarchy.vb.global.nodes.ThickBorder;
 
 public class ArgViewWrapper extends AbstractTemplateWrapper implements IResourceTemplateWrapper<IArgument> {
 
@@ -24,7 +25,8 @@ public class ArgViewWrapper extends AbstractTemplateWrapper implements IResource
 	public static ArgViewWrapper get() {
 		if(INSTANCE == null) {
 			INSTANCE = new ArgViewWrapper();
-			INSTANCE.possiblePaths.add(PointViewController.get());
+			INSTANCE.possiblePaths.add(GetPointView.get());
+			INSTANCE.possiblePaths.add(ThickBorder.get());
 		}
 		
 		return INSTANCE;
@@ -37,18 +39,20 @@ public class ArgViewWrapper extends AbstractTemplateWrapper implements IResource
 		return "./templates/html/arg/nodes/ArgView.soy";
 	}
 
+	private static final String PARAM_BORDER_SET = "borderSet";
+	
 	@Override
 	public SoyMapData getParams(PMSession pmSession, IUser user, HttpServletRequest request,
 			IArgument arg) {
 
 		SoyMapData paramMap = new SoyMapData();
 		
-		paramMap.put(ID_KEY, arg.getArgId().toString());
+		paramMap.put(ID_KEY, String.format("%d", arg.getArgId().getId()));
 		paramMap.put(TITLE_KEY, arg.getTitle());
 		paramMap.put(CONTENT_KEY, arg.getContent());
-		paramMap.put(POINT_KEY, PointViewController.get().getParams(pmSession, user, request, arg));
+		paramMap.put(POINT_KEY, GetPointView.get().getParams(pmSession, user, request, arg));
+		paramMap.put(PARAM_BORDER_SET, ThickBorder.get().getParams(pmSession, user, request));
 		
 		return paramMap;
 	}
-
 }

@@ -1,0 +1,18 @@
+{namespace communarchy.templates.html.arg.point.pov.nodes}
+
+/**
+ *  Column for pov view
+ *
+ *  @param buttonSet Parameters for the stance button of this column
+ *  @param povs The set of povs that go into this column
+ */
+{template .PovColumn}
+<div class="pov-column-container">
+	<div class="take-stance-button">
+		{call communarchy.templates.html.arg.point.pov.branches.GetPovViewHeader data="$buttonSet" /}
+	</div>
+	<div class="povs-container">
+		{call communarchy.templates.html.arg.point.pov.branches.GetPovView data="$povs" /}
+	</div>
+</div>
+{/template}

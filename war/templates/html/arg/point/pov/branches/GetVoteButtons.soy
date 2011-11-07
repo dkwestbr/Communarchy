@@ -1,0 +1,20 @@
+{namespace communarchy.templates.html.arg.point.pov.branches}
+
+/**
+ *  Calls the proper leaf view for one, and only one pov
+ *  foreach pov in a set
+ *
+ *  @param voteParams parameters for calling vote buttons template
+ *  @param isDisabled Flag used when a pov is disabled
+ *  @param userIsAuthor Flag used when the user is the author of the pov
+ *  @param noVotesRemaining Flag indicating no votes are left
+ */
+{template .GetVoteButtons}
+{if $isDisabled}
+	{call communarchy.templates.html.arg.point.pov.nodes.AlreadyVoted data="$voteParams" /}
+{elseif $noVotesRemaining or $userIsAuthor}
+	{call communarchy.templates.html.arg.point.pov.nodes.NoVotesRemaining data="$voteParams"/}
+{else}
+	{call communarchy.templates.html.arg.point.pov.nodes.AllowVote data="$voteParams" /}
+{/if}
+{/template}

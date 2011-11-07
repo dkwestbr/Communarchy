@@ -8,8 +8,6 @@
  */
 {template .GetErrorsView}
 	{foreach $error in $errors}
-		{call communarchy.templates.html.global.nodes.ErrorView}
-			{param error: $error /}
-		{/call}
+		{call communarchy.templates.html.global.nodes.ErrorView data="$error" /}
 	{/foreach}
 {/template}

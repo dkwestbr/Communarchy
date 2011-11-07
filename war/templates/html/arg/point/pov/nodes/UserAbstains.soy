@@ -1,0 +1,14 @@
+{namespace communarchy.templates.html.arg.point.pov.nodes}
+
+/**
+ *  View for individual points of view within an argument
+ *
+ *  @param povs povs associated with this stance
+ */
+{template .UserAbstains}
+	<div class="pov-column pov-top abstains">
+		<div class="pov-container">
+		    {call communarchy.templates.html.arg.point.pov.branches.GetUnsupportedPovs data="$povs" /}
+		</div>
+	</div>
+{/template}

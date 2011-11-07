@@ -1,0 +1,16 @@
+{namespace communarchy.templates.html.newarg.nodes}
+
+/**
+ *  View for the text area input for new arguments
+ *
+ *  @param content Existing content to be rendered to the user
+ *  @param contentErrors stuff...its just not right here...
+ */
+{template .ContentWithErrors}
+	{call .Content}
+		{param content : $content /}
+	{/call}
+	<div class="errors-wrapper">
+		{call communarchy.templates.html.global.branches.GetErrorsView data="$contentErrors" /}
+	</div>
+{/template}

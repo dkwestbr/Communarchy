@@ -7,7 +7,7 @@
  *  @param message Message indicating what input errors pertain to
  *  @param errors List of errors found during validation
  */
-{template .validationErrors}
+{template .ValidationErrors}
 	<div class="arg-errors-header">{$message}</div>
 	{foreach $error in $errors}
 		<div class="arg-errors-content">{$error}</div>

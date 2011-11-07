@@ -1,0 +1,50 @@
+{namespace communarchy.templates.html.arg.point.nodes}
+
+/**
+ * View for an individual point
+ *
+ * IMPORTANT NOTE: To see why the html is structured like this, go here:
+ *                 http://matthewjamestaylor.com/blog/equal-height-columns-cross-browser-css-no-hacks
+ *
+ * @param id Id of the point being rendered
+ * @param point Point to render
+ * @param agreeColumnSet
+ * @param neutralColumnSet
+ * @param disagreeColumnSet
+ * @param inputSet
+ * @param selectedStance
+ * @param countHeaders
+ */
+{template .PointView}
+<div class="point-container" id="point-{$id}">
+    <div class="point-header">
+		<div class="point">{$point}</div>
+	</div>
+	<div class="stance-count">
+		{call communarchy.templates.html.arg.point.branches.GetStanceCountHeaders data="$countHeaders" /}
+		<div class="clear"></div>
+	</div>
+	<div class="pov-table-wrapper {$selectedStance}">
+		<div class="pov-table-outer float-left disagree-marker">
+			<div class="pov-table float-left neutral-marker">
+				<div class="pov-table float-left agree-marker">
+					<div class="agree pov-column-wrapper float-left">
+						{call communarchy.templates.html.arg.point.pov.nodes.PovColumn data="$agreeColumnSet" /}
+					</div>
+					<div class="neutral pov-column-wrapper float-left">
+						{call communarchy.templates.html.arg.point.pov.nodes.PovColumn data="$neutralColumnSet" /}
+					</div>
+					<div class="disagree pov-column-wrapper float-left">
+						{call communarchy.templates.html.arg.point.pov.nodes.PovColumn data="$disagreeColumnSet" /}
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	{call communarchy.templates.html.arg.point.pov.branches.GetPovViewInput data="$inputSet" /}
+</div>
+{/template}

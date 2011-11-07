@@ -1,45 +1,29 @@
-{namespace communarchy.templates.html.point.nodes}
+{namespace communarchy.templates.html.arg.point.nodes}
 
 /**
  *  Default view for an individual argument.
  *
  *  @param newPointAction Action handler for this point
  *  @param point Point about to be made of arg in view
- *  @param pov First reason why they agree
- *  @param pointMessage Message informing user of problem with their argument header
  *  @param pointErrors List of problems with argument header
- *  @param povMessage Message informing user of problem with their argument content
- *  @param povErrors List of validation problems with point made
+ *  @param borderSet 
  */
-{template .newPointWithErrs}
+{template .NewPointWithErrors}
+{call communarchy.templates.html.global.nodes.ThickBorder data="$borderSet" /}
+<div class="create-point">
 	<form method="post" action="{$newPointAction}">
 	    <div class="suggestion-box">
     		<div class="suggestion">What do you think?</div>
-    		<div class="new-point-wrapper">
-				<input type="text" name="point" class="required new-point-input" title="Point" value="{$point}"></input>
-			</div>
-			<div class="new-point-errs">
-				{call communarchy.templates.html.global.validationErrors}
-						{param message: $pointMessage /}
-						{param errors: $pointErrors /}
-				{/call}
-			</div>
-		</div>
-		<div class="first-pov-wrapper">
-			<div class="suggestion">Why?</div>
 			<div class="new-point-container">
 				<div class="new-point float-left">
-					<textarea  name="pov" class="point-text-area">
-						{$pov}
-					</textarea>
+					<div>
+						<textarea  name="point" class="point-text-area">{$point}</textarea>
+					</div>
+					<div class="new-point-errs">
+						{call communarchy.templates.html.global.branches.GetErrorsView data="$pointErrors" /}
+					</div>
 				</div>
 				<div class="float-left">
-					<div class="new-pov-errs">
-						{call communarchy.templates.html.global.validationErrors}
-							{param message: $povMessage /}
-							{param errors: $povErrors /}
-						{/call}
-					</div>
 					<div class="arg-btn-container">
 						<input class="btn point-btn" type="submit" value="Submit your point"></input>
 					</div>
@@ -48,4 +32,5 @@
 			</div>
 		</div>
 	</form>
+</div>
 {/template}

@@ -18,7 +18,7 @@ var LoginButton = new Class({
 				var container = $('container');
 				
 				var myRequest = new Request({
-				    url: '/Subjective/login?dbg=true',
+				    url: '/login?dbg=true',
 				    method: 'post',
 				    data: {'user': user},
 				    onRequest: function(){

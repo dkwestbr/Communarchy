@@ -1,0 +1,38 @@
+{namespace communarchy.templates.html.arg.point.pov.nodes}
+
+/**
+ *  View for individual points of view within an argument
+ *
+ *  @param id Id of the pov
+ *  @param content The content of the pov
+ *  @param povStats The stats of this pov
+ *  @param voteButtonParams Parameters for the vote button template
+ */
+{template .UserSupports}
+<div class="pov pov-width">
+	<div class="pov-leaf">
+		<div id="pov-{$id}" class="pov-wrapper">
+			{$content}
+			/*
+			{call communarchy.templates.html.arg.point.pov.branches.GetPovContent}
+				{param povContent: $pov.povContent /}
+			{/call}
+			*/
+		</div>
+		<div>
+			<div class="float-left vote-wrapper">
+				{call communarchy.templates.html.arg.point.pov.branches.GetVoteButtons data="$voteButtonParams" /}
+			</div>
+			/*
+			<div class="float-left">
+				{call .Flags data="$pov.flags" /}
+			</div>
+			*/
+			<div class="float-right">
+				{call .PovStats data="$povStats" /}
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+</div>
+{/template}

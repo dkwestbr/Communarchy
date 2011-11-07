@@ -11,6 +11,7 @@ import communarchy.vb.IGlobalTemplateWrapper;
 import communarchy.vb.arg.ArgRoot;
 import communarchy.vb.login.LoginRoot;
 import communarchy.vb.main.MainRoot;
+import communarchy.vb.newarg.NewArgRoot;
 
 public class Script extends AbstractTemplateWrapper implements IGlobalTemplateWrapper<SoyListData> {
 
@@ -20,6 +21,7 @@ public class Script extends AbstractTemplateWrapper implements IGlobalTemplateWr
 		rootMap.put(ArgRoot.class, ArgRoot.get().getScripts());
 		rootMap.put(MainRoot.class, MainRoot.get().getScripts());
 		rootMap.put(LoginRoot.class, MainRoot.get().getScripts());
+		rootMap.put(NewArgRoot.class, NewArgRoot.get().getScripts());
 	}
 	
 	private Map<Type, SoyListData> rootMap;

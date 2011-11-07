@@ -8,7 +8,7 @@ var PostArgButton = new Class({
 		var errAppendPoint = $('post-arg-validation-errs');
 		
 		var jsonRequest = new Request.JSON({
-			url: '/Subjective/postarg', 
+			url: '/postarg', 
 		    onRequest: function(){
 		        container.addClass('request-waiting');
 		    },

@@ -1,0 +1,19 @@
+{namespace communarchy.templates.html.arg.point.pov.branches}
+
+/**
+ *  Coordinates which child artifact view to render based
+ *  on situation specified by mapper.
+ *
+ *  @param userAbstains
+ *  @param userSupports
+ *  @param povSet Called when you want to render pov with no errs
+ */
+{template .GetPovView}
+	{if $userAbstains}
+		{call communarchy.templates.html.arg.point.pov.nodes.UserAbstains data="$povSet" /}
+	{elseif $userSupports}
+		{call communarchy.templates.html.arg.point.pov.branches.GetSupportedPovs data="$povSet" /}
+	{else}
+		{call communarchy.templates.html.arg.point.pov.branches.GetUnsupportedPovs data="$povSet" /}
+	{/if}
+{/template}

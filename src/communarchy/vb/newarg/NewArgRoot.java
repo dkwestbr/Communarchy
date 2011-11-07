@@ -11,23 +11,22 @@ import com.google.template.soy.data.SoyListData;
 import com.google.template.soy.data.SoyMapData;
 import communarchy.constants.IHttpSessionConstants;
 import communarchy.facts.PMSession;
-import communarchy.facts.interfaces.IArgument;
 import communarchy.facts.interfaces.IUser;
 import communarchy.vb.AbstractTemplateWrapper;
-import communarchy.vb.IResourceTemplateWrapper;
+import communarchy.vb.IParamBuilder;
 import communarchy.vb.IRootTemplate;
-import communarchy.vb.arg.branches.GetArgView;
 import communarchy.vb.global.branches.HeaderWrapper;
 import communarchy.vb.global.nodes.NavigationBarWrapper;
+import communarchy.vb.newarg.nodes.NewArgView;
 
 // testing change from eclipse
-public class NewArgRoot extends AbstractTemplateWrapper implements IRootTemplate, IResourceTemplateWrapper<IArgument> {
+public class NewArgRoot extends AbstractTemplateWrapper implements IRootTemplate, IParamBuilder {
 	
 	private static NewArgRoot INSTANCE;
 	private NewArgRoot() {}
 	
 	private static final String PARAM_KEY_ARGBAR = "argBarData";
-	private static final String PARAM_KEY_VIEW = "viewData";
+	private static final String PARAM_KEY_VIEW = "newArgData";
 	private static final String PARAM_KEY_HEADER = "headerParams";
 	
 	@Override
@@ -43,7 +42,7 @@ public class NewArgRoot extends AbstractTemplateWrapper implements IRootTemplate
 		if(INSTANCE == null) {
 			INSTANCE = new NewArgRoot();
 			INSTANCE.possiblePaths.add(NavigationBarWrapper.get());
-			INSTANCE.possiblePaths.add(GetArgView.get());
+			INSTANCE.possiblePaths.add(NewArgView.get());
 			INSTANCE.possiblePaths.add(HeaderWrapper.get());
 		}
 		
@@ -56,17 +55,17 @@ public class NewArgRoot extends AbstractTemplateWrapper implements IRootTemplate
 
 	@Override
 	public String getRenderTarget() {
-		return "communarchy.templates.html.newarg.Root";
+		return "communarchy.templates.html.newArg.Root";
 	}
 
 	@Override
 	public SoyMapData getParams(PMSession pmSession, IUser user,
-			HttpServletRequest request, IArgument arg) {
+			HttpServletRequest request) {
 		
 		SoyMapData pMap = new SoyMapData();
 		
 		pMap.put(PARAM_KEY_ARGBAR, NavigationBarWrapper.get().getParams(pmSession, user, request));
-		pMap.put(PARAM_KEY_VIEW, GetArgView.get().getParams(pmSession, user, request, arg));
+		pMap.put(PARAM_KEY_VIEW, NewArgView.get().getParams(pmSession, user, request));
 		pMap.put(PARAM_KEY_HEADER, HeaderWrapper.get().getParams(NewArgRoot.class));
 		return pMap;
 	}

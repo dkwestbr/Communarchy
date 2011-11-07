@@ -1,46 +1,34 @@
-{namespace communarchy.templates.html.point.nodes}
+{namespace communarchy.templates.html.arg.point.nodes}
 
 /**
  * View for an individual point
  *
  * @param id Id of the point being rendered
  * @param point Point to render
- * @param inputSet Set for new pov input 
- * @param agreePovs Map for povs
- * @param neutralPovs Map for povs
- * @param disagreePovs Map for povs
+ * @param countSets
+ * @param headerSets
+ * @param contentSets
+ * @param inputSet
  */
-{template .pointContent}
+{template .PointContent}
 <div class="point-container" id="point-{$id}">
     <div class="point-header">
 		<div class="point">{$point}</div>
 		<div>
-			<div class="float-left">
-				{call communarchy.templates.html.argComponents.pov.stanceCountHeader data="$agreePovs.countSet" /}
-			</div>
-			<div class="float-left">
-				{call communarchy.templates.html.argComponents.pov.stanceCountHeader data="$neutralPovs.countSet" /}
-			</div>
-			<div class="float-left">
-				{call communarchy.templates.html.argComponents.pov.stanceCountHeader data="$disagreePovs.countSet" /}
-			</div>
+			{call communarchy.templates.html.arg.point.branches.GetStanceCountHeaders data="$countSets" /}
 			<div class="clear"></div>
 		</div>
 	</div>
 	<div class="pov-table">
 		<div>
-			{call communarchy.templates.html.controllers.PointViewController.getPovViewHeader data="$agreePovs.povHeaderSet" /}
-			{call communarchy.templates.html.controllers.PointViewController.getPovViewHeader data="$neutralPovs.povHeaderSet" /}
-			{call communarchy.templates.html.controllers.PointViewController.getPovViewHeader data="$disagreePovs.povHeaderSet" /}
+			{call communarchy.templates.html.arg.point.branches.GetStanceHeaders data="$headerSets" /}
 			<div class="clear"></div>
 		</div>
 		<div>
-			{call communarchy.templates.html.controllers.PointViewController.getPovView data="$agreePovs.contentSet" /}
-			{call communarchy.templates.html.controllers.PointViewController.getPovView data="$neutralPovs.contentSet" /}
-			{call communarchy.templates.html.controllers.PointViewController.getPovView data="$disagreePovs.contentSet" /}
+			{call communarchy.templates.html.arg.point.branches.GetPovs data="$contentSets" /}
 			<div class="clear"></div>
 		</div>
-		{call communarchy.templates.html.controllers.PointViewController.getPovViewInput data="$inputSet" /}
+		{call communarchy.templates.html.arg.point.pov.branches.GetPovViewInput data="$inputSet" /}
 	</div>
 </div>
 {/template}

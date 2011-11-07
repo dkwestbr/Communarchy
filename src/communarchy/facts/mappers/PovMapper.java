@@ -3,19 +3,20 @@ package communarchy.facts.mappers;
 import java.util.ArrayList;
 import java.util.List;
 import javax.jdo.Query;
+import javax.jdo.Transaction;
 
 import com.google.appengine.api.datastore.Key;
 
-import communarchy.exceptions.CommunarchyPersistenceException;
 import communarchy.facts.actions.Vote;
 import communarchy.facts.actions.interfaces.IFlag;
 import communarchy.facts.actions.interfaces.IVote;
-import communarchy.facts.counters.VoteCounter;
+import communarchy.facts.implementations.Argument;
 import communarchy.facts.implementations.PointOfView;
 import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.interfaces.IPointOfView;
 import communarchy.facts.mappers.interfaces.AbstractMapper;
 import communarchy.facts.mappers.interfaces.IPovMapper;
+import communarchy.facts.results.PageSet;
 
 
 @SuppressWarnings("unchecked")
@@ -78,7 +79,7 @@ public class PovMapper extends AbstractMapper<PovMapper> implements IPovMapper {
 
 	@Override
 	public Integer getPovVoteCount(Key povId) {
-		return pmSession.getMapper(ShardMapper.class).getCount(povId, VoteCounter.class);
+		return pmSession.getMapper(VoteCountMapper.class).getCount(povId);
 	}
 
 	@Override
@@ -90,12 +91,23 @@ public class PovMapper extends AbstractMapper<PovMapper> implements IPovMapper {
 		}
 		
 		vote = new Vote(povId, userId);
-		pmSession.getPM().makePersistent(vote);
-		pmSession.getMapper(ShardMapper.class).increment(povId, VoteCounter.class);
+		
+		Transaction txn = pmSession.getPM().currentTransaction();
+		
+		try {
+			txn.begin();
+			pmSession.getPM().makePersistent(vote);
+			pmSession.getMapper(VoteCountMapper.class).increment(povId);
+			txn.commit();
+		} finally {
+			if(txn.isActive()) {
+				txn.rollback();
+			}
+		}
 	}
 
 	@Override
-	public void reclaimVote(Key povId, Key userId) throws CommunarchyPersistenceException {
+	public void reclaimVote(Key povId, Key userId) {
 		
 		// TODO: Make this a transaction
 		Vote vote = selectVote(povId, userId);
@@ -103,19 +115,30 @@ public class PovMapper extends AbstractMapper<PovMapper> implements IPovMapper {
 			return;
 		}
 		
-		pmSession.getPM().deletePersistent(vote);
-		pmSession.getMapper(ShardMapper.class).decrement(povId, VoteCounter.class);
+		Transaction txn = pmSession.getPM().currentTransaction();
+		
+		try {
+			txn.begin();
+			pmSession.getPM().deletePersistent(vote);
+			pmSession.getMapper(VoteCountMapper.class).decrement(povId);
+			txn.commit();
+		} finally {
+			if(txn.isActive()) {
+				txn.rollback();
+			}
+		}
 	}
 
 	@Override
 	public Vote selectVote(Key povId, Key userId) {
 		
 		Query q = pmSession.getPM().newQuery(Vote.class);
-		Vote vote;
+		Vote vote = null;
 		try {
 			q.setFilter("povKey == povKeyParam && userKey == userKeyParam");
 			q.declareParameters(String.format("%s povKeyParam, %s userKeyParam", Key.class.getName(), Key.class.getName()));
-			vote = (Vote) q.execute(povId, userId);	
+			List<Vote> results = (List<Vote>) q.execute(povId, userId);
+			vote = results == null || results.isEmpty() ? null : results.get(0);
 		} finally {
 			q.closeAll();
 		}
@@ -139,5 +162,11 @@ public class PovMapper extends AbstractMapper<PovMapper> implements IPovMapper {
 		}
 		
 		return votes;
+	}
+
+	@Override
+	public PageSet<Argument> buildPostFeeed(int numArgs, String startCursor) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

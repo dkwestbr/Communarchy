@@ -16,7 +16,7 @@ import communarchy.facts.interfaces.IUser;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.IRootTemplate;
-import communarchy.vb.arg.branches.GetArgView;
+import communarchy.vb.arg.nodes.ArgViewWrapper;
 import communarchy.vb.global.branches.HeaderWrapper;
 import communarchy.vb.global.nodes.NavigationBarWrapper;
 
@@ -42,7 +42,7 @@ public class ArgRoot extends AbstractTemplateWrapper implements IRootTemplate, I
 		if(INSTANCE == null) {
 			INSTANCE = new ArgRoot();
 			INSTANCE.possiblePaths.add(NavigationBarWrapper.get());
-			INSTANCE.possiblePaths.add(GetArgView.get());
+			INSTANCE.possiblePaths.add(ArgViewWrapper.get());
 			INSTANCE.possiblePaths.add(HeaderWrapper.get());
 		}
 		
@@ -55,7 +55,7 @@ public class ArgRoot extends AbstractTemplateWrapper implements IRootTemplate, I
 
 	@Override
 	public String getRenderTarget() {
-		return "communarchy.templates.html.arg.Root.getView";
+		return "communarchy.templates.html.arg.Root";
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class ArgRoot extends AbstractTemplateWrapper implements IRootTemplate, I
 		SoyMapData pMap = new SoyMapData();
 		
 		pMap.put(PARAM_KEY_ARGBAR, NavigationBarWrapper.get().getParams(pmSession, user, request));
-		pMap.put(PARAM_KEY_VIEW, GetArgView.get().getParams(pmSession, user, request, arg));
+		pMap.put(PARAM_KEY_VIEW, ArgViewWrapper.get().getParams(pmSession, user, request, arg));
 		pMap.put(PARAM_KEY_HEADER, HeaderWrapper.get().getParams(ArgRoot.class));
 		return pMap;
 	}
@@ -89,6 +89,7 @@ public class ArgRoot extends AbstractTemplateWrapper implements IRootTemplate, I
 			STYLES = new SoyListData();
 			
 			STYLES.add(new SoyMapData("styleSheet", "/dbg/css/global.css"));
+			STYLES.add(new SoyMapData("styleSheet", "/dbg/css/main.css"));
 			STYLES.add(new SoyMapData("styleSheet", "/dbg/css/arg.css"));
 		}
 		

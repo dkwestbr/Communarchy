@@ -1,16 +1,17 @@
-{namespace communarchy.templates.html.pov.nodes}
+{namespace communarchy.templates.html.arg.point.nodes}
 
 /**
  *  View for individual points of view within an argument
  *
- *  @param takeStanceAction action to perform when user wants to align with this stance
- *  @param stance Stance represented by this pov
+ *  @param takestanceAction action to perform when user wants to align with this stance
+ *  @param stance css target based on stance chosen
+ *  @param label Stance represented by this pov
  */
-{template .headerUserSupports}
-	<div class="float-left stance pov-column pov-header-supports">
-		<form method="post" action="{$takeStanceAction}">
+{template .HeaderUserSupports}
+	<div class="stance pov-column pov-header-supports {$stance}">
+		<form method="post" action="{$takestanceAction}">
 			<div>
-				<input disabled="disabled" class="take-stance-btn-disabled" type="submit" value="{$stance}"></input>
+				<input disabled="disabled" class="take-stance-btn-disabled" type="submit" value="{$label}"></input>
 			</div>
 		</form>
 	</div>

@@ -1,0 +1,12 @@
+{namespace communarchy.templates.html.arg.point.branches}
+
+/**
+ *  The button container for each stance
+ *
+ *  @param headerSets
+ */
+{template .GetStanceHeaders}
+	{foreach $set in $headerSets}
+		{call communarchy.templates.html.arg.point.pov.branches.GetPovViewHeader data="$set" /}
+	{/foreach}
+{/template}

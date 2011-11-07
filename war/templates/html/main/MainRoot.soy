@@ -1,22 +1,22 @@
-{namespace communarchy.templates.html.main.Root}
+{namespace communarchy.templates.html.main}
 
 /**
- *  /Subjective/main scaffold
+ *  /main scaffold
  *
  *  @param headerParams param map for header
  *  @param argBarData param map for argBarData
  *  @param args this is why i hate mandotory commefweefnts, or not...whatefwae fafw e you.
  */
-{template .getView autoescape="false"}
+{template .Root autoescape="false"}
 <!DOCTYPE html>
 <html>
 	<head>
 		<title>Communarchy</title>
-		{call communarchy.templates.html.global.branches.Head.getView data="$headerParams" /}
+		{call communarchy.templates.html.global.branches.Head data="$headerParams" /}
 	</head>
 	<body id="body">
 		<div class="main-container">
-			{call communarchy.templates.html.global.nodes.NavigationBar.view data="$argBarData" /}
+			{call communarchy.templates.html.global.nodes.NavigationBar data="$argBarData" /}
 			<div>
 				<div id="ArgPanel" class="content-container">
 					<div id="dynamic-arg-div">

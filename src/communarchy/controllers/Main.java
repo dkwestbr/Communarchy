@@ -24,7 +24,6 @@ public class Main extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private static final String PAGE = "page";
-	private static final String RENDER_TARGET = "communarchy.templates.html.main.Root.getView";
 	
 	private static SoyTofu mainTmpl = null;
 
@@ -47,7 +46,7 @@ public class Main extends HttpServlet {
 			
 			SoyMapData templateParams = MainRoot.get().getParams(pmSession, user, request, scopedResource);
 			
-			response.getWriter().write(mainTmpl.render(RENDER_TARGET, templateParams, null));
+			response.getWriter().write(mainTmpl.render(MainRoot.get().getRenderTarget(), templateParams, null));
 			response.flushBuffer();
 		} catch (Exception e) {
 			getServletContext().log("In " + Main.class.getCanonicalName() + ":", e);

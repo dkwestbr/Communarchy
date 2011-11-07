@@ -1,0 +1,14 @@
+{namespace communarchy.templates.html.arg.point.pov.nodes}
+
+/**
+ *  View to render when user supports, but has no votes left
+ *
+ *  @param upvoteParams parameters for rendering vote/up button
+ *  @param reclaimvoteParams parameters for rendering reclaim vote button
+ */
+{template .NoVotesRemaining}
+	<div class="pov-novotes">
+		{call .UpvoteActiveDisabled data="$upvoteParams" /}
+		{call .ReclaimVoteInactive data="$reclaimvoteParams" /}
+	</div>
+{/template}

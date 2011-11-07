@@ -1,0 +1,16 @@
+{namespace communarchy.templates.html.arg.point.pov.branches}
+
+/**
+ *  Input for new povs.  Only visible when user has taken a stance
+ *
+ *  @param hasErrors flag indicating if previous input has errors
+ *  @param stanceTaken flag set if the user has taken a stance on this point
+ *  @param povSet Set of parameters to call input template
+ */
+{template .GetPovViewInput}
+	{if $hasErrors}
+		{call communarchy.templates.html.arg.point.pov.nodes.PovInputWithErrs data="$povSet" /}
+	{elseif $stanceTaken}
+		{call communarchy.templates.html.arg.point.pov.nodes.PovInput data="$povSet" /}
+	{/if}
+{/template}

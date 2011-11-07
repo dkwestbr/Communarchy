@@ -47,7 +47,7 @@ public class MainRoot extends AbstractTemplateWrapper implements IRootTemplate, 
 	
 	@Override
 	public String getRenderTarget() {
-		return "communarchy.templates.html.main.Root.getView";
+		return "communarchy.templates.html.main.Root";
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class MainRoot extends AbstractTemplateWrapper implements IRootTemplate, 
 		if(STYLES == null) {
 			STYLES = new SoyListData();
 			STYLES.add(new SoyMapData("styleSheet", "/dbg/css/global.css"));
-			STYLES.add(new SoyMapData("styleSheet", "/dbg/css/main.css"));
+			STYLES.add(new SoyMapData("styleSheet", "/dbg/css/newarg.css"));
 		}
 		
 		return STYLES;

@@ -1,0 +1,16 @@
+{namespace communarchy.templates.html.newarg.branches}
+
+/**
+ *  Content component of /main page used when user is
+ *  on page to create new arguments
+ *
+ *  @param hasErrors flag if errors are in the input
+ *  @param titleParams parameters for the title
+ */
+{template .GetArgTitle}
+{if $hasErrors}
+	{call communarchy.templates.html.newarg.nodes.TitleWithErrors data="$titleParams" /}
+{else}
+	{call communarchy.templates.html.newarg.nodes.Title data="$titleParams" /}
+{/if}
+{/template}

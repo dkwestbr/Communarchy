@@ -1,24 +1,20 @@
-{namespace communarchy.templates.html.point.nodes}
+{namespace communarchy.templates.html.arg.point.nodes}
 
 /**
  *  Default view for an individual argument.
  *
  *  @param newPointAction Action handler for this point
- *
+ *  @param borderSet
  */
-{template .newPoint}
+{template .NewPoint}
+{call communarchy.templates.html.global.nodes.ThickBorder data="$borderSet" /}
+<div class="create-point">
 	<form method="post" action="{$newPointAction}">
 	    <div class="suggestion-box">
     		<div class="suggestion">What do you think?</div>
-    		<div class="new-point-wrapper">
-				<input type="text" name="point" class="required new-point-input" title="Point"></input>
-			</div>
-		</div>
-		<div class="first-pov-wrapper">
-			<div class="suggestion">Why?</div>
 			<div class="new-point-container">
 				<div class="new-point float-left">
-					<textarea  name="pov" class="point-text-area"></textarea>
+					<textarea  name="point" class="point-text-area"></textarea>
 				</div>
 				<div class="float-left">
 					<div class="arg-btn-container">
@@ -29,4 +25,5 @@
 			</div>
 		</div>
 	</form>
+</div>
 {/template}

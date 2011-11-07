@@ -1,0 +1,14 @@
+{namespace communarchy.templates.html.arg.point.pov.nodes}
+
+/**
+ *  Active view for recalaim vote button
+ *
+ *  @param reclaimvoteAction Action to reclaim the vote
+ */
+{template .ReclaimVoteActive}
+<form method="post" action="{$reclaimvoteAction}">
+	<div class="pov-reclaim-container">
+		<input class="reclaimvote-active" type="submit"></input>
+	</div>
+</form>
+{/template}

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -21,7 +22,8 @@ import communarchy.facts.implementations.Argument;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.mappers.ArgumentMapper;
 import communarchy.inputValidation.IUserInput;
-import communarchy.vb.login.LoginRoot;
+import communarchy.inputValidation.ValidationResult;
+import communarchy.vb.newarg.NewArgRoot;
 
 public class NewArgController extends AbstractInputHandler {
 
@@ -39,7 +41,7 @@ public class NewArgController extends AbstractInputHandler {
 	@Override
 	public void init() throws ServletException {
 		
-		RENDER_TARGET = LoginRoot.get().getRenderTarget();
+		RENDER_TARGET = NewArgRoot.get().getRenderTarget();
 		NEW_ARG_TEMPL = (SoyTofu) getServletContext().getAttribute(IHttpSessionConstants.NEW_ARG_VIEW_TEMPLATE);
 		
 		requiredFieldMap = new HashMap<String, IUserInput>();
@@ -55,6 +57,9 @@ public class NewArgController extends AbstractInputHandler {
 
 			@Override
 			public String getContentName() { return "content"; }
+
+			@Override
+			public String getDisplayName() { return "Content"; }
 		});
 		
 		requiredFieldMap.put("title", new IUserInput() {
@@ -69,17 +74,21 @@ public class NewArgController extends AbstractInputHandler {
 
 			@Override
 			public String getContentName() { return "title"; }
+
+			@Override
+			public String getDisplayName() { return "Title"; }
 		});
 	}
 	
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void performGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession();
 		IUser user = (IUser) session.getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
 		try {
+			
 			PMSession pmSession = (PMSession) session.getAttribute(IHttpSessionConstants.PM_SESSION_KEY);
-			SoyMapData map = LoginRoot.get().getParams(pmSession, user, request);
+			SoyMapData map = NewArgRoot.get().getParams(pmSession, user, request);
 			response.getWriter().write(NEW_ARG_TEMPL.render(RENDER_TARGET, map, null));
 			response.flushBuffer();
 		} catch (Exception e) {
@@ -92,10 +101,10 @@ public class NewArgController extends AbstractInputHandler {
 
 	@Override
 	public void performPost(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response, Map<String, ValidationResult> validInputs) {
 		
-		String title = request.getParameter("title");
-		String content = request.getParameter("content");
+		String title = validInputs.get("title").getContent();
+		String content = validInputs.get("content").getContent();
 		ApplicationUser user = (ApplicationUser) request.getSession().getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
 		PMSession pmSession = (PMSession) request.getSession().getAttribute(IHttpSessionConstants.PM_SESSION_KEY);
 		
@@ -112,5 +121,10 @@ public class NewArgController extends AbstractInputHandler {
 	@Override
 	protected String getValidationKey() {
 		return IHttpSessionConstants.VALIDATION_RESULTS_NEW_ARG;
+	}
+
+	@Override
+	protected String getRedirectURI(String originatingURI, PMSession pmSession) {
+		return originatingURI;
 	}
 }

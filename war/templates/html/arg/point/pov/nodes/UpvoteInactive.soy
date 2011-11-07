@@ -1,0 +1,14 @@
+{namespace communarchy.templates.html.arg.point.pov.nodes}
+
+/**
+ *  Inactive view for vote/up form
+ *
+ *  @param upvoteAction Action to perform an vote/up
+ */
+{template .UpvoteInactive}
+<form method="post" action="{$upvoteAction}">
+	<div class="pov-upvote-container">
+		<input class="upvote-inactive" disabled="disabled" type="submit"></input>
+	</div>
+</form>
+{/template}

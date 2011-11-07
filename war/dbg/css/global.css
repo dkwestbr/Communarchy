@@ -1,6 +1,22 @@
 body {
 	text-align: center;
 	min-width: 1000px;
+	max-width: 1649px;
+	min-height: 2000px;
+}
+
+.border-top {
+	margin-top: 15px;
+}
+
+.border-filler {
+	background-color: #FF3;
+	height: 15px;
+}
+
+.border {
+	border-top: 1px solid;
+    width: 999px;
 }
 
 .center {

@@ -1,6 +1,7 @@
 package communarchy.facts.implementations;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
@@ -32,6 +33,12 @@ public class PointOfView implements IPointOfView, Serializable {
 	@Persistent
 	private String pov;
 	
+	@Persistent
+	private Date createDate;
+	
+	@Persistent
+	private Date updateDate;
+	
 	public PointOfView(){}
 	
 	public PointOfView(Key parent_point_id, Key poster_id, String pov, Integer stance) {
@@ -44,6 +51,8 @@ public class PointOfView implements IPointOfView, Serializable {
 		this.parentPointId = parent_point_id;
 		this.pov = pov;
 		this.stance = stance;
+		this.createDate = new Date();
+		this.updateDate = createDate;
 	}
 	
 	public Key getParentPointId() {

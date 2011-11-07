@@ -1,0 +1,15 @@
+{namespace communarchy.templates.html.arg.point.branches}
+
+/**
+ *  Get the input form for adding new points
+ *
+ *  @param hasErrors
+ *  @param inputParams
+ */
+{template .GetPointInput}
+{if $hasErrors}
+	{call communarchy.templates.html.arg.point.Input data="$inputParams" /}
+{else}
+	{call communarchy.templates.html.arg.point.InputWithErrors data="$inputParams" /}
+{/if}
+{/template}

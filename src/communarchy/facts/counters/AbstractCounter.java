@@ -1,34 +1,37 @@
 package communarchy.facts.counters;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.Inheritance;
+import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
+import com.google.appengine.api.datastore.Key;
 
 import communarchy.facts.interfaces.ICounter;
 
-public abstract class AbstractCounter implements ICounter {
+@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
+@Inheritance(strategy=InheritanceStrategy.SUBCLASS_TABLE)
+public abstract class AbstractCounter<T> implements ICounter {
 	
-	@Persistent
-	private Integer count;
-	
-	@Persistent
-	private Integer shardNum;
-	
-	private static Map<Class<?>, Integer> shardCountRegistry;
-	
+	@PrimaryKey
 	@SuppressWarnings("unused")
-	private AbstractCounter() {}
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private Key resourceId;
 	
-	protected AbstractCounter(Integer shardNum, int numShards, Class<?> type) {
-		this.shardNum = shardNum;
+	@Persistent
+	protected Integer count;
+	
+	@Persistent
+	protected Integer shardNum;
+	
+	public AbstractCounter() {}
+	
+	protected AbstractCounter(int shardNum) {
 		this.count = 0;
-		
-		if(AbstractCounter.shardCountRegistry == null) {
-			AbstractCounter.shardCountRegistry = new HashMap<Class<?>, Integer>();
-		}
-		
-		AbstractCounter.shardCountRegistry.put(type, numShards);
+		this.shardNum = shardNum;
 	}
 	
 	public Integer getShardNum() {
@@ -45,18 +48,5 @@ public abstract class AbstractCounter implements ICounter {
 	
 	public void decrement() {
 		--count;
-	}
-	
-	public static int getNumShards(Class<?> type) {
-		
-		if(shardCountRegistry == null) {
-			throw new NullPointerException("Don't forget to register your shard...");
-		}
-		
-		if(shardCountRegistry.get(type) == null) {
-			throw new NullPointerException("Don't forget to register your shard number...");
-		}
-		
-		return shardCountRegistry.get(type);
 	}
 }

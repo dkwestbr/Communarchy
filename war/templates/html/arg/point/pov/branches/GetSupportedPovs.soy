@@ -1,0 +1,13 @@
+{namespace communarchy.templates.html.arg.point.pov.branches}
+
+/**
+ *  Calls the proper leaf view for one, and only one pov
+ *  foreach pov in a set
+ *
+ *  @param povs Set of povs which need to be rendered
+ */
+{template .GetSupportedPovs}
+{foreach $pov in $povs}
+	{call communarchy.templates.html.arg.point.pov.nodes.UserSupports data="$pov"/}
+{/foreach}
+{/template}

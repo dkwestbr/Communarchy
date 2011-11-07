@@ -1,0 +1,12 @@
+{namespace communarchy.templates.html.arg.point.branches}
+
+/**
+ *  Get the headers which show how many people have taken a certain stance
+ *
+ *  @param povSets
+ */
+{template .GetPovs}
+	{foreach $set in $povSets}
+		{call communarchy.templates.html.arg.point.pov.branches.GetPovView data="$set" /}
+	{/foreach}
+{/template}
