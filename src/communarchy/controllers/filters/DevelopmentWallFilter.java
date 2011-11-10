@@ -1,4 +1,4 @@
-package communarchy.filters;
+package communarchy.controllers.filters;
 
 import java.io.IOException;
 
@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import communarchy.constants.ISessionConstants;
+
+import communarchy.utils.constants.ISessionConstants;
 
 public class DevelopmentWallFilter implements Filter {
 

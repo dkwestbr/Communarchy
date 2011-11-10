@@ -1,4 +1,4 @@
-package communarchy.exceptions;
+package communarchy.utils.exceptions;
 
 public class CommunarchyPersistenceException extends Exception {
 

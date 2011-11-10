@@ -1,4 +1,4 @@
-package communarchy.inputValidation;
+package communarchy.controllers.handlers.input.validation;
 
 import java.io.IOException;
 

@@ -4,11 +4,11 @@ import java.util.List;
 
 import com.google.appengine.api.datastore.Key;
 
-import communarchy.exceptions.CommunarchyPersistenceException;
 import communarchy.facts.actions.interfaces.IFlag;
 import communarchy.facts.actions.interfaces.IVote;
 import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.interfaces.IPointOfView;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 
 public interface IPovMapper extends IPostMapper<IPointOfView>, IPostHasParentMapper<IPoint, IPointOfView> {
 	public List<IPointOfView> selectAllChildrenByStance(Key pointId, Integer stance);

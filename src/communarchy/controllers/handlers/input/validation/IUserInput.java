@@ -1,4 +1,4 @@
-package communarchy.inputValidation;
+package communarchy.controllers.handlers.input.validation;
 
 public interface IUserInput {
 	public int getMaxLength();

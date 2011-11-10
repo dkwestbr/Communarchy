@@ -1,4 +1,4 @@
-package communarchy.constants;
+package communarchy.utils.constants;
 
 public interface ISessionConstants {
 	public static final String RESOURCE_PATH = "RESOURCE_PATH";

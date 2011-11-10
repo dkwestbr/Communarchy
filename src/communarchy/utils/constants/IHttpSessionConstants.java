@@ -1,4 +1,4 @@
-package communarchy.constants;
+package communarchy.utils.constants;
 
 public interface IHttpSessionConstants {
 	public static final String LOGIN_MESSAGE = "message";

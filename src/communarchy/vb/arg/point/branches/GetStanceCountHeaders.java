@@ -5,10 +5,10 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.template.soy.data.SoyListData;
 import com.google.template.soy.data.SoyMapData;
 
-import communarchy.constants.IRestrictions;
 import communarchy.facts.PMSession;
 import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.interfaces.IUser;
+import communarchy.utils.constants.IRestrictions;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.arg.point.nodes.StanceCountHeader;

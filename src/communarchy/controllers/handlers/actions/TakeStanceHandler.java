@@ -8,13 +8,13 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
-import communarchy.exceptions.CommunarchyPersistenceException;
 import communarchy.facts.PMSession;
 import communarchy.facts.implementations.ApplicationUser;
 import communarchy.facts.implementations.Point;
 import communarchy.facts.implementations.Stance;
 import communarchy.facts.implementations.UserStance;
 import communarchy.facts.mappers.PointMapper;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 
 public class TakeStanceHandler extends AbstractActionHandler<Point> {
 

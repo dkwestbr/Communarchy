@@ -5,12 +5,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import com.google.template.soy.data.SoyMapData;
 
-import communarchy.constants.IHttpSessionConstants;
+import communarchy.controllers.handlers.input.validation.ValidationResult;
 import communarchy.facts.PMSession;
 import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.mappers.PointMapper;
-import communarchy.inputValidation.ValidationResult;
+import communarchy.utils.constants.IHttpSessionConstants;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.arg.point.pov.nodes.PovInput;

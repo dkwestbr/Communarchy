@@ -7,7 +7,7 @@ import javax.jdo.Transaction;
 
 import com.google.appengine.api.datastore.Key;
 
-import communarchy.exceptions.CommunarchyPersistenceException;
+import communarchy.controllers.rankingStrategies.TopPointStrategy;
 import communarchy.facts.actions.interfaces.IVote;
 import communarchy.facts.implementations.Argument;
 import communarchy.facts.implementations.Point;
@@ -21,7 +21,7 @@ import communarchy.facts.interfaces.IUserStance;
 import communarchy.facts.mappers.interfaces.AbstractMapper;
 import communarchy.facts.mappers.interfaces.IPointMapper;
 import communarchy.facts.results.PageSet;
-import communarchy.rankingStrategies.TopPointStrategy;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 
 @SuppressWarnings("unchecked")
 public class PointMapper extends AbstractMapper<PointMapper> implements IPointMapper {

@@ -4,9 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.google.template.soy.data.SoyMapData;
 
-import communarchy.constants.IHttpSessionConstants;
 import communarchy.facts.PMSession;
 import communarchy.facts.interfaces.IUser;
+import communarchy.utils.constants.IHttpSessionConstants;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IParamBuilder;
 import communarchy.vb.login.nodes.Message;

@@ -8,12 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.template.soy.data.SoyListData;
 import com.google.template.soy.data.SoyMapData;
 
+import communarchy.controllers.rankingStrategies.PointRankStrategy;
 import communarchy.facts.PMSession;
 import communarchy.facts.interfaces.IArgument;
 import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.mappers.ArgumentMapper;
-import communarchy.rankingStrategies.PointRankStrategy;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.arg.point.nodes.PointSeperator;

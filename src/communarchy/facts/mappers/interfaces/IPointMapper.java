@@ -4,12 +4,12 @@ import java.util.List;
 
 import com.google.appengine.api.datastore.Key;
 
-import communarchy.exceptions.CommunarchyPersistenceException;
 import communarchy.facts.implementations.Point;
 import communarchy.facts.interfaces.IArgument;
 import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.interfaces.IPointOfView;
 import communarchy.facts.interfaces.IUserStance;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 
 public interface IPointMapper extends IPostMapper<Point>, IPostHasChildrenMapper<IPointOfView>, IPostHasParentMapper<IArgument, IPoint> {
 	public IUserStance selectStance(Key pointKey, Key userKey);

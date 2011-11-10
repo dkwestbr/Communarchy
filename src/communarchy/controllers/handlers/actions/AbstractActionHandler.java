@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import communarchy.constants.IHttpSessionConstants;
 import communarchy.facts.PMSession;
 import communarchy.facts.implementations.ApplicationUser;
 import communarchy.facts.interfaces.IUser;
+import communarchy.utils.constants.IHttpSessionConstants;
 
 public abstract class AbstractActionHandler<T> extends HttpServlet {
 	

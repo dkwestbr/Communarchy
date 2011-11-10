@@ -1,4 +1,4 @@
-package communarchy.filters;
+package communarchy.controllers.filters;
 
 import java.io.IOException;
 import javax.servlet.Filter;
@@ -11,11 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import communarchy.constants.IHttpSessionConstants;
-import communarchy.constants.IServletConstants;
-import communarchy.constants.ISessionConstants;
 import communarchy.facts.implementations.UnauthenticatedUser;
 import communarchy.facts.interfaces.IUser;
+import communarchy.utils.constants.IHttpSessionConstants;
+import communarchy.utils.constants.IServletConstants;
+import communarchy.utils.constants.ISessionConstants;
 
 public class AuthenticationFilter implements Filter {
 	

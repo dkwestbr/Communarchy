@@ -16,7 +16,8 @@ import javax.servlet.http.HttpSession;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.template.soy.tofu.SoyTofuException;
-import communarchy.constants.IHttpSessionConstants;
+import communarchy.controllers.handlers.input.validation.IUserInput;
+import communarchy.controllers.handlers.input.validation.ValidationResult;
 import communarchy.facts.PMSession;
 import communarchy.facts.implementations.ApplicationUser;
 import communarchy.facts.implementations.Point;
@@ -25,8 +26,7 @@ import communarchy.facts.implementations.UserStance;
 import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.mappers.PointMapper;
 import communarchy.facts.mappers.PovMapper;
-import communarchy.inputValidation.IUserInput;
-import communarchy.inputValidation.ValidationResult;
+import communarchy.utils.constants.IHttpSessionConstants;
 
 public class NewPovController extends AbstractInputHandler {
 	

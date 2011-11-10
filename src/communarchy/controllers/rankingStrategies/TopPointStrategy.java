@@ -1,4 +1,4 @@
-package communarchy.rankingStrategies;
+package communarchy.controllers.rankingStrategies;
 
 import java.util.Comparator;
 

@@ -12,12 +12,12 @@ import javax.servlet.http.HttpSession;
 import com.google.template.soy.data.SoyMapData;
 import com.google.template.soy.tofu.SoyTofu;
 
-import communarchy.constants.IHttpSessionConstants;
 import communarchy.facts.PMSession;
 import communarchy.facts.implementations.ApplicationUser;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.mappers.UserMapper;
 import communarchy.facts.mappers.interfaces.IUserMapper;
+import communarchy.utils.constants.IHttpSessionConstants;
 import communarchy.vb.login.LoginRoot;
 
 /**

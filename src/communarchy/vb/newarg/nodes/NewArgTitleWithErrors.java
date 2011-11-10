@@ -4,9 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.google.template.soy.data.SoyMapData;
 
+import communarchy.controllers.handlers.input.validation.ValidationResult;
 import communarchy.facts.PMSession;
 import communarchy.facts.interfaces.IUser;
-import communarchy.inputValidation.ValidationResult;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.global.branches.GetErrors;

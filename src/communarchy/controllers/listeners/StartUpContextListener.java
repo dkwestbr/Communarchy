@@ -1,4 +1,4 @@
-package communarchy.listeners;
+package communarchy.controllers.listeners;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;

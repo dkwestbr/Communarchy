@@ -8,6 +8,7 @@ import javax.jdo.Transaction;
 
 import com.google.appengine.api.datastore.Key;
 
+import communarchy.controllers.rankingStrategies.PovRankStrategy;
 import communarchy.facts.actions.Vote;
 import communarchy.facts.actions.interfaces.IFlag;
 import communarchy.facts.actions.interfaces.IVote;
@@ -18,7 +19,6 @@ import communarchy.facts.interfaces.IPointOfView;
 import communarchy.facts.mappers.interfaces.AbstractMapper;
 import communarchy.facts.mappers.interfaces.IPovMapper;
 import communarchy.facts.results.PageSet;
-import communarchy.rankingStrategies.PovRankStrategy;
 
 
 @SuppressWarnings("unchecked")

@@ -1,4 +1,4 @@
-package communarchy.constants;
+package communarchy.utils.constants;
 
 import java.util.regex.Pattern;
 

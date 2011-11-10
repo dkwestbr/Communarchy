@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import communarchy.constants.IHttpSessionConstants;
+import communarchy.controllers.handlers.input.validation.IUserInput;
+import communarchy.controllers.handlers.input.validation.UserInputValidator;
+import communarchy.controllers.handlers.input.validation.ValidationResult;
 import communarchy.facts.PMSession;
 import communarchy.facts.interfaces.IUser;
-import communarchy.inputValidation.IUserInput;
-import communarchy.inputValidation.UserInputValidator;
-import communarchy.inputValidation.ValidationResult;
+import communarchy.utils.constants.IHttpSessionConstants;
 
 public abstract class AbstractInputHandler extends HttpServlet {
 

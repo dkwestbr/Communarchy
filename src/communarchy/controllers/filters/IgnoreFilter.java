@@ -1,4 +1,4 @@
-package communarchy.filters;
+package communarchy.controllers.filters;
 
 import java.io.IOException;
 

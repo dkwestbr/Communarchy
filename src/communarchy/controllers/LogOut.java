@@ -7,12 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import communarchy.constants.IHttpSessionConstants;
 import communarchy.facts.PMSession;
 import communarchy.facts.implementations.ApplicationUser;
 import communarchy.facts.implementations.UnauthenticatedUser;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.mappers.UserMapper;
+import communarchy.utils.constants.IHttpSessionConstants;
 
 /**
  * Servlet implementation class LogOut

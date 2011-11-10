@@ -12,13 +12,14 @@ import org.datanucleus.store.appengine.query.JDOCursorHelper;
 
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.Key;
+
+import communarchy.controllers.rankingStrategies.PointRankStrategy;
 import communarchy.facts.implementations.Argument;
 import communarchy.facts.implementations.Point;
 import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.mappers.interfaces.AbstractMapper;
 import communarchy.facts.mappers.interfaces.IArgMapper;
 import communarchy.facts.results.PageSet;
-import communarchy.rankingStrategies.PointRankStrategy;
 
 public class ArgumentMapper extends AbstractMapper<ArgumentMapper> implements IArgMapper {
 	

@@ -11,9 +11,9 @@ import com.google.template.soy.data.SoyListData;
 import com.google.template.soy.data.SoyMapData;
 import com.google.template.soy.tofu.SoyTofu;
 
-import communarchy.constants.IHttpSessionConstants;
 import communarchy.facts.PMSession;
 import communarchy.facts.interfaces.IUser;
+import communarchy.utils.constants.IHttpSessionConstants;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.IRootTemplate;

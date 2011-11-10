@@ -20,14 +20,14 @@ import com.google.template.soy.data.SoyMapData;
 import com.google.template.soy.tofu.SoyTofu;
 import com.google.template.soy.tofu.SoyTofuException;
 
-import communarchy.constants.IHttpSessionConstants;
+import communarchy.controllers.handlers.input.validation.IUserInput;
+import communarchy.controllers.handlers.input.validation.ValidationResult;
 import communarchy.facts.PMSession;
 import communarchy.facts.implementations.Argument;
 import communarchy.facts.interfaces.IArgument;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.mappers.ArgumentMapper;
-import communarchy.inputValidation.IUserInput;
-import communarchy.inputValidation.ValidationResult;
+import communarchy.utils.constants.IHttpSessionConstants;
 import communarchy.vb.arg.ArgRoot;
 
 public class ArgController extends AbstractInputHandler {
