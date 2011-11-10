@@ -29,18 +29,22 @@ public class LogOut extends HttpServlet {
 		HttpSession session = request.getSession();
 		PMSession pmSession = PMSession.getOpenSession();
 		
-		String cb = (String) session.getAttribute(IHttpSessionConstants.CALL_BACK_URL);
-		if(cb == null || cb == "") {
-			cb="/";
+		try {
+			String cb = (String) session.getAttribute(IHttpSessionConstants.CALL_BACK_URL);
+			if(cb == null || cb == "") {
+				cb="/";
+			}
+			
+			IUser user = (IUser) session.getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
+			if(user.isAuthenticated()) {
+				pmSession.getMapper(UserMapper.class).updateUser((ApplicationUser) user);
+			}
+			
+			user = UnauthenticatedUser.getNewUser();
+			session.setAttribute(IHttpSessionConstants.USER_SESSION_KEY, user);
+			response.sendRedirect(cb);
+		} finally {
+			pmSession.close();
 		}
-		
-		IUser user = (IUser) session.getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
-		if(user.isAuthenticated()) {
-			pmSession.getMapper(UserMapper.class).updateUser((ApplicationUser) user);
-		}
-		
-		user = UnauthenticatedUser.getNewUser();
-		session.setAttribute(IHttpSessionConstants.USER_SESSION_KEY, user);
-		response.sendRedirect(cb);
 	}
 }

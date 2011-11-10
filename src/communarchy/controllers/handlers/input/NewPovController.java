@@ -97,6 +97,7 @@ public class NewPovController extends AbstractInputHandler {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			throw e;
 		} finally {
+			pmSession.close();
 			out.close();
 		}
 	}

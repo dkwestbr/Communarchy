@@ -57,7 +57,7 @@ public class PMSession {
 		return new PMSession();
 	}
 	
-	public void closeIt() {
+	public void close() {
 		if(!pm.isClosed()) {
 			pm.close();
 		}

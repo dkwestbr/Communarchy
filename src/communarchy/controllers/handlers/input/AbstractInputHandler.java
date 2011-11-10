@@ -59,9 +59,13 @@ public abstract class AbstractInputHandler extends HttpServlet {
 				request.getSession().removeAttribute(getValidationKey());
 				performPost(request, response, results);
 			} else {
+				PMSession pmSession = PMSession.getOpenSession();
+				try {
 				request.getSession().setAttribute(getValidationKey(), results);
-				response.sendRedirect(getRedirectURI(request.getRequestURI(), 
-						PMSession.getOpenSession()));
+				response.sendRedirect(getRedirectURI(request.getRequestURI(), pmSession));
+				} finally {
+					pmSession.close();
+				}
 			}
 		} else {
 			performGet(request, response);
@@ -71,28 +75,33 @@ public abstract class AbstractInputHandler extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		Map<String, ValidationResult> results = new HashMap<String, ValidationResult>();
-		boolean isValid = true;
-		for(String key : requiredFieldMap.keySet()) {
-			String val;
-			if(!request.getParameterMap().containsKey(key) || request.getParameter(key) == null) {
-				val = "";
-			} else {
-				val = request.getParameter(key);
+		PMSession pmSession = PMSession.getOpenSession();
+		try {
+			Map<String, ValidationResult> results = new HashMap<String, ValidationResult>();
+			boolean isValid = true;
+			for(String key : requiredFieldMap.keySet()) {
+				String val;
+				if(!request.getParameterMap().containsKey(key) || request.getParameter(key) == null) {
+					val = "";
+				} else {
+					val = request.getParameter(key);
+				}
+				
+				ValidationResult result = UserInputValidator.getInstance().validateUserInput(requiredFieldMap.get(key), val);
+				isValid = result.isValid();
+				results.put(result.getName(), result);
 			}
 			
-			ValidationResult result = UserInputValidator.getInstance().validateUserInput(requiredFieldMap.get(key), val);
-			isValid = result.isValid();
-			results.put(result.getName(), result);
-		}
-		
-		if(isValid) {
-			request.getSession().removeAttribute(getValidationKey());
-			performPost(request, response, results);
-		} else {
-			request.getSession().setAttribute(getValidationKey(), results);
-			response.sendRedirect(getRedirectURI(request.getRequestURI(), 
-					PMSession.getOpenSession()));
+			if(isValid) {
+				request.getSession().removeAttribute(getValidationKey());
+				performPost(request, response, results);
+			} else {
+				request.getSession().setAttribute(getValidationKey(), results);
+				response.sendRedirect(getRedirectURI(request.getRequestURI(), 
+						PMSession.getOpenSession()));
+			}
+		} finally {
+			pmSession.close();
 		}
 	}
 }

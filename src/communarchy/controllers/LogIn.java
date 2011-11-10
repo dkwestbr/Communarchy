@@ -43,8 +43,9 @@ public class LogIn extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession();
 		IUser user = (IUser) session.getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
+		PMSession pmSession = PMSession.getOpenSession();
+		
 		try {
-			PMSession pmSession = PMSession.getOpenSession();
 			SoyMapData map = LoginRoot.get().getParams(pmSession, user, request);
 			response.getWriter().write(LOGIN_TEMPL.render(RENDER_TARGET, map, null));
 			response.flushBuffer();
@@ -53,6 +54,7 @@ public class LogIn extends HttpServlet {
 			response.sendError(HttpURLConnection.HTTP_INTERNAL_ERROR);
 	    } finally {
 			out.close();
+			pmSession.close();
 		}
 	}
 
@@ -84,6 +86,8 @@ public class LogIn extends HttpServlet {
 			response.sendRedirect(cb != null && cb != "" ? cb : "/");
 		} catch (Exception e) {
 			getServletContext().log("GENERIC EXCEPTION OCCURRED: " + e.getMessage(), e);
+	    } finally {
+	    	pmSession.close();
 	    }
 	}
 }

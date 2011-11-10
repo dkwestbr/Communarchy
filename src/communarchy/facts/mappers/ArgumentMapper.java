@@ -1,5 +1,6 @@
 package communarchy.facts.mappers;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.mappers.interfaces.AbstractMapper;
 import communarchy.facts.mappers.interfaces.IArgMapper;
 import communarchy.facts.results.PageSet;
+import communarchy.rankingStrategies.PointRankStrategy;
 
 public class ArgumentMapper extends AbstractMapper<ArgumentMapper> implements IArgMapper {
 	
@@ -40,6 +42,7 @@ public class ArgumentMapper extends AbstractMapper<ArgumentMapper> implements IA
 			q.closeAll();
 		}
 		
+		Collections.sort(points, new PointRankStrategy(pmSession));
 		return points;
 	}
 

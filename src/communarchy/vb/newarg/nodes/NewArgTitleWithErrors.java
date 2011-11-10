@@ -43,7 +43,6 @@ public class NewArgTitleWithErrors extends AbstractTemplateWrapper implements
 		pMap.put(P_TITLE, scopedResource.getContent());
 		pMap.put(P_TITLE_ERRORS, GetErrors.get().getParams(pmSession, user, request, scopedResource.getErrors()));
 		
-		
 		return pMap;
 	}
 }

@@ -64,6 +64,7 @@ public class NewPointController extends AbstractInputHandler {
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession();
 		ApplicationUser user = (ApplicationUser) session.getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
+		PMSession pmSession = PMSession.getOpenSession();
 		
 		try {
 			Pattern argIdPattern = Pattern.compile("/arg/point/new/([0-9]+)");
@@ -72,7 +73,6 @@ public class NewPointController extends AbstractInputHandler {
 				long id = Long.parseLong(argIdMatcher.group(1));
 				Key argKey = KeyFactory.createKey(Argument.class.getSimpleName(), id);
 				
-				PMSession pmSession = PMSession.getOpenSession();
 				IArgument arg = pmSession.getMapper(ArgumentMapper.class).selectPostById(argKey);
 				
 				if(arg == null) {
@@ -90,6 +90,7 @@ public class NewPointController extends AbstractInputHandler {
 			throw e;
 		} finally {
 			out.close();
+			pmSession.close();
 		}
 	}
 

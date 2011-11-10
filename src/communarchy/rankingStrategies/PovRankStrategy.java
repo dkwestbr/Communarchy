@@ -2,8 +2,6 @@ package communarchy.rankingStrategies;
 
 import java.util.Comparator;
 
-import com.google.appengine.api.datastore.Key;
-
 import communarchy.facts.PMSession;
 import communarchy.facts.interfaces.IPointOfView;
 import communarchy.facts.mappers.PovMapper;
@@ -11,14 +9,12 @@ import communarchy.facts.mappers.interfaces.IPovMapper;
 
 public class PovRankStrategy implements Comparator<IPointOfView> {
 
-	private Key viewerId;
 	private PMSession pmSession;
 	
 	@SuppressWarnings("unused")
 	private PovRankStrategy() {}
 	
-	public PovRankStrategy(Key viewerId, PMSession pmSession) {
-		this.viewerId = viewerId;
+	public PovRankStrategy(PMSession pmSession) {
 		this.pmSession = pmSession;
 	}
 	
@@ -32,14 +28,10 @@ public class PovRankStrategy implements Comparator<IPointOfView> {
 		Integer pov2Votes = povMapper.getPovVoteCount(pov2.getPovId());
 		if(pov2Votes == null)
 			pov2Votes = 0;
-		
-		boolean votedFor1 = povMapper.selectVote(pov1.getPovId(), viewerId) != null;
-		boolean votedFor2 = povMapper.selectVote(pov2.getPovId(), viewerId) != null;
-		if(pov1Votes > pov2Votes || 
-				(pov1Votes.equals(pov2Votes) && votedFor1)) {
+
+		if(pov1Votes > pov2Votes) {
 			return -1;
-		} else if (pov2Votes > pov1Votes || 
-				(pov1Votes.equals(pov2Votes) && votedFor2)) {
+		} else if (pov2Votes > pov1Votes) {
 			return 1;
 		} else {
 			return 0;

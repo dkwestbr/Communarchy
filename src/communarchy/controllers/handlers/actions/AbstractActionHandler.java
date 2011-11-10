@@ -43,12 +43,12 @@ public abstract class AbstractActionHandler<T> extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		HttpSession session = request.getSession();
+		PMSession pmSession = PMSession.getOpenSession();
 		
 		try {
 			ApplicationUser user = (ApplicationUser) session.getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
 			Pattern idPattern = Pattern.compile(getMatcherPattern());
 			Matcher idMatcher = idPattern.matcher(request.getRequestURI());
-			PMSession pmSession = PMSession.getOpenSession();
 			
 			if(idMatcher.find()) {
 				String action = idMatcher.group(1);
@@ -63,6 +63,8 @@ public abstract class AbstractActionHandler<T> extends HttpServlet {
 			}
 		} catch(NumberFormatException e) {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+		} finally {
+			pmSession.close();
 		}
 	}
 }

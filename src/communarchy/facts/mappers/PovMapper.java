@@ -1,6 +1,7 @@
 package communarchy.facts.mappers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
@@ -17,6 +18,7 @@ import communarchy.facts.interfaces.IPointOfView;
 import communarchy.facts.mappers.interfaces.AbstractMapper;
 import communarchy.facts.mappers.interfaces.IPovMapper;
 import communarchy.facts.results.PageSet;
+import communarchy.rankingStrategies.PovRankStrategy;
 
 
 @SuppressWarnings("unchecked")
@@ -74,6 +76,7 @@ public class PovMapper extends AbstractMapper<PovMapper> implements IPovMapper {
 			q.closeAll();
 		}
 		
+		Collections.sort(povs, new PovRankStrategy(pmSession));
 		return povs;
 	}
 

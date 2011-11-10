@@ -52,6 +52,7 @@ public class Main extends HttpServlet {
 			getServletContext().log("In " + Main.class.getCanonicalName() + ":", e);
 			response.sendError(HttpURLConnection.HTTP_INTERNAL_ERROR);
 	    } finally {
+	    	pmSession.close();
 			out.close();
 		}
 	}

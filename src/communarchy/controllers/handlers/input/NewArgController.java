@@ -84,10 +84,9 @@ public class NewArgController extends AbstractInputHandler {
 	public void performGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession();
+		PMSession pmSession = PMSession.getOpenSession();
 		IUser user = (IUser) session.getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
 		try {
-			
-			PMSession pmSession = PMSession.getOpenSession();
 			SoyMapData map = NewArgRoot.get().getParams(pmSession, user, request);
 			response.getWriter().write(NEW_ARG_TEMPL.render(RENDER_TARGET, map, null));
 			response.flushBuffer();
@@ -96,6 +95,7 @@ public class NewArgController extends AbstractInputHandler {
 			response.sendError(HttpURLConnection.HTTP_INTERNAL_ERROR);
 	    } finally {
 			out.close();
+			pmSession.close();
 		}
 	}
 
@@ -115,6 +115,8 @@ public class NewArgController extends AbstractInputHandler {
 			response.sendRedirect(String.format("/arg/%d", arg.getArgId().getId()));
 		} catch (IOException e) {
 			log.severe("Argument id for new argument invalid");
+		} finally {
+			pmSession.close();
 		}
 	}
 

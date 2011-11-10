@@ -1,6 +1,5 @@
 package communarchy.vb.arg.point.pov.branches;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +13,6 @@ import communarchy.facts.interfaces.IPointOfView;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.mappers.PointMapper;
 import communarchy.facts.mappers.interfaces.IPointMapper;
-import communarchy.rankingStrategies.PovRankStrategy;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceSubsetWrapper;
 import communarchy.vb.arg.point.pov.nodes.UserSupports;
@@ -59,7 +57,6 @@ public class GetSupportedPovs extends AbstractTemplateWrapper implements
 		*/
 		
 		List<IPointOfView> povs = pointMapper.getPovsByStance(scopedResource.getPointId(), subset);
-		Collections.sort(povs, new PovRankStrategy(user.getUserId(), pmSession));
 		
 		SoyListData povList = new SoyListData();
 		for(IPointOfView pov : povs) {

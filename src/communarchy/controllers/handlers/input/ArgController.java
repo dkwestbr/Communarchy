@@ -58,6 +58,7 @@ public class ArgController extends AbstractInputHandler {
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession();
 		IUser user = (IUser) session.getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
+		PMSession pmSession = PMSession.getOpenSession();
 		
 		try {
 			Pattern argIdPattern = Pattern.compile("/arg/([0-9]+)");
@@ -66,7 +67,6 @@ public class ArgController extends AbstractInputHandler {
 				long id = Long.parseLong(argIdMatcher.group(1));
 				Key argKey = KeyFactory.createKey(Argument.class.getSimpleName(), id);
 				
-				PMSession pmSession = PMSession.getOpenSession();
 				IArgument arg = pmSession.getMapper(ArgumentMapper.class).selectPostById(argKey);
 				
 				if(arg == null) {
@@ -89,6 +89,7 @@ public class ArgController extends AbstractInputHandler {
 			throw e;
 		} finally {
 			out.close();
+			pmSession.close();
 		}
 	}
 
