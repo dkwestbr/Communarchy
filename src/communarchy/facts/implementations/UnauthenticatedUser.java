@@ -6,6 +6,11 @@ import communarchy.facts.interfaces.IUser;
 
 public final class UnauthenticatedUser implements IUser {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4056587213200216344L;
+
 	public static IUser getNewUser() {
 		return new UnauthenticatedUser();
 	}

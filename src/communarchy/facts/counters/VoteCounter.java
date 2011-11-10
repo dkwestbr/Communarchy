@@ -9,6 +9,11 @@ import communarchy.facts.actions.Vote;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class VoteCounter extends AbstractCounter<Vote> {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	@Persistent
 	private Key povKey;
 	

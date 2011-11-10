@@ -43,12 +43,12 @@ public abstract class AbstractActionHandler<T> extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		HttpSession session = request.getSession();
-		ApplicationUser user = (ApplicationUser) session.getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
 		
 		try {
+			ApplicationUser user = (ApplicationUser) session.getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
 			Pattern idPattern = Pattern.compile(getMatcherPattern());
 			Matcher idMatcher = idPattern.matcher(request.getRequestURI());
-			PMSession pmSession = (PMSession) session.getAttribute(IHttpSessionConstants.PM_SESSION_KEY);
+			PMSession pmSession = PMSession.getOpenSession();
 			
 			if(idMatcher.find()) {
 				String action = idMatcher.group(1);

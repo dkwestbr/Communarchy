@@ -61,7 +61,7 @@ public abstract class AbstractInputHandler extends HttpServlet {
 			} else {
 				request.getSession().setAttribute(getValidationKey(), results);
 				response.sendRedirect(getRedirectURI(request.getRequestURI(), 
-						(PMSession) request.getSession().getAttribute(IHttpSessionConstants.PM_SESSION_KEY)));
+						PMSession.getOpenSession()));
 			}
 		} else {
 			performGet(request, response);
@@ -92,7 +92,7 @@ public abstract class AbstractInputHandler extends HttpServlet {
 		} else {
 			request.getSession().setAttribute(getValidationKey(), results);
 			response.sendRedirect(getRedirectURI(request.getRequestURI(), 
-					(PMSession) request.getSession().getAttribute(IHttpSessionConstants.PM_SESSION_KEY)));
+					PMSession.getOpenSession()));
 		}
 	}
 }

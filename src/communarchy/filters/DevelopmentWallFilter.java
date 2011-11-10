@@ -31,15 +31,19 @@ public class DevelopmentWallFilter implements Filter {
 		
         UserService userService = UserServiceFactory.getUserService();
         User user = userService.getCurrentUser();
-        
-        if (request.getSession().getAttribute(ISessionConstants.FRONTLINE) == null) {
-        	request.getSession().setAttribute(ISessionConstants.FRONTLINE, request.getRequestURI());
-            response.sendRedirect(userService.createLoginURL(request.getRequestURI()));
-        } else if(user != null 
-        		|| userService.createLoginURL((String) request.getSession().getAttribute(ISessionConstants.FRONTLINE))
-        				.split("\\?")[0].equals(request.getRequestURI())) {
-        	
+     
+        if(user != null) {
+        	request.getSession().removeAttribute(ISessionConstants.FRONTLINE);
         	chain.doFilter(req, resp);
+        } else {
+		    if (request.getSession().getAttribute(ISessionConstants.FRONTLINE) == null) {
+		    	request.getSession().setAttribute(ISessionConstants.FRONTLINE, request.getRequestURI());
+		        response.sendRedirect(userService.createLoginURL(request.getRequestURI()));
+		    } else if(userService.createLoginURL((String) request.getSession().getAttribute(ISessionConstants.FRONTLINE))
+		    				.split("\\?")[0].equals(request.getRequestURI())) {
+		    	
+		    	chain.doFilter(req, resp);
+		    }
         }
 	}
 

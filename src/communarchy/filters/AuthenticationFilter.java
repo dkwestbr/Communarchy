@@ -31,33 +31,35 @@ public class AuthenticationFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
 		HttpSession session = request.getSession();
+		String devWall = (String) request.getSession().getAttribute(ISessionConstants.FRONTLINE);
 		
-		IUser user = (IUser) session.getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
-		
-		if(user == null) {
-			user = UnauthenticatedUser.getNewUser();
-			session.setAttribute(IHttpSessionConstants.USER_SESSION_KEY, user);
-		}
-		
-		if(!request.getRequestURI().equals("/login")
-				&& !request.getRequestURI().equals("/logout")) {
-			request.getSession().setAttribute(IHttpSessionConstants.CALL_BACK_URL, request.getRequestURI());
-		}
-		
-		if(request.getMethod().equals("POST")
-				&& !user.isAuthenticated()
-				&& !request.getRequestURI().equals("/login")
-				&& request.getSession().getAttribute(ISessionConstants.FRONTLINE) == null) {
+		if(devWall == null) {
+			IUser user = (IUser) session.getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
 			
-			session.setAttribute(IHttpSessionConstants.LOGIN_MESSAGE, IServletConstants.LOGIN_REQUIRED);
-			if(!request.getParameterMap().isEmpty()) {
-				session.setAttribute(IHttpSessionConstants.CALL_BACK_PARAMS, request.getParameterMap());
+			if(user == null) {
+				user = UnauthenticatedUser.getNewUser();
+				session.setAttribute(IHttpSessionConstants.USER_SESSION_KEY, user);
 			}
 			
-			response.sendRedirect("/login");
-			response.flushBuffer();
-		} else {
-			chain.doFilter(req, resp);
+			if(!request.getRequestURI().equals("/login")
+					&& !request.getRequestURI().equals("/logout")) {
+				request.getSession().setAttribute(IHttpSessionConstants.CALL_BACK_URL, request.getRequestURI());
+			}
+			
+			if(request.getMethod().equals("POST")
+					&& !user.isAuthenticated()
+					&& !request.getRequestURI().equals("/login")) {
+				
+				session.setAttribute(IHttpSessionConstants.LOGIN_MESSAGE, IServletConstants.LOGIN_REQUIRED);
+				if(!request.getParameterMap().isEmpty()) {
+					session.setAttribute(IHttpSessionConstants.CALL_BACK_PARAMS, request.getParameterMap());
+				}
+				
+				response.sendRedirect("/login");
+				response.flushBuffer();
+			} else {
+				chain.doFilter(req, resp);
+			}
 		}
 	}
 

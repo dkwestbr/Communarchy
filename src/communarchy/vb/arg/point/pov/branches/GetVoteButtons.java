@@ -9,9 +9,7 @@ import communarchy.facts.PMSession;
 import communarchy.facts.actions.interfaces.IVote;
 import communarchy.facts.interfaces.IPointOfView;
 import communarchy.facts.interfaces.IUser;
-import communarchy.facts.mappers.PointMapper;
 import communarchy.facts.mappers.PovMapper;
-import communarchy.facts.mappers.interfaces.IPointMapper;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.arg.point.pov.nodes.AllowVote;
@@ -50,7 +48,6 @@ public class GetVoteButtons extends AbstractTemplateWrapper implements
 			HttpServletRequest request, IPointOfView scopedResource) {
 
 		SoyMapData pMap = new SoyMapData();
-		IPointMapper pointMapper = pmSession.getMapper(PointMapper.class);
 		
 		IVote vote = pmSession.getMapper(PovMapper.class).selectVote(scopedResource.getPovId(), user.getUserId());
 		if(vote != null) {

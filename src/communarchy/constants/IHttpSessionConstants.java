@@ -8,8 +8,6 @@ public interface IHttpSessionConstants {
 	
 	public static final String LOGIN_TEMPLATE = "LOGIN_TEMPLATE";
 	
-	public static final String PM_SESSION_KEY = "pmSessionKey";
-	
 	public static final String RESOURCE_KEY = "resourceKey";
 	
 	public static final String USER_SESSION_KEY = "USER";

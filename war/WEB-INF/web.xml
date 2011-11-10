@@ -37,14 +37,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
   		<filter-name>AuthenticationFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	<filter>
-		<filter-name>SessionFilter</filter-name>
-		<filter-class>communarchy.filters.SessionFilter</filter-class>
-	</filter>
-	<filter-mapping>
-  		<filter-name>SessionFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
 	<!-- END FILTERS -->
 
 	<!-- LISTENERS -->

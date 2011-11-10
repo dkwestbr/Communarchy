@@ -1,6 +1,8 @@
 package communarchy.facts.interfaces;
 
-public interface ICounter {
+import java.io.Serializable;
+
+public interface ICounter extends Serializable {
 	public int getCount();
 	public void increment();
 	public void decrement();

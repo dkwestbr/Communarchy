@@ -8,6 +8,11 @@ import communarchy.facts.interfaces.IStance;
 
 public class Stance implements IStance {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Persistent
 	private Key point;
 	

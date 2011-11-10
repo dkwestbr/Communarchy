@@ -5,21 +5,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
+import javax.jdo.PersistenceManagerFactory;
 
 import communarchy.facts.mappers.interfaces.AbstractMapper;
 
 public class PMSession {
-	private static Map<PersistenceManager, PMSession> INSTANCE_MAP;
-	
-	private PersistenceManager pm;
-	private Map<Type, AbstractMapper<?>> mapperMap;
+
+	private static PersistenceManagerFactory pmfInstance = null;
+	private PersistenceManager pm = null;
+	private Map<Type, AbstractMapper<?>> mapperMap = null;
 	
 	private static final Logger log = Logger.getLogger(PMSession.class.getName());
 	
-	private PMSession() {}
-	private PMSession(PersistenceManager pm) {
-		this.pm = pm;
+	private PMSession() {
+		if(pmfInstance == null) {
+			pmfInstance = JDOHelper.getPersistenceManagerFactory("transactions-optional");
+		}
+		
+		pm = pmfInstance.getPersistenceManager();
 		mapperMap = new HashMap<Type, AbstractMapper<?>>();
 	}
 	
@@ -48,22 +53,13 @@ public class PMSession {
 		return this.pm;
 	}
 	
-	public static PMSession getOpenSession(PersistenceManager pm) {
-		if(INSTANCE_MAP == null) {
-			INSTANCE_MAP = new HashMap<PersistenceManager, PMSession>();
-		}
-		
-		if(INSTANCE_MAP.containsKey(pm)) {
-			return INSTANCE_MAP.get(pm);
-		} else {
-			PMSession session = new PMSession(pm);
-			INSTANCE_MAP.put(pm, session);
-			return session;
-		}
+	public static PMSession getOpenSession() {
+		return new PMSession();
 	}
 	
 	public void closeIt() {
-		INSTANCE_MAP.remove(pm);
-		pm.close();
+		if(!pm.isClosed()) {
+			pm.close();
+		}
 	}
 }

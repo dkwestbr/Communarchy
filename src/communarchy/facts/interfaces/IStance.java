@@ -1,8 +1,10 @@
 package communarchy.facts.interfaces;
 
+import java.io.Serializable;
+
 import com.google.appengine.api.datastore.Key;
 
-public interface IStance {
+public interface IStance extends Serializable {
 	public Key getPoint();
 	public Integer getStance();
 	

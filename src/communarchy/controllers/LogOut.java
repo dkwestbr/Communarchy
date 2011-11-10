@@ -27,7 +27,7 @@ public class LogOut extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		PMSession pmSession = (PMSession) session.getAttribute(IHttpSessionConstants.PM_SESSION_KEY);
+		PMSession pmSession = PMSession.getOpenSession();
 		
 		String cb = (String) session.getAttribute(IHttpSessionConstants.CALL_BACK_URL);
 		if(cb == null || cb == "") {

@@ -16,6 +16,11 @@ import communarchy.facts.interfaces.ICounter;
 @Inheritance(strategy=InheritanceStrategy.SUBCLASS_TABLE)
 public abstract class AbstractCounter<T> implements ICounter {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@PrimaryKey
 	@SuppressWarnings("unused")
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

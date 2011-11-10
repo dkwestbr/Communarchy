@@ -1,0 +1,631 @@
+.arg-header {
+	color: #0077CC;
+    font-size: 35px;
+    font-weight: bold;
+    padding-top: 15px;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.arg-content {
+	padding-top: 10px;
+	padding-bottom: 10px;
+    text-align: left;
+    font-size: 20px;
+}
+
+.arg-btn-container {
+	padding-left: 130px;
+}
+
+.arg-container {
+	width: 999px;
+}
+
+.bg-pov-even {
+	background-color: #6FF;
+}
+
+.bg-pov-odd {
+	background-color: #CFF;
+}
+
+.bg-pov-even-agree {
+	background-color: #6FF;
+}
+
+.bg-pov-odd-agree {
+	background-color: #3F0;
+}
+
+.bg-pov-even-neutral {
+	background-color: #6FF;
+}
+
+.bg-pov-odd-neutral {
+	background-color: #3FF;
+}
+
+.bg-pov-even-disagree {
+	background-color: #6FF;
+}
+
+.bg-pov-odd-disagree {
+	background-color: #F60;
+}
+
+.create-point {
+	padding-top: 40px;
+	padding-bottom: 10px;
+}
+
+.point-sep-top {
+	border-bottom: solid 1px;
+	padding-top: 15px;
+}
+
+.point-sep-filler {
+	height: 5px;
+	background-color: #DE0;
+}
+
+.point-sep-bottom {
+	padding-bottom: 5px;
+	border-top: solid 1px;
+}
+
+.point-area {
+	
+}
+
+.point-text-area {
+	width: 333px;
+	height: 250px;
+	font-size: 16px;
+	resize: none;
+}
+
+.pov-text-area {
+	width: 75%;
+	height: 250px;
+	font-size: 16px;
+	resize: none;
+}
+
+.pov-text-area-container {
+	padding-top: 10px;
+}
+
+.pov-reclaim-container {
+
+}
+
+.pov-width {
+	width: 330px;
+}
+
+.pov-wrapper {
+	padding-bottom: 15px;
+	padding-left: 10px;
+	padding-top: 10px;
+}
+
+.new-point-input {
+	width: 500px;
+}
+
+.new-point-wrapper {
+	padding-bottom: 3px;
+}
+
+.selected-stance-agree, .agree {
+	background-color: #3F0;
+}
+
+.selected-stance-neutral, .neutral {
+	background-color: #3FF;
+}
+
+.selected-stance-disagree, .disagree {
+	background-color: #F60;
+}
+
+.submit-first-point {
+}
+
+.suggestion-box {
+	padding-left: 15px;
+	padding-bottom: 15px;
+}
+
+.suggestion {
+	padding-top: 1px;
+	font-size: 20px;
+}
+
+.first-pov-wrapper {
+	border-top: dashed 1px;
+	padding-top: 15px;
+	padding-left: 15px;
+}
+
+.new-pov-errs {
+	height: 215px;
+	color: #F02;
+	padding-left: 15px;
+	padding-top: 15px;
+}
+
+.new-point-errs {
+	color: #F02;
+}
+
+.point-container {
+	border-bottom: solid 1px;
+}
+
+.point {
+	font-size: 30px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	color: #07C;
+}
+
+.point-header {
+	text-align: left;
+	border-bottom: 1px dashed;
+}
+
+.pov-agree {
+	width: 332px;
+	min-height: 100px;
+	border-left: solid 1px;
+}
+
+.pov-neutral {
+	width: 331px;
+	min-height: 100px;
+	border-left: solid 1px;
+	border-right: solid 1px;
+	border-top: solid 1px;
+}
+
+.pov-disagree {
+	width: 332px;
+	min-height: 100px;
+	border-top: solid 1px;
+	border-right: solid 1px;
+}
+
+.pov-table {
+	width: 999px;
+}
+
+.pov {
+	font-size: 18px;
+	width: 323px;
+	height: 94%;
+	padding-left: 3%;
+	padding-top: 3%;
+}
+
+.pov-leaf {
+	border: solid 1px;
+	background-color: #FFF;
+}
+
+.pov-top {
+	border-top: solid 1px;
+}
+
+.pov-container {
+	min-height: 60px;
+}
+
+.selected-view .pov-container {
+	width: 460px;
+}
+
+td {
+	width: 328px;
+}
+
+tr {
+	min-height: 100px;
+}
+
+.point-btn {
+	width: 260px;
+}
+
+.pov-btn {
+	font-size: 20px;
+}
+
+.pov-btn-container {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.new-arg-btn {
+	width: 260px;
+}
+
+.stance {
+	text-align: center;
+	font-size: 24px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-right: 5px;
+	margin-left: 15px;
+	width: 312px;
+}
+
+.agree > .pov-input-container > form > .pov-input-wrapper {
+	text-align: left;
+	padding-left: 10px;
+}
+
+.neutral > .pov-input-container > form > .pov-input-wrapper {
+	text-align: center;
+}
+
+.disagree > .pov-input-container > form > .pov-input-wrapper {
+	text-align: right;
+	padding-right: 10px;
+}
+
+.pov-column {
+	vertical-align: top;
+}
+
+.take-stance-btn {
+	background-color: #DEB236;
+	cursor: pointer;
+	color: #FFFFFF;
+	text-align: center;
+	text-decoration: underline;
+	border: solid 2px #000;
+	min-width: 120px;
+	font-size: 20px;
+}
+
+.take-stance-btn:hover {
+	background-color: #3658DE;
+}
+
+.take-stance-btn-disabled {
+	background-color: #3658DE;
+	color: #FFFFFF;
+	text-align: center;
+	text-decoration: underline;
+	border: solid 2px #000;
+	min-width: 120px;
+	font-size: 20px;
+}
+
+.pov-input-wrapper {
+	border-top: solid 1px;
+	border-left: solid 1px;
+	border-right: solid 1px;
+	padding-left: 40px;
+}
+
+.agree-count {
+	color: #33FF00;
+}
+
+.neutral-count {
+	color: #33FFFF;
+}
+
+.disagree-count {
+	color: #FF6600;
+}
+
+.pov-upvote {
+	border: none;
+	font-size: 52px;
+	font-family: serif;
+	font-weight: bold;
+	height: 34px;
+}
+
+.pov-upvote-novote {
+	border: none;
+	font-size: 52px;
+	font-family: serif;
+	font-weight: bold;
+	height: 34px;
+}
+
+.pov-novotes {
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+	zoom: 1;
+}
+
+.pov-upvote-disabled {
+	border: none;
+	font-size: 52px;
+	font-family: serif;
+	font-weight: bold;
+	height: 34px;
+	color: #FFA;
+}
+
+.pov-upvote-container {
+	width: 33px;
+	padding-top: 6px;
+	padding-left: 20px;
+}
+
+.pov-voted {
+	color: #FFA;
+	border: none;
+	font-size: 52px;
+	font-family: serif;
+	font-weight: bold;
+	height: 34px;
+}
+
+.pov-upvote:hover {
+	cursor: pointer;
+	color: #FFA;
+}
+
+.pov-count-voted {
+	font-size: 18px;
+	padding-top: 11px;
+}
+
+.pov-count {
+	font-size: 18px;
+	padding-top: 15px;
+	padding-left: 3px;
+}
+
+.selected-stance-count {
+	font-size: 24px;
+	height: 27px;
+	margin-top: 4px;
+	margin-bottom: 4px;
+	text-align: center;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	padding-left: 5px;
+}
+
+.selected-stance {
+	font-size: 24px;
+	text-align: center;
+	height: 29px;
+	vertical-align: middle;
+	padding-top: 13px;
+	padding-bottom: 12px;
+}
+
+.stance-not-taken {
+	width: 25%;
+}
+
+.upvote-active {
+	background-image: url("/dbg/images/vote_btns.png");
+	background-repeat: no-repeat;
+	height: 27px;
+	width: 40px;
+	font-size: 0px;
+	background-position: 37% 31%;
+	border: none;
+}
+
+.upvote-active-nh {
+	background-image: url("/dbg/images/vote_btns.png");
+	background-repeat: no-repeat;
+	height: 27px;
+	width: 40px;
+	font-size: 0px;
+	background-position: 37% 31%;
+	border: none;
+}
+
+.upvote-active:hover {
+	cursor: pointer;
+	background-position: 37% 6%;
+}
+
+.upvote-inactive {
+	background-image: url("/dbg/images/vote_btns.png");
+	background-repeat: no-repeat;
+	height: 27px;
+	width: 40px;
+	font-size: 0px;
+	background-position: 37% 6%;
+	border: none;
+}
+
+.main-width {
+	width: 179px;
+	text-align: center;
+	padding-left: 154px;
+}
+
+.person-agree {
+	background-image: url("/dbg/images/ppl.png");
+	background-repeat: no-repeat;
+	background-position: 3% 0%;
+	height: 44px;
+	width: 27px;
+}
+
+.person-neutral {
+	background-image: url("/dbg/images/ppl.png");
+	background-repeat: no-repeat;
+	background-position: 48% 0%;
+	height: 44px;
+	width: 27px;
+}
+
+.person-disagree {
+	background-image: url("/dbg/images/ppl.png");
+	background-repeat: no-repeat;
+	background-position: 95% 0%;
+	height: 44px;
+	width: 27px;
+}
+
+.person-count {
+	font-size: 22px;
+	padding-top: 14px;
+}
+
+.person {
+	width: 24px;
+	height: 42px;
+}
+
+.pov-prompt {
+	padding-top: 15px;
+	font-size: 20px;
+	padding-left: 5px;
+}
+
+.reclaimvote-active {
+	background-image: url("/dbg/images/vote_btns.png");
+	background-repeat: no-repeat;
+	height: 25px;
+	width: 65px;
+	font-size: 0px;
+	background-position: 0% 61%;
+	border: none;
+}
+
+.reclaimvote-active-nh {
+	background-image: url("/dbg/images/vote_btns.png");
+	background-repeat: no-repeat;
+	height: 25px;
+	width: 65px;
+	font-size: 0px;
+	background-position: 0% 92%;
+	border: none;
+}
+
+.reclaimvote-active:hover {
+	cursor: pointer;
+	background-position: 0% 92%;
+}
+
+.reclaimvote-inactive {
+	background-image: url("/dbg/images/vote_btns.png");
+	background-repeat: no-repeat;
+	height: 25px;
+	width: 65px;
+	font-size: 0px;
+	background-position: 0% 61%;
+	border: none;
+}
+
+.stat-vote {
+	padding: 3px;
+}
+
+.stat-container {
+	border: solid 1px;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	margin-top: 10px;
+}
+
+.stat-val {
+	text-align: center;
+}
+
+.stat-vote-icon {
+	background-image: url("/dbg/images/vote_icons.png");
+	background-repeat: no-repeat;
+	height: 18px;
+	width: 33px;
+}
+
+.agree .stat-vote-icon {
+	background-position: 0% 3%;
+}
+
+.neutral .stat-vote-icon {
+	background-position: 0% 46%;
+}
+
+.disagree .stat-vote-icon {
+	background-position: 0% 90%;
+}
+
+.flag-wrapper {
+    border-left: 1px solid;
+    padding-left: 5px;
+    padding-top: 15px;
+    width: 135px;
+}
+
+.flag-text {
+    background-color: white;
+    border: medium none;
+    font-size: 12px;
+    font-weight: bold;
+    height: 17px;
+}
+
+.flag-text:hover {
+	background-color: #DEB236;
+}
+
+.flag-spacer {
+	padding-left: 1px;
+	padding-right: 1px;
+	border-top: solid 1px;
+}
+
+.p-flag {
+	background-position: 0% 91%;
+}
+
+.p-flagged {
+	background-position: 0% 3%;
+}
+
+.pov-flag {
+	background-image: url("/dbg/images/flags.png");
+	background-repeat: no-repeat;
+	width: 38px;
+	height: 38px;
+	margin-top: 5px;
+}
+
+.selected-view {
+	width: 499px;
+}
+
+.unselected-view {
+	width: 246px;
+}
+
+.vote-wrapper {
+	padding-right: 5px;
+}
+
+.v-count-wrapper {
+    padding-left: 10px;
+    padding-top: 40px;
+}
+
+.v-count-spacer {
+    border-color: #FFFFFF;
+    border-top: 4px solid #FFFFFF;
+    width: 25px;
+}
+
+.v-count-text {
+    color: white;
+    padding-left: 5px;
+    font-size: 30px;
+    font-weight: bold;
+}

@@ -11,6 +11,11 @@ import communarchy.facts.interfaces.IStance;
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
 public class StanceCounter extends AbstractCounter<UserStance> {
 		
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Persistent
 	private Key point;
 	

@@ -72,7 +72,7 @@ public class NewPointController extends AbstractInputHandler {
 				long id = Long.parseLong(argIdMatcher.group(1));
 				Key argKey = KeyFactory.createKey(Argument.class.getSimpleName(), id);
 				
-				PMSession pmSession = (PMSession) session.getAttribute(IHttpSessionConstants.PM_SESSION_KEY);
+				PMSession pmSession = PMSession.getOpenSession();
 				IArgument arg = pmSession.getMapper(ArgumentMapper.class).selectPostById(argKey);
 				
 				if(arg == null) {

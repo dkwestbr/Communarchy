@@ -87,7 +87,7 @@ public class NewArgController extends AbstractInputHandler {
 		IUser user = (IUser) session.getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
 		try {
 			
-			PMSession pmSession = (PMSession) session.getAttribute(IHttpSessionConstants.PM_SESSION_KEY);
+			PMSession pmSession = PMSession.getOpenSession();
 			SoyMapData map = NewArgRoot.get().getParams(pmSession, user, request);
 			response.getWriter().write(NEW_ARG_TEMPL.render(RENDER_TARGET, map, null));
 			response.flushBuffer();
@@ -106,7 +106,7 @@ public class NewArgController extends AbstractInputHandler {
 		String title = validInputs.get("title").getContent();
 		String content = validInputs.get("content").getContent();
 		ApplicationUser user = (ApplicationUser) request.getSession().getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
-		PMSession pmSession = (PMSession) request.getSession().getAttribute(IHttpSessionConstants.PM_SESSION_KEY);
+		PMSession pmSession = PMSession.getOpenSession();
 		
 		Argument arg = new Argument(user.getUserId(), title, content);
 		pmSession.getMapper(ArgumentMapper.class).insertNewPost(arg);

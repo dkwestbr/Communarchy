@@ -38,7 +38,7 @@ public class Main extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		HttpSession session = request.getSession();
-		PMSession pmSession = (PMSession) session.getAttribute(IHttpSessionConstants.PM_SESSION_KEY);
+		PMSession pmSession = PMSession.getOpenSession();
 		
 		try {
 			IUser user = (IUser) session.getAttribute(IHttpSessionConstants.USER_SESSION_KEY);

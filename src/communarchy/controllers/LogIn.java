@@ -44,7 +44,7 @@ public class LogIn extends HttpServlet {
 		HttpSession session = request.getSession();
 		IUser user = (IUser) session.getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
 		try {
-			PMSession pmSession = (PMSession) session.getAttribute(IHttpSessionConstants.PM_SESSION_KEY);
+			PMSession pmSession = PMSession.getOpenSession();
 			SoyMapData map = LoginRoot.get().getParams(pmSession, user, request);
 			response.getWriter().write(LOGIN_TEMPL.render(RENDER_TARGET, map, null));
 			response.flushBuffer();
@@ -62,7 +62,7 @@ public class LogIn extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		HttpSession session = request.getSession();
-		PMSession pmSession = (PMSession) request.getSession().getAttribute(IHttpSessionConstants.PM_SESSION_KEY);
+		PMSession pmSession = PMSession.getOpenSession();
 		
 		String userName = request.getParameter("user");
 		

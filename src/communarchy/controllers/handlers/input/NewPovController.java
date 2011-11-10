@@ -65,7 +65,7 @@ public class NewPovController extends AbstractInputHandler {
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession();
 		ApplicationUser user = (ApplicationUser) session.getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
-		PMSession pmSession = (PMSession) session.getAttribute(IHttpSessionConstants.PM_SESSION_KEY);
+		PMSession pmSession = PMSession.getOpenSession();
 		
 		try {
 			Pattern newPovPattern = Pattern.compile("/point/pov/new/(agree|neutral|disagree)/([0-9]+)");
