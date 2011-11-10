@@ -9,6 +9,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 import communarchy.facts.interfaces.IArgument;
 
@@ -31,7 +32,7 @@ public class Argument implements IArgument, Serializable {
 	private String title;
 	
 	@Persistent
-	private String content;
+	private Text content;
 	
 	@Persistent
 	private Date createDate;
@@ -49,13 +50,13 @@ public class Argument implements IArgument, Serializable {
 		
 		this.posterId = poster_id;
 		this.title = title;
-		this.content = content;
+		this.content = new Text(content);
 		this.createDate = new Date();
 		this.updateDate = createDate;
 	}
 
 	@Override
-	public String getContent() {
+	public Text getContent() {
 		return content;
 	}
 

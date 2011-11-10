@@ -3,6 +3,7 @@ package communarchy.facts.interfaces;
 import java.io.Serializable;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 public interface IPointOfView extends Serializable {
 	public static int FLAG_PROFANITY = 0;
@@ -11,5 +12,5 @@ public interface IPointOfView extends Serializable {
 	public Key getPosterId();
 	public int getStance();
 	public Key getParentPointId();
-	public String getPov();
+	public Text getPov();
 }

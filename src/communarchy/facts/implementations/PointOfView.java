@@ -9,6 +9,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 import communarchy.facts.interfaces.IPointOfView;
 
@@ -31,7 +32,7 @@ public class PointOfView implements IPointOfView, Serializable {
 	private int stance;
 	
 	@Persistent
-	private String pov;
+	private Text pov;
 	
 	@Persistent
 	private Date createDate;
@@ -49,7 +50,7 @@ public class PointOfView implements IPointOfView, Serializable {
 		
 		this.posterId = poster_id;
 		this.parentPointId = parent_point_id;
-		this.pov = pov;
+		this.pov = new Text(pov);
 		this.stance = stance;
 		this.createDate = new Date();
 		this.updateDate = createDate;
@@ -63,7 +64,7 @@ public class PointOfView implements IPointOfView, Serializable {
 		return stance;
 	}
 	
-	public String getPov() {
+	public Text getPov() {
 		return pov;
 	}
 

@@ -9,6 +9,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 import communarchy.facts.interfaces.IPoint;
 
@@ -27,7 +28,7 @@ public class Point implements IPoint, Serializable {
 	private Key parentArgId;
 	
 	@Persistent
-	private String point;
+	private Text point;
 	
 	@Persistent
 	private Date createDate;
@@ -45,7 +46,7 @@ public class Point implements IPoint, Serializable {
 		
 		this.posterId = poster_id;
 		this.parentArgId = parent_arg_id;
-		this.point = point;
+		this.point = new Text(point);
 		this.createDate = new Date();
 		this.updateDate = createDate;
 	}
@@ -58,7 +59,7 @@ public class Point implements IPoint, Serializable {
 		return parentArgId;
 	}
 	
-	public String getPoint() {
+	public Text getPoint() {
 		return point;
 	}
 
