@@ -50,10 +50,10 @@ public class PointView extends AbstractTemplateWrapper implements
 			IPoint scopedResource) {
 		
 		SoyMapData pMap = new SoyMapData();
-		pMap.put(P_ID, String.format("%d", scopedResource.getPointId().getId()));
+		pMap.put(P_ID, String.format("%d", scopedResource.getKey().getId()));
 		pMap.put(P_POINT, scopedResource.getPoint());
 		
-		IUserStance userStance = pmSession.getMapper(PointMapper.class).selectStance(scopedResource.getPointId(), user.getUserId());
+		IUserStance userStance = pmSession.getMapper(PointMapper.class).selectStance(scopedResource.getKey(), user.getUserId());
 		if(userStance == null) {
 			pMap.put(P_SELECTED_STANCE, " ");
 		} else {

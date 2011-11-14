@@ -1,13 +1,12 @@
 package communarchy.facts.mappers;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
 
 import com.google.appengine.api.datastore.Key;
 
-import communarchy.controllers.rankingStrategies.TopPointStrategy;
 import communarchy.facts.actions.interfaces.IVote;
 import communarchy.facts.implementations.Argument;
 import communarchy.facts.implementations.Point;
@@ -21,28 +20,61 @@ import communarchy.facts.interfaces.IUserStance;
 import communarchy.facts.mappers.interfaces.AbstractMapper;
 import communarchy.facts.mappers.interfaces.IPointMapper;
 import communarchy.facts.results.PageSet;
+import communarchy.utils.caching.CommunarchyCache;
+import communarchy.utils.caching.ListUtils;
 import communarchy.utils.exceptions.CommunarchyPersistenceException;
 
 @SuppressWarnings("unchecked")
 public class PointMapper extends AbstractMapper<PointMapper> implements IPointMapper {
-	
+
 	public PointMapper() {}
 
 	@Override
 	public void insertNewPost(Point post) {
+		if(post == null) {
+			return;
+		}
+		
 		pmSession.getPM().makePersistent(post);
+		CommunarchyCache.getInstance().clearList(post.getParentId().toString());
 	}
 
 	@Override
+	@SuppressWarnings("rawtypes")
 	public List<IPointOfView> selectChildrenPosts(Key id) {
-		List<IPointOfView> povs;
-		Query q = pmSession.getPM().newQuery(PointOfView.class);
-		try {
-			q.setFilter("parentPointId == parentIdParam");
-			q.declareParameters(Key.class.getName() + " parentIdParam");
-			povs = (List<IPointOfView>) q.execute(id);	
-		} finally {
-			q.closeAll();
+		
+		CommunarchyCache.getInstance();
+		String key = CommunarchyCache.buildKey(PointMapper.class, 
+				"selectChildrenPosts", id.toString());
+		
+		List<IPointOfView> povs = null;
+		if(CommunarchyCache.getInstance().contains(key)) {
+			String povIds = CommunarchyCache.getInstance().get(key);
+			if(povIds == null) {
+				return null;
+			}
+			
+			List<Key> keys = ListUtils.keyStringToKeyList(povIds, PointOfView.class.getSimpleName());
+			povs = new ArrayList<IPointOfView>();
+			for(Key povKey : keys) {
+				povs.add(pmSession.getMapper(PovMapper.class).selectPostById(povKey));
+			}
+		} else {
+			if(povs == null) {
+				Query q = pmSession.getPM().newQuery(PointOfView.class);
+				try {
+					q.setFilter("parentPointId == parentIdParam");
+					q.declareParameters(Key.class.getName() + " parentIdParam");
+					povs = (List<IPointOfView>) q.execute(id);	
+				} finally {
+					q.closeAll();
+				}
+				
+				CommunarchyCache.getInstance().putList(id.toString(), key, ((List)povs));
+				if(povs == null || povs.isEmpty()) {
+					return new ArrayList<IPointOfView>();
+				}
+			}
 		}
 		
 		return povs;
@@ -68,25 +100,15 @@ public class PointMapper extends AbstractMapper<PointMapper> implements IPointMa
 	}
 
 	@Override
-	public Key getTopPoint(Key argId) {
-		
-		List<IPoint> points = pmSession.getMapper(ArgumentMapper.class).selectChildrenPosts(argId);
-		Collections.sort(points, new TopPointStrategy(pmSession));
-		
-		if(points.get(0) == null) {
-			return null;
-		} else {
-			return points.get(0).getPointId();
-		}
-	}
-
-	@Override
 	public void updateStance(IUserStance stance, Integer oldStance) throws CommunarchyPersistenceException {
 		
 		Transaction tx = pmSession.getPM().currentTransaction();
 		
 		try {	
 			tx.begin();
+			CommunarchyCache.getInstance().clearList(stance.getPoint().toString());
+			CommunarchyCache.getInstance().clearEntity(stance.getKey().toString());
+			CommunarchyCache.getInstance().clearEntity(UserStance.BuildVoteQueryKey(stance.getPoint(), stance.getUser()));
 			pmSession.getPM().makePersistent(stance);
 			pmSession.getMapper(StanceCountMapper.class).decrement(new Stance(stance.getPoint(), oldStance));
 			pmSession.getMapper(StanceCountMapper.class).increment(stance);
@@ -104,8 +126,6 @@ public class PointMapper extends AbstractMapper<PointMapper> implements IPointMa
 		for(IVote vote : votes) {
 			pmSession.getMapper(PovMapper.class).reclaimVote(vote.getPovKey(), vote.getUserKey());
 		}
-		
-		pmSession.getPM().makePersistent(stance);
 	}
 
 	@Override
@@ -114,6 +134,8 @@ public class PointMapper extends AbstractMapper<PointMapper> implements IPointMa
 		
 		try {
 			tx.begin();
+			CommunarchyCache.getInstance().clearList(selectPostById(stance.getPoint()).getParentId().toString());
+			CommunarchyCache.getInstance().clearEntity(UserStance.BuildVoteQueryKey(stance.getPoint(), stance.getUser()));
 			pmSession.getPM().makePersistent(stance);
 			pmSession.getMapper(StanceCountMapper.class).increment(stance);
 			tx.commit();
@@ -126,7 +148,16 @@ public class PointMapper extends AbstractMapper<PointMapper> implements IPointMa
 
 	@Override
 	public Point selectPostById(Key id) {
-		return pmSession.getPM().getObjectById(Point.class, id);
+		String key = CommunarchyCache.buildKey(PointMapper.class, "selectPostById", id.toString());
+		Point point = null;
+		if(CommunarchyCache.getInstance().contains(key)) {
+			point = CommunarchyCache.getInstance().get(key);
+		} else {
+			point = pmSession.getPM().getObjectById(Point.class, id);
+			CommunarchyCache.getInstance().putEntity(point.getKey().toString(), key, point);
+		}
+		
+		return point;
 	}
 
 	@Override
@@ -145,17 +176,33 @@ public class PointMapper extends AbstractMapper<PointMapper> implements IPointMa
 			return null;
 		}
 		
-		Query q = pmSession.getPM().newQuery(UserStance.class);
-		List<UserStance> results = null;
-		try {
-			q.setFilter("user == userParam && point == pointParam");
-			q.declareParameters(String.format("%s userParam, %s pointParam", Key.class.getName(), Key.class.getName()));
-			results = (List<UserStance>) q.execute(userKey, pointKey);	
-		} finally {
-			q.closeAll();
+		String key = CommunarchyCache.buildKey(PointMapper.class, "selectStance", 
+				String.format("%s_%s", pointKey.toString(), userKey.toString()));
+		
+		UserStance result = null;
+		if(CommunarchyCache.getInstance().contains(key)) {
+			result = CommunarchyCache.getInstance().get(key);
+		} else {
+			List<UserStance> results;
+			Query q = pmSession.getPM().newQuery(UserStance.class);
+			try {
+				q.setFilter("user == userParam && point == pointParam");
+				q.declareParameters(String.format("%s userParam, %s pointParam", Key.class.getName(), Key.class.getName()));
+				results = (List<UserStance>) q.execute(userKey, pointKey);	
+			} finally {
+				q.closeAll();
+			}
+			
+			if(results == null || results.isEmpty()) {
+				CommunarchyCache.getInstance().putEntity(UserStance.BuildVoteQueryKey(pointKey, userKey), key, null);
+				return null;
+			}
+			result = results.get(0);
+
+			CommunarchyCache.getInstance().putEntity(result.getKey().toString(), key, result);
 		}
 		
-		return results == null ? null : (results.isEmpty() ? null : results.get(0));
+		return result;
 	}
 
 	@Override
@@ -182,7 +229,7 @@ public class PointMapper extends AbstractMapper<PointMapper> implements IPointMa
 	}
 
 	@Override
-	public PageSet<Argument> buildPostFeeed(int numArgs, String startCursor) {
+	public PageSet<Argument> buildPostFeed(int numArgs, String startCursor) {
 		// TODO Auto-generated method stub
 		return null;
 	}

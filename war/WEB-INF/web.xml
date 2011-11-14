@@ -10,7 +10,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<!-- 
 	<filter>
 		<filter-name>IgnoreFilter</filter-name>
-		<filter-class>communarchy.filters.IgnoreFilter</filter-class>
+		<filter-class>communarchy.controllers.filters.IgnoreFilter</filter-class>
 	</filter>
 	<filter-mapping>
   		<filter-name>IgnoreFilter</filter-name>
@@ -18,20 +18,22 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</filter-mapping>
 	 -->
 	 
-	<!-- Uncomment before push to production --> 
+	<!-- Uncomment before push to production -->
+	  
 	<filter>
 		<filter-name>DevelopmentWallFilter</filter-name>
-		<filter-class>communarchy.filters.DevelopmentWallFilter</filter-class>
+		<filter-class>communarchy.controllers.filters.DevelopmentWallFilter</filter-class>
 	</filter>
 	<filter-mapping>
   		<filter-name>DevelopmentWallFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
 	<!-- Uncomment before push to production -->
 	
 	<filter>
 		<filter-name>AuthenticationFilter</filter-name>
-		<filter-class>communarchy.filters.AuthenticationFilter</filter-class>
+		<filter-class>communarchy.controllers.filters.AuthenticationFilter</filter-class>
 	</filter>
 	<filter-mapping>
   		<filter-name>AuthenticationFilter</filter-name>
@@ -41,7 +43,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 
 	<!-- LISTENERS -->
 	<listener>
-		<listener-class>communarchy.listeners.StartUpContextListener</listener-class>
+		<listener-class>communarchy.controllers.listeners.StartUpContextListener</listener-class>
 	</listener>
 	<!-- END LISTENERS  -->
 

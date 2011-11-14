@@ -37,7 +37,7 @@ public class ReclaimVoteActive extends AbstractTemplateWrapper implements
 			HttpServletRequest request, IPointOfView scopedResource) {
 
 		SoyMapData pMap = new SoyMapData();
-		pMap.put(P_RECLAIM_VOTE_ACTION, String.format("/pov/vote/reclaim/%d", scopedResource.getPovId().getId()));
+		pMap.put(P_RECLAIM_VOTE_ACTION, String.format("/pov/vote/reclaim/%d", scopedResource.getKey().getId()));
 		return pMap;
 	}
 

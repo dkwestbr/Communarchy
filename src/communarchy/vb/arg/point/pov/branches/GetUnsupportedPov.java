@@ -46,7 +46,7 @@ public class GetUnsupportedPov extends AbstractTemplateWrapper implements
 		SoyMapData pMap = new SoyMapData();
 	
 		SoyListData povList = new SoyListData();
-		List<IPointOfView> povs = pmSession.getMapper(PointMapper.class).getPovsByStance(scopedResource.getPointId(), subset);
+		List<IPointOfView> povs = pmSession.getMapper(PointMapper.class).getPovsByStance(scopedResource.getKey(), subset);
 		for(IPointOfView pov : povs) {
 			povList.add(UserDoesntSupport.get().getParams(pmSession, user, request, pov));
 		}

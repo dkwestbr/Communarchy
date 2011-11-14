@@ -38,7 +38,7 @@ public class PovStats extends AbstractTemplateWrapper implements
 			HttpServletRequest request, IPointOfView scopedResource) {
 		
 		SoyMapData pMap = new SoyMapData();
-		pMap.put(P_POV_VOTE_COUNT, pmSession.getMapper(PovMapper.class).getPovVoteCount(scopedResource.getPovId()));
+		pMap.put(P_POV_VOTE_COUNT, pmSession.getMapper(PovMapper.class).getPovVoteCount(scopedResource.getKey()));
 		
 		return pMap;
 	}

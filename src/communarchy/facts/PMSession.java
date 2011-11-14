@@ -3,6 +3,8 @@ package communarchy.facts;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
 
 import javax.jdo.JDOHelper;
@@ -16,12 +18,24 @@ public class PMSession {
 	private static PersistenceManagerFactory pmfInstance = null;
 	private PersistenceManager pm = null;
 	private Map<Type, AbstractMapper<?>> mapperMap = null;
+	private Lock lock;
 	
 	private static final Logger log = Logger.getLogger(PMSession.class.getName());
 	
 	private PMSession() {
+		if(lock == null) {
+			lock = new ReentrantLock();
+		}
+		
 		if(pmfInstance == null) {
-			pmfInstance = JDOHelper.getPersistenceManagerFactory("transactions-optional");
+			lock.lock();
+			try {
+				if(pmfInstance == null) {
+					pmfInstance = JDOHelper.getPersistenceManagerFactory("transactions-optional");
+				}
+			} finally {
+				lock.unlock();
+			}
 		}
 		
 		pm = pmfInstance.getPersistenceManager();
@@ -35,22 +49,27 @@ public class PMSession {
 		if(mapperMap.containsKey(mapperClass)) {
 			mapper = (T) mapperMap.get(mapperClass);
 		} else {
+			lock.lock();
 			try {
-				mapper = mapperClass.newInstance();
-				mapper.init(this);
-				mapperMap.put(mapperClass, mapper);
+				if(!mapperMap.containsKey(mapperClass)) {
+					mapper = mapperClass.newInstance();
+					mapper.init(this);
+					mapperMap.put(mapperClass, mapper);
+				}
 			} catch (InstantiationException e) {
 				log.severe(String.format("Problem instantiating mapper: %s", e.getMessage()));
 			} catch (IllegalAccessException e) {
 				log.severe(String.format("Problem instantiating mapper: %s", e.getMessage()));
-			}			
+			} finally {
+				lock.unlock();
+			}
 		}
 		
 		return mapper;
 	}
 	
 	public PersistenceManager getPM() {
-		return this.pm;
+		return pm;
 	}
 	
 	public static PMSession getOpenSession() {

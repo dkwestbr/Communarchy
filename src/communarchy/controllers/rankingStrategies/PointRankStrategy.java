@@ -23,8 +23,8 @@ public class PointRankStrategy implements Comparator<IPoint> {
 		
 		IPointMapper pointMapper = pmSession.getMapper(PointMapper.class);
 		
-		Integer p1Rank = pointMapper.getPointAgreeCount(p1.getPointId());
-		Integer p2Rank = pointMapper.getPointAgreeCount(p2.getPointId());
+		Integer p1Rank = pointMapper.getPointAgreeCount(p1.getKey());
+		Integer p2Rank = pointMapper.getPointAgreeCount(p2.getKey());
 		
 		if(p1Rank > p2Rank) {
 			return -1;
@@ -32,8 +32,8 @@ public class PointRankStrategy implements Comparator<IPoint> {
 			return 1;
 		}
 		
-		p1Rank = pointMapper.getPointNeutralCount(p1.getPointId());
-		p2Rank = pointMapper.getPointNeutralCount(p2.getPointId());
+		p1Rank = pointMapper.getPointNeutralCount(p1.getKey());
+		p2Rank = pointMapper.getPointNeutralCount(p2.getKey());
 		
 		if(p1Rank > p2Rank) {
 			return -1;
@@ -41,8 +41,8 @@ public class PointRankStrategy implements Comparator<IPoint> {
 			return 1;
 		}
 		
-		p1Rank = pointMapper.getPointDisagreeCount(p1.getPointId());
-		p2Rank = pointMapper.getPointDisagreeCount(p2.getPointId());
+		p1Rank = pointMapper.getPointDisagreeCount(p1.getKey());
+		p2Rank = pointMapper.getPointDisagreeCount(p2.getKey());
 		
 		// Notice the direction change of the comparison...
 		if(p1Rank < p2Rank) {

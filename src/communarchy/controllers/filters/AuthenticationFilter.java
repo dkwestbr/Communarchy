@@ -60,6 +60,8 @@ public class AuthenticationFilter implements Filter {
 			} else {
 				chain.doFilter(req, resp);
 			}
+		} else if(devWall != null) {
+			chain.doFilter(req, resp);
 		}
 	}
 

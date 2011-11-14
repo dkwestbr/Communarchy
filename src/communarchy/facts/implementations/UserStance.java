@@ -70,4 +70,8 @@ public class UserStance extends Stance implements IUserStance {
 	public void setStance(Integer newStance) {
 		this.stance = newStance;
 	}
+	
+	public static String BuildVoteQueryKey(Key pointId, Key userId) {
+		return String.format("UserStance(%s_%s)", pointId.toString(), userId.toString());
+	}
 }

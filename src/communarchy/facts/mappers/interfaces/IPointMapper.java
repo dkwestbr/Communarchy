@@ -19,7 +19,6 @@ public interface IPointMapper extends IPostMapper<Point>, IPostHasChildrenMapper
 	public Integer getPointAgreeCount(Key pointId);
 	public Integer getPointNeutralCount(Key pointId);
 	public Integer getPointDisagreeCount(Key pointId);
-	public Key getTopPoint(Key argId);
 	public void updateStance(IUserStance stance, Integer oldStance) throws CommunarchyPersistenceException;
 	public void reclaimAllVotes(IUserStance stance) throws CommunarchyPersistenceException;
 	public void insertNewStance(IUserStance stance) throws CommunarchyPersistenceException;

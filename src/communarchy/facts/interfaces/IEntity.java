@@ -1,4 +1,4 @@
-package communarchy.facts;
+package communarchy.facts.interfaces;
 
 import com.google.appengine.api.datastore.Key;
 

@@ -9,8 +9,8 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
 
-import communarchy.facts.IEntity;
 import communarchy.facts.actions.interfaces.IVote;
+import communarchy.facts.interfaces.IEntity;
 
 @PersistenceCapable
 public class Vote implements IVote, Serializable, IEntity {
@@ -55,5 +55,9 @@ public class Vote implements IVote, Serializable, IEntity {
 	@Override
 	public Key getKey() {
 		return this.key;
+	}
+	
+	public static String BuildVoteQueryKey(Key povId, Key userId) {
+		return String.format("Vote(%s_%s)", povId.toString(), userId.toString());
 	}
 }

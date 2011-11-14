@@ -41,7 +41,7 @@ public class UserDoesntSupport extends AbstractTemplateWrapper implements
 
 		SoyMapData pMap = new SoyMapData();
 		
-		pMap.put(P_ID, String.format("%d", scopedResource.getPovId().getId()));
+		pMap.put(P_ID, String.format("%d", scopedResource.getKey().getId()));
 		pMap.put(P_CONTENT, scopedResource.getPov());
 		pMap.put(P_POV_STATS, PovStats.get().getParams(pmSession, user, request, scopedResource));
 		

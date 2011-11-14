@@ -46,9 +46,9 @@ public class TakeStanceHandler extends AbstractActionHandler<Point> {
 		
 		PointMapper mapper = pmSession.getMapper(PointMapper.class);
 		try {
-			UserStance existingStance = mapper.selectStance(resource.getPointId(), user.getUserId());
+			UserStance existingStance = mapper.selectStance(resource.getKey(), user.getUserId());
 			if(existingStance == null) {
-				mapper.insertNewStance(new UserStance(user.getUserId(), resource.getPointId(), 
+				mapper.insertNewStance(new UserStance(user.getUserId(), resource.getKey(), 
 						Stance.getStanceAsId(command)));
 			} else if(!existingStance.getStance().equals(Stance.getStanceAsId(command))) {
 				Integer oldStance = existingStance.getStance();

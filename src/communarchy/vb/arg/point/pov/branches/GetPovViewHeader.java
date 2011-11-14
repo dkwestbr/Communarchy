@@ -46,9 +46,9 @@ public class GetPovViewHeader extends AbstractTemplateWrapper implements
 		SoyMapData pMap = new SoyMapData();
 		
 		IUserStance userStance = pmSession.getMapper(PointMapper.class)
-				.selectStance(scopedResource.getPointId(), user.getUserId());
+				.selectStance(scopedResource.getKey(), user.getUserId());
 		
-		if(userStance != null && userStance.getStance() == subset) {
+		if(userStance != null && userStance.getStance().equals(subset)) {
 			pMap.put(P_POV_SET, HeaderUserSupports.get().getParams(pmSession, user, request, 
 																	scopedResource));
 			

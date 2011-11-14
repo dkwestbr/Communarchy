@@ -28,9 +28,9 @@ public class PovVoteHandler extends AbstractActionHandler<PointOfView> {
 			ApplicationUser user, PMSession pmSession) throws IOException {
 		
 		if(action.equals("up")) {
-			pmSession.getMapper(PovMapper.class).insertVote(resource.getPovId(), user.getUserId());
+			pmSession.getMapper(PovMapper.class).insertVote(resource.getKey(), user.getUserId());
 		} else if(action.equals("reclaim")) {
-			pmSession.getMapper(PovMapper.class).reclaimVote(resource.getPovId(), user.getUserId());
+			pmSession.getMapper(PovMapper.class).reclaimVote(resource.getKey(), user.getUserId());
 		}
 		
 		IPoint point = pmSession.getMapper(PointMapper.class).selectPostById(resource.getParentPointId());

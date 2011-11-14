@@ -5,6 +5,7 @@ import java.io.Serializable;
 import com.google.appengine.api.datastore.Key;
 
 public interface IStance extends Serializable {
+
 	public Key getPoint();
 	public Integer getStance();
 	

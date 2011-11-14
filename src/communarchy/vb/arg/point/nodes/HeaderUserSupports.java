@@ -43,10 +43,10 @@ public class HeaderUserSupports extends AbstractTemplateWrapper implements
 		SoyMapData pMap = new SoyMapData();
 		
 		IUserStance userStance = pmSession.getMapper(PointMapper.class)
-				.selectStance(scopedResource.getPointId(), user.getUserId());
+				.selectStance(scopedResource.getKey(), user.getUserId());
 		
 		pMap.put(P_TAKE_STANCE_ACTION, String.format("/point/takestance/%s/%d", 
-				Stance.getStanceUrlPath(userStance.getStance()), scopedResource.getPointId().getId()));
+				Stance.getStanceUrlPath(userStance.getStance()), scopedResource.getKey().getId()));
 		
 		pMap.put(P_LABEL, Stance.getStanceAsString(userStance.getStance()));
 		pMap.put(P_STANCE, Stance.getStanceUrlPath(userStance.getStance()));

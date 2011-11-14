@@ -48,15 +48,15 @@ public class GetSupportedPovs extends AbstractTemplateWrapper implements
 		SoyMapData pMap = new SoyMapData();
 		
 		IPointMapper pointMapper = pmSession.getMapper(PointMapper.class);
-		Integer voteCount = pointMapper.getVoteCount(scopedResource.getPointId(), user.getUserId());
 		
 		/*
-		if(voteCount == pointMapper.getMaxVoteCount(scopedResource.getPointId(), subset)) {
+		Integer voteCount = pointMapper.getVoteCount(scopedResource.getKey(), user.getUserId());
+		if(voteCount == pointMapper.getMaxVoteCount(scopedResource.getKey(), subset)) {
 			pMap.put(P_NO_VOTES_REMAINING, " ");
 		}
 		*/
 		
-		List<IPointOfView> povs = pointMapper.getPovsByStance(scopedResource.getPointId(), subset);
+		List<IPointOfView> povs = pointMapper.getPovsByStance(scopedResource.getKey(), subset);
 		
 		SoyListData povList = new SoyListData();
 		for(IPointOfView pov : povs) {

@@ -40,7 +40,7 @@ public class HeaderUserDoesntSupport extends AbstractTemplateWrapper implements
 		SoyMapData pMap = new SoyMapData();
 		
 		pMap.put(P_TAKE_STANCE_ACTION, String.format("/point/takestance/%s/%d", 
-				Stance.getStanceUrlPath(subset), scopedResource.getPointId().getId()));
+				Stance.getStanceUrlPath(subset), scopedResource.getKey().getId()));
 		
 		pMap.put(P_STANCE, Stance.getStanceAsString(subset));
 		

@@ -80,11 +80,11 @@ public class NewPovController extends AbstractInputHandler {
 					response.sendError(HttpServletResponse.SC_NOT_FOUND);
 				} else {
 					UserStance userStance = pmSession.getMapper(PointMapper.class)
-							.selectStance(point.getPointId(), user.getUserId());
+							.selectStance(point.getKey(), user.getUserId());
 					if(userStance == null || userStance.getStance() != stanceId) {
 						response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 					} else {
-						PointOfView pov = new PointOfView(point.getPointId(), user.getUserId(), 
+						PointOfView pov = new PointOfView(point.getKey(), user.getUserId(), 
 								validInputs.get("pov").getContent(), stanceId);
 						pmSession.getMapper(PovMapper.class).insertNewPost(pov);
 						response.sendRedirect(getRedirectURI(request.getRequestURI(), pmSession));

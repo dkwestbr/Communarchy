@@ -41,7 +41,7 @@ public class GetArgFeed extends AbstractTemplateWrapper implements IParamBuilder
 		SoyMapData pMap = new SoyMapData();
 		
 		SoyListData argList = new SoyListData();
-		PageSet<Argument> pageSet = pmSession.getMapper(ArgumentMapper.class).buildPostFeeed(20, null);
+		PageSet<Argument> pageSet = pmSession.getMapper(ArgumentMapper.class).buildPostFeed(20, null);
 		
 		for(Argument arg : pageSet.getPages()) {
 			argList.add(ArgFeedElement.get().getParams(pmSession, user, request, arg));

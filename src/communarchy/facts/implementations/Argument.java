@@ -56,8 +56,8 @@ public class Argument implements IArgument, Serializable {
 	}
 
 	@Override
-	public Text getContent() {
-		return content;
+	public String getContent() {
+		return content.getValue();
 	}
 
 	@Override

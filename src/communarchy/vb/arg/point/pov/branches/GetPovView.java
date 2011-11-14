@@ -46,13 +46,13 @@ public class GetPovView extends AbstractTemplateWrapper implements
 		
 		SoyMapData pMap = new SoyMapData();
 		
-		UserStance userStance = pmSession.getMapper(PointMapper.class).selectStance(scopedResource.getPointId(), user.getUserId());
+		UserStance userStance = pmSession.getMapper(PointMapper.class).selectStance(scopedResource.getKey(), user.getUserId());
 		if(userStance == null) {
 			pMap.put(P_USER_ABSTAINS, "true");
 			pMap.put(P_USER_SUPPORTS, "");
 			pMap.put(P_POV_SET, UserAbstains.get()
 					.getParams(pmSession, user, request, scopedResource, subset));
-		} else if(userStance.getStance() == subset) {
+		} else if(userStance.getStance().equals(subset)) {
 			pMap.put(P_USER_ABSTAINS, "");
 			pMap.put(P_USER_SUPPORTS, "true");
 			pMap.put(P_POV_SET, GetSupportedPovs.get()

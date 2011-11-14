@@ -7,5 +7,5 @@ import communarchy.facts.results.PageSet;
 public abstract interface IPostMapper<T> {
 	T selectPostById(Key id);
 	void insertNewPost(T post);
-	PageSet<Argument> buildPostFeeed(int numArgs, String startCursor);
+	PageSet<Argument> buildPostFeed(int numArgs, String startCursor);
 }

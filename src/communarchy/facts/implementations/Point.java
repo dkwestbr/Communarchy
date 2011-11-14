@@ -59,12 +59,12 @@ public class Point implements IPoint, Serializable {
 		return parentArgId;
 	}
 	
-	public Text getPoint() {
-		return point;
+	public String getPoint() {
+		return point.getValue();
 	}
 
 	@Override
-	public Key getPointId() {
+	public Key getKey() {
 		return pointId;
 	}
 }

@@ -20,8 +20,8 @@ public class TopPointStrategy implements Comparator<IPoint> {
 	@Override
 	public int compare(IPoint p1, IPoint p2) {
 		
-		if(pmSession.getMapper(PointMapper.class).getPointAgreeCount(p1.getPointId()) 
-				> pmSession.getMapper(PointMapper.class).getPointAgreeCount(p2.getPointId())) {
+		if(pmSession.getMapper(PointMapper.class).getPointAgreeCount(p1.getKey()) 
+				> pmSession.getMapper(PointMapper.class).getPointAgreeCount(p2.getKey())) {
 			return -1;
 		}
 		

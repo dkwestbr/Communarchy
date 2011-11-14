@@ -64,8 +64,8 @@ public class PointOfView implements IPointOfView, Serializable {
 		return stance;
 	}
 	
-	public Text getPov() {
-		return pov;
+	public String getPov() {
+		return pov.getValue();
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class PointOfView implements IPointOfView, Serializable {
 	}
 
 	@Override
-	public Key getPovId() {
+	public Key getKey() {
 		return povId;
 	}
 }

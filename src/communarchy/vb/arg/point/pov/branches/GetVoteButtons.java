@@ -49,7 +49,7 @@ public class GetVoteButtons extends AbstractTemplateWrapper implements
 
 		SoyMapData pMap = new SoyMapData();
 		
-		IVote vote = pmSession.getMapper(PovMapper.class).selectVote(scopedResource.getPovId(), user.getUserId());
+		IVote vote = pmSession.getMapper(PovMapper.class).selectVote(scopedResource.getKey(), user.getUserId());
 		if(vote != null) {
 			pMap.put(P_IS_DISABLED, " ");
 			pMap.put(P_VOTE_PARAMS, AlreadyVoted.get().getParams(pmSession, user, request, scopedResource));

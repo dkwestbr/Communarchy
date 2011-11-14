@@ -44,7 +44,7 @@ public class StanceCountHeader extends AbstractTemplateWrapper implements
 		
 		pMap.put(P_PERSON_IMG, Stance.getStanceUrlPath(subset));
 		pMap.put(P_STANCE_COUNT, pmSession.getMapper(PointMapper.class)
-				.getPointCountByStance(scopedResource.getPointId(), subset));
+				.getPointCountByStance(scopedResource.getKey(), subset));
 		
 		return pMap;
 	}

@@ -41,10 +41,10 @@ public class PovInput extends AbstractTemplateWrapper implements
 
 		SoyMapData pMap = new SoyMapData();
 		IUserStance stance = pmSession.getMapper(PointMapper.class)
-				.selectStance(scopedResource.getPointId(), user.getUserId());
+				.selectStance(scopedResource.getKey(), user.getUserId());
 		
 		pMap.put(P_ACTION, String.format("/point/pov/new/%s/%d", 
-				Stance.getStanceUrlPath(stance.getStance()), scopedResource.getPointId().getId()));
+				Stance.getStanceUrlPath(stance.getStance()), scopedResource.getKey().getId()));
 		pMap.put(P_USER_STANCE, Stance.getStanceUrlPath(stance.getStance()));
 		
 		return pMap;

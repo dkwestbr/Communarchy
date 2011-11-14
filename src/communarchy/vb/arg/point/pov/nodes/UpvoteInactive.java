@@ -39,7 +39,7 @@ public class UpvoteInactive extends AbstractTemplateWrapper implements
 		SoyMapData pMap = new SoyMapData();
 		
 		pMap.put(P_UPVOTE_ACTION, 
-				String.format("/pov/vote/up/%d", scopedResource.getPovId().getId()));
+				String.format("/pov/vote/up/%d", scopedResource.getKey().getId()));
 		
 		return pMap;
 	}

@@ -21,11 +21,11 @@ public class PovRankStrategy implements Comparator<IPointOfView> {
 	@Override
 	public int compare(IPointOfView pov1, IPointOfView pov2) {
 		IPovMapper povMapper = pmSession.getMapper(PovMapper.class);
-		Integer pov1Votes = povMapper.getPovVoteCount(pov1.getPovId());
+		Integer pov1Votes = povMapper.getPovVoteCount(pov1.getKey());
 		if(pov1Votes == null)
 			pov1Votes = 0;
 		
-		Integer pov2Votes = povMapper.getPovVoteCount(pov2.getPovId());
+		Integer pov2Votes = povMapper.getPovVoteCount(pov2.getKey());
 		if(pov2Votes == null)
 			pov2Votes = 0;
 
