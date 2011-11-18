@@ -44,18 +44,14 @@ public class ArgumentMapper extends AbstractMapper<ArgumentMapper> implements IA
 		String key = CommunarchyCache.buildKey(ArgumentMapper.class, 
 				"selectChildrenPosts", id.toString());
 		List<IPoint> points = null;
-		if(CommunarchyCache.getInstance().contains(key)) {
-			String pointIds = CommunarchyCache.getInstance().get(key);
-			if(pointIds == null) {
-				return EMPTY_RESULT;
-			}
-			
-			List<Key> pointKeys = ListUtils.keyStringToKeyList(pointIds, Point.class.getSimpleName());
+		String ids = CommunarchyCache.getInstance().get(key);
+		if(ids != null) {
+			List<Key> keys = ListUtils.keyStringToKeyList(ids, Point.class.getSimpleName());
 			points = new ArrayList<IPoint>();
-			for(Key pointKey : pointKeys) {
-				points.add(pmSession.getMapper(PointMapper.class).selectPostById(pointKey));
+			for(Key povKey : keys) {
+				points.add(pmSession.getMapper(PointMapper.class).selectPostById(povKey));
 			}
-		} else {
+		} else if(!CommunarchyCache.getInstance().contains(key)) {
 			Query q = pmSession.getPM().newQuery(Point.class);
 			try {
 				q.setFilter("parentArgId == parentIdParam");
@@ -100,10 +96,8 @@ public class ArgumentMapper extends AbstractMapper<ArgumentMapper> implements IA
 		String key = CommunarchyCache.buildKey(ArgumentMapper.class, 
 				"selectPostById", id.toString());
 		
-		Argument arg = null;
-		if(CommunarchyCache.getInstance().contains(key)) {
-			arg = CommunarchyCache.getInstance().get(key);
-		} else {
+		Argument arg = CommunarchyCache.getInstance().get(key);
+		if(arg == null && !CommunarchyCache.getInstance().contains(key)) {
 			arg = pmSession.getPM().getObjectById(Argument.class, id);
 			CommunarchyCache.getInstance().putEntity(id.toString(), key, arg);
 		}

@@ -13,7 +13,7 @@ import communarchy.facts.mappers.interfaces.AbstractMapper;
 
 public class VoteCountMapper extends AbstractMapper<VoteCountMapper> {
 	
-	private static final Integer SHARD_NUM = 20;
+	private static final Integer SHARD_NUM = 4;
 	private static final Random RANDOM = new Random();
 
 	@SuppressWarnings("unchecked")

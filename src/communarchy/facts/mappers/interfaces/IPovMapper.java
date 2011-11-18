@@ -15,7 +15,7 @@ public interface IPovMapper extends IPostMapper<IPointOfView>, IPostHasParentMap
 	public List<IVote> selectAllVotes(Key pointId, Key userId);
 	public Integer getPovVoteCount(Key povId);
 	public IFlag selectFlag(IFlag flag);
-	public void insertVote(Key povId, Key userId);
+	public void insertVote(Key pointId, Key povId, Key userId);
 	public void insertFlagIgnored(Key povId, Key userId, int flagType);
 	public void reclaimVote(Key povId, Key userId) throws CommunarchyPersistenceException;
 	public IVote selectVote(Key povId, Key userId);

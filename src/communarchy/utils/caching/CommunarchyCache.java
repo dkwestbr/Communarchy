@@ -40,26 +40,38 @@ public class CommunarchyCache {
 	}
 	
 	public boolean contains(String key) {
+		boolean returnVal = false;
 		try {
-			return MemcacheServiceFactory.getAsyncMemcacheService().contains(key).get();
+			Future<Boolean> future = MemcacheServiceFactory.getAsyncMemcacheService().contains(key);
+			//lock.lock();
+			while(!future.isDone() && !future.isCancelled()) {}
+			Boolean val = future.get();
+			returnVal = val == null ? false : val;
 		} catch (InterruptedException e) {
 			log.warning("Unable to confirm object exists in memcache");
 		} catch (ExecutionException e) {
 			log.warning("Unable to confirm object exists in memcache");
+		} finally {
+			//lock.unlock();
 		}
 		
-		return false;
+		return returnVal;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public <T> T get(String key) {
 		T val = null;
 		try {
-			val = (T) MemcacheServiceFactory.getAsyncMemcacheService().get(key).get();
+			Future<Object> future = MemcacheServiceFactory.getAsyncMemcacheService().get(key);
+			//lock.lock();
+			while(!future.isDone() && !future.isCancelled()) {}	
+			val = (T) future.get();
 		} catch (InterruptedException e) {
 			log.warning("Unable to retrieve object from memcache");
 		} catch (ExecutionException e) {
 			log.warning("Unable to retrieve object from memcache");
+		} finally {
+			//lock.unlock();
 		}
 		
 		return val;
@@ -90,11 +102,11 @@ public class CommunarchyCache {
 		registerCatalyst(catalyst, key, registry);
 		AsyncMemcacheService asyncCache = MemcacheServiceFactory.getAsyncMemcacheService();
 	    Future<Void> futureValue = asyncCache.put(key, value);
-	    lock.lock();
+	    //lock.lock();
 	    try {
 	    	while(!futureValue.isDone() && !futureValue.isCancelled()) {}
 	    } finally {
-	    	lock.unlock();
+	    	//lock.unlock();
 	    }
 	}
 	
@@ -102,12 +114,12 @@ public class CommunarchyCache {
 		if(registry.containsKey(catalyst)) {
 			AsyncMemcacheService asyncCache = MemcacheServiceFactory.getAsyncMemcacheService();
 			Future<Set<String>> futureVal = asyncCache.deleteAll(registry.get(catalyst));
-			lock.lock();
+			//lock.lock();
 			try {
 				while(!futureVal.isDone() && !futureVal.isCancelled()) {}
 				registry.remove(catalyst);
 			} finally {
-				lock.unlock();
+				//lock.unlock();
 			}
 		}
 	}
@@ -115,14 +127,14 @@ public class CommunarchyCache {
 	private void registerCatalyst(String catalyst, String key, Map<String, List<String>> registry) {
 		List<String> keys = registry.get(catalyst);
 		if(keys == null) {
-			lock.lock();
+			//lock.lock();
 			try {
 				if(keys == null) {
 					keys = new ArrayList<String>();
 					registry.put(catalyst, keys);
 				}
 			} finally {
-				lock.unlock();
+				//lock.unlock();
 			}
 		}
 		keys.add(key);

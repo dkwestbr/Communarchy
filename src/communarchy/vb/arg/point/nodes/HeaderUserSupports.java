@@ -22,6 +22,7 @@ public class HeaderUserSupports extends AbstractTemplateWrapper implements
 	private static final String P_TAKE_STANCE_ACTION = "takestanceAction";
 	private static final String P_LABEL = "label";
 	private static final String P_STANCE = "stance";
+	private static final String P_VOTES_REMAINING = "votesLeft";
 	
 	public static HeaderUserSupports get() {
 		if(INSTANCE == null) {
@@ -50,6 +51,7 @@ public class HeaderUserSupports extends AbstractTemplateWrapper implements
 		
 		pMap.put(P_LABEL, Stance.getStanceAsString(userStance.getStance()));
 		pMap.put(P_STANCE, Stance.getStanceUrlPath(userStance.getStance()));
+		pMap.put(P_VOTES_REMAINING, pmSession.getMapper(PointMapper.class).getMaxVoteCount(scopedResource.getKey(), userStance.getStance()));
 		
 		return pMap;
 	}

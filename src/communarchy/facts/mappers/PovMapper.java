@@ -44,10 +44,8 @@ public class PovMapper extends AbstractMapper<PovMapper> implements IPovMapper {
 	@Override
 	public IPointOfView selectPostById(Key id) {
 		String key = CommunarchyCache.buildKey(PovMapper.class, "selectPostById", id.toString());
-		IPointOfView pov = null;
-		if(CommunarchyCache.getInstance().contains(key)) {
-			pov = CommunarchyCache.getInstance().get(key);
-		} else {
+		IPointOfView pov = CommunarchyCache.getInstance().get(key);
+		if(pov == null && !CommunarchyCache.getInstance().contains(key)) {
 			pov = pmSession.getPM().getObjectById(PointOfView.class, id);
 			CommunarchyCache.getInstance().putEntity(id.toString(), key, pov);
 		}
@@ -65,9 +63,14 @@ public class PovMapper extends AbstractMapper<PovMapper> implements IPovMapper {
 	public List<IPointOfView> selectAllChildrenByParent(Key id) {
 		String key = CommunarchyCache.buildKey(PovMapper.class, "selectAllChildrenByParent", id.toString());
 		List<IPointOfView> povs = null;
-		if(CommunarchyCache.getInstance().contains(key)) {
-			povs = CommunarchyCache.getInstance().get(key);
-		} else {
+		String ids = CommunarchyCache.getInstance().get(key);
+		if(ids != null) {
+			List<Key> keys = ListUtils.keyStringToKeyList(ids, PointOfView.class.getSimpleName());
+			povs = new ArrayList<IPointOfView>();
+			for(Key povKey : keys) {
+				povs.add(pmSession.getMapper(PovMapper.class).selectPostById(povKey));
+			}
+		} else if(!CommunarchyCache.getInstance().contains(key)) {
 			Query q = pmSession.getPM().newQuery(PointOfView.class);
 			try {
 				q.setFilter("parentPointId == parentIdParam");
@@ -91,30 +94,24 @@ public class PovMapper extends AbstractMapper<PovMapper> implements IPovMapper {
 				String.format("%s_%d", pointId.toString(), stance));
 		
 		List<IPointOfView> povs = null;
-		if(CommunarchyCache.getInstance().contains(key)) {
-			String ids = CommunarchyCache.getInstance().get(key);
-			if(ids == null) {
-				return EMPTY_RESULT;
-			}
-			
-			List<Key> povKeys = ListUtils.keyStringToKeyList(ids, PointOfView.class.getSimpleName());
+		String ids = CommunarchyCache.getInstance().get(key);
+		if(ids != null) {
+			List<Key> keys = ListUtils.keyStringToKeyList(ids, PointOfView.class.getSimpleName());
 			povs = new ArrayList<IPointOfView>();
-			for(Key povKey : povKeys) {
-				povs.add(selectPostById(povKey));
+			for(Key povKey : keys) {
+				povs.add(pmSession.getMapper(PovMapper.class).selectPostById(povKey));
 			}
-		} else {
-			if(povs == null) {
-				Query q = pmSession.getPM().newQuery(PointOfView.class);
-				try {
-					q.setFilter("parentPointId == parentIdParam && stance == stanceParam");
-					q.declareParameters(String.format("%s parentIdParam, int stanceParam", Key.class.getName()));
-					povs = (List<IPointOfView>) q.execute(pointId, stance);
-				} finally {
-					q.closeAll();
-				}
-				Collections.sort(povs, new PovRankStrategy(pmSession));
-				CommunarchyCache.getInstance().putList(pointId.toString(), key, ((List) povs));
+		} else if(!CommunarchyCache.getInstance().contains(key)) {
+			Query q = pmSession.getPM().newQuery(PointOfView.class);
+			try {
+				q.setFilter("parentPointId == parentIdParam && stance == stanceParam");
+				q.declareParameters(String.format("%s parentIdParam, int stanceParam", Key.class.getName()));
+				povs = (List<IPointOfView>) q.execute(pointId, stance);
+			} finally {
+				q.closeAll();
 			}
+			Collections.sort(povs, new PovRankStrategy(pmSession));
+			CommunarchyCache.getInstance().putList(pointId.toString(), key, ((List) povs));
 		}
 		
 		return povs == null ? EMPTY_RESULT : povs;
@@ -126,14 +123,14 @@ public class PovMapper extends AbstractMapper<PovMapper> implements IPovMapper {
 	}
 
 	@Override
-	public void insertVote(Key povId, Key userId) {
+	public void insertVote(Key pointId, Key povId, Key userId) {
 		
 		IVote vote = selectVote(povId, userId);
 		if(vote != null) {
 			return;
 		}
 		
-		vote = new Vote(povId, userId);
+		vote = new Vote(pointId, povId, userId);
 		
 		Transaction txn = pmSession.getPM().currentTransaction();
 		
@@ -176,6 +173,30 @@ public class PovMapper extends AbstractMapper<PovMapper> implements IPovMapper {
 			}
 		}
 	}
+	
+	public Integer getVotesCast(Key pointId, Key userId) {
+		Integer votesCast = 0;
+		String key = CommunarchyCache.buildKey(PovMapper.class, "getVotesCast", 
+				String.format("%s_%s", pointId.toString(), userId.toString()));
+		
+		// STOPPED HERE AND FIX THIS SHIT...................
+		Query q = pmSession.getPM().newQuery(Vote.class);
+		
+		try {
+			q.setFilter("pointKey == pointKeyParam && userKey == userKeyParam");
+			q.declareParameters(String.format("%s pointKeyParam, %s userKeyParam", Key.class.getName(), Key.class.getName()));
+			List<Vote> results = (List<Vote>) q.execute(pointId, userId);
+			votesCast = results == null ? 0 : results.size();
+		} finally {
+			q.closeAll();
+		}
+		
+		if(votesCast.equals(0)) {
+			CommunarchyCache.getInstance().putEntity(pointId.toString(), key, votesCast);
+		}
+		
+		return votesCast;
+	}
 
 	@Override
 	public Vote selectVote(Key povId, Key userId) {
@@ -183,10 +204,8 @@ public class PovMapper extends AbstractMapper<PovMapper> implements IPovMapper {
 		String key = CommunarchyCache.buildKey(PovMapper.class, "selectVote", 
 				String.format("%s_%s", povId.toString(), userId.toString()));
 		
-		Vote vote = null;
-		if(CommunarchyCache.getInstance().contains(key)) {
-			vote = CommunarchyCache.getInstance().get(key);
-		} else {
+		Vote vote = CommunarchyCache.getInstance().get(key);
+		if(vote == null && !CommunarchyCache.getInstance().contains(key)) {
 			Query q = pmSession.getPM().newQuery(Vote.class);
 			
 			try {

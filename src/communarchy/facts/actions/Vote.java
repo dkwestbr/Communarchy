@@ -28,16 +28,20 @@ public class Vote implements IVote, Serializable, IEntity {
 	private Key povKey;
     
     @Persistent
+	private Key pointKey;
+    
+    @Persistent
 	private Key userKey;
 	
 	public Vote() {}
 	
-	public Vote(Key povId, Key userId) {
+	public Vote(Key pointId, Key povId, Key userId) {
 		if(povId == null || userId == null) {
 			throw new NullPointerException("To preserve integrity, params of type " 
 					+ Key.class.getCanonicalName() + " must not be null");
 		}
 		
+		this.pointKey = pointId;
 		this.povKey = povId;
 		this.userKey = userId;
 	}
@@ -57,7 +61,12 @@ public class Vote implements IVote, Serializable, IEntity {
 		return this.key;
 	}
 	
+	@Override
+	public Key getPointKey() {
+		return this.pointKey;
+	}
+	
 	public static String BuildVoteQueryKey(Key povId, Key userId) {
 		return String.format("Vote(%s_%s)", povId.toString(), userId.toString());
-	}
+	}	
 }
