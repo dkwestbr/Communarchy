@@ -11,10 +11,11 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
 
+import communarchy.facts.interfaces.IEntity;
 import communarchy.facts.interfaces.IUser;
 
 @PersistenceCapable
-public class ApplicationUser implements IUser, Serializable {
+public class ApplicationUser implements IUser, Serializable, IEntity {
 	/**
 	 * 
 	 */
@@ -97,5 +98,16 @@ public class ApplicationUser implements IUser, Serializable {
 	@Override
 	public boolean isAuthenticated() {
 		return true;
+	}
+
+	@Override
+	public Key getKey() {
+		return this.userId;
+	}
+
+	@Override
+	public String getNewObjectKey() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

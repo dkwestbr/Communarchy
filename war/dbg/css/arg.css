@@ -237,7 +237,7 @@
 }
 
 .pov-top {
-	border-top: solid 1px;
+	
 }
 
 .pov-container {
@@ -314,6 +314,10 @@ tr {
 
 .take-stance-btn:hover {
 	background-color: #3658DE;
+}
+
+.take-stance-btn:active {
+	background-color: #9FF;
 }
 
 .take-stance-btn-disabled {
@@ -652,4 +656,26 @@ tr {
     padding-left: 5px;
     font-size: 30px;
     font-weight: bold;
+}
+
+.votes-remaining-wrapper {
+	border: solid 2px;;
+	width: 200px;
+	height: 40px;
+}
+
+.votes-remaining-place-holder {
+	height: 40px;
+}
+
+.votes-remaining-digit {
+	font-size: 30px;
+	padding-left: 48px;
+	padding-right: 5px;
+	padding-top: 3px;
+}
+
+.votes-remaining-msg {
+	font-size: 20px;
+	padding-top: 12px;
 }

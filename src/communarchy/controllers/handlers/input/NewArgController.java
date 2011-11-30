@@ -21,7 +21,7 @@ import communarchy.facts.PMSession;
 import communarchy.facts.implementations.ApplicationUser;
 import communarchy.facts.implementations.Argument;
 import communarchy.facts.interfaces.IUser;
-import communarchy.facts.mappers.ArgumentMapper;
+import communarchy.facts.mappers.BasicMapper;
 import communarchy.utils.constants.IHttpSessionConstants;
 import communarchy.vb.newarg.NewArgRoot;
 
@@ -109,7 +109,7 @@ public class NewArgController extends AbstractInputHandler {
 		PMSession pmSession = PMSession.getOpenSession();
 		
 		Argument arg = new Argument(user.getUserId(), title, content);
-		pmSession.getMapper(ArgumentMapper.class).insertNewPost(arg);
+		pmSession.getMapper(BasicMapper.class).persist(arg);
 		
 		try {
 			response.sendRedirect(String.format("/arg/%d", arg.getArgId().getId()));

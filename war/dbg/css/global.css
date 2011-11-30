@@ -37,6 +37,10 @@ body {
 	background-color: #3658DE;
 }
 
+.btn:active {
+	background-color: #9FF;
+}
+
 .request-waiting {
 	cursor: progress;
 }

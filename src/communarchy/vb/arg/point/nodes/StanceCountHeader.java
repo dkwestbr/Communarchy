@@ -1,6 +1,5 @@
 package communarchy.vb.arg.point.nodes;
 
-
 import javax.servlet.http.HttpServletRequest;
 
 import com.google.template.soy.data.SoyMapData;
@@ -9,7 +8,8 @@ import communarchy.facts.PMSession;
 import communarchy.facts.implementations.Stance;
 import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.interfaces.IUser;
-import communarchy.facts.mappers.PointMapper;
+import communarchy.facts.mappers.CountMapper;
+import communarchy.facts.queries.list.GetStanceCount;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceSubsetWrapper;
 
@@ -43,8 +43,7 @@ public class StanceCountHeader extends AbstractTemplateWrapper implements
 		SoyMapData pMap = new SoyMapData();
 		
 		pMap.put(P_PERSON_IMG, Stance.getStanceUrlPath(subset));
-		pMap.put(P_STANCE_COUNT, pmSession.getMapper(PointMapper.class)
-				.getPointCountByStance(scopedResource.getKey(), subset));
+		pMap.put(P_STANCE_COUNT, pmSession.getMapper(CountMapper.class).getCount(new GetStanceCount(scopedResource.getKey(), subset)));
 		
 		return pMap;
 	}

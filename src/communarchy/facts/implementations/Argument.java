@@ -89,4 +89,15 @@ public class Argument implements IArgument, Serializable {
 	public String getWebFriendlyTitle() {
 		return title.replaceAll("[^A-Za-z0-9 ]", "").replaceAll(" ", "-");
 	}
+
+	@Override
+	public Key getKey() {
+		return this.argId;
+	}
+
+	@Override
+	public String getNewObjectKey() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -7,10 +7,11 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
 
+import communarchy.facts.interfaces.IEntity;
 import communarchy.facts.interfaces.IUserStance;
 
 @PersistenceCapable
-public class UserStance extends Stance implements IUserStance {
+public class UserStance extends Stance implements IUserStance, IEntity {
 	
 	/**
 	 * 
@@ -73,5 +74,10 @@ public class UserStance extends Stance implements IUserStance {
 	
 	public static String BuildVoteQueryKey(Key pointId, Key userId) {
 		return String.format("UserStance(%s_%s)", pointId.toString(), userId.toString());
+	}
+
+	@Override
+	public String getNewObjectKey() {
+		return null;
 	}
 }

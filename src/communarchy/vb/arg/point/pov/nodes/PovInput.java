@@ -9,7 +9,8 @@ import communarchy.facts.implementations.Stance;
 import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.interfaces.IUserStance;
-import communarchy.facts.mappers.PointMapper;
+import communarchy.facts.mappers.UniqueEntityMapper;
+import communarchy.facts.queries.entity.UserStanceQuery;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 
@@ -40,8 +41,10 @@ public class PovInput extends AbstractTemplateWrapper implements
 			HttpServletRequest request, IPoint scopedResource) {
 
 		SoyMapData pMap = new SoyMapData();
-		IUserStance stance = pmSession.getMapper(PointMapper.class)
-				.selectStance(scopedResource.getKey(), user.getUserId());
+		IUserStance stance = null;
+		if(user.getUserId() != null) {
+			stance = pmSession.getMapper(UniqueEntityMapper.class).getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId()));
+		}
 		
 		pMap.put(P_ACTION, String.format("/point/pov/new/%s/%d", 
 				Stance.getStanceUrlPath(stance.getStance()), scopedResource.getKey().getId()));

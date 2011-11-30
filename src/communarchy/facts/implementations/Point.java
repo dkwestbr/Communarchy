@@ -67,4 +67,9 @@ public class Point implements IPoint, Serializable {
 	public Key getKey() {
 		return pointId;
 	}
+
+	@Override
+	public String getNewObjectKey() {
+		return String.format("new_%s_%s", Point.class.toString(), parentArgId.toString());
+	}
 }

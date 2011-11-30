@@ -24,8 +24,17 @@ public class StanceCounter extends AbstractCounter<UserStance> {
 	
 	public StanceCounter(IStance resource, Integer shardNum) {
 		super(shardNum);
-		this.point = resource.getPoint();
-		this.stance = resource.getStance();
+		init(resource.getPoint(), resource.getStance());
+	}
+	
+	public StanceCounter(Key pointId, Integer stance, Integer shardNum) {
+		super(shardNum);
+		init(pointId, stance);
+	}
+	
+	private void init(Key pointId, Integer stance) {
+		this.point = pointId;
+		this.stance = stance;
 	}
 	
 	public Key getPointKey() {
@@ -34,5 +43,16 @@ public class StanceCounter extends AbstractCounter<UserStance> {
 	
 	public Integer getStance() {
 		return this.stance;
+	}
+
+	@Override
+	public Key getKey() {
+		return resourceId;
+	}
+
+	@Override
+	public String getNewObjectKey() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

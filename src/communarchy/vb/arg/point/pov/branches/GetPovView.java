@@ -8,7 +8,8 @@ import communarchy.facts.PMSession;
 import communarchy.facts.implementations.UserStance;
 import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.interfaces.IUser;
-import communarchy.facts.mappers.PointMapper;
+import communarchy.facts.mappers.UniqueEntityMapper;
+import communarchy.facts.queries.entity.UserStanceQuery;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceSubsetWrapper;
 import communarchy.vb.arg.point.pov.nodes.UserAbstains;
@@ -46,7 +47,12 @@ public class GetPovView extends AbstractTemplateWrapper implements
 		
 		SoyMapData pMap = new SoyMapData();
 		
-		UserStance userStance = pmSession.getMapper(PointMapper.class).selectStance(scopedResource.getKey(), user.getUserId());
+		UserStance userStance = null;
+		if(user.getUserId() != null) {
+			userStance = pmSession.getMapper(UniqueEntityMapper.class)
+				.getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId()));
+		}
+		
 		if(userStance == null) {
 			pMap.put(P_USER_ABSTAINS, "true");
 			pMap.put(P_USER_SUPPORTS, "");

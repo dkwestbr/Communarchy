@@ -1,5 +1,6 @@
 package communarchy.vb.arg.point.pov.branches;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,12 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.template.soy.data.SoyListData;
 import com.google.template.soy.data.SoyMapData;
 
+import communarchy.controllers.strategies.displayRank.PovRankStrategy;
 import communarchy.facts.PMSession;
+import communarchy.facts.implementations.PointOfView;
 import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.interfaces.IPointOfView;
 import communarchy.facts.interfaces.IUser;
-import communarchy.facts.mappers.PointMapper;
-import communarchy.facts.mappers.interfaces.IPointMapper;
+import communarchy.facts.mappers.QueryMapper;
+import communarchy.facts.queries.list.GetPovsByStance;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceSubsetWrapper;
 import communarchy.vb.arg.point.pov.nodes.UserSupports;
@@ -47,16 +50,9 @@ public class GetSupportedPovs extends AbstractTemplateWrapper implements
 		
 		SoyMapData pMap = new SoyMapData();
 		
-		IPointMapper pointMapper = pmSession.getMapper(PointMapper.class);
-		
-		/*
-		Integer voteCount = pointMapper.getVoteCount(scopedResource.getKey(), user.getUserId());
-		if(voteCount == pointMapper.getMaxVoteCount(scopedResource.getKey(), subset)) {
-			pMap.put(P_NO_VOTES_REMAINING, " ");
-		}
-		*/
-		
-		List<IPointOfView> povs = pointMapper.getPovsByStance(scopedResource.getKey(), subset);
+		GetPovsByStance query = new GetPovsByStance(scopedResource.getKey(), subset);
+		List<PointOfView> povs = pmSession.getMapper(QueryMapper.class).runListQuery(query);
+		Collections.sort(povs, new PovRankStrategy(pmSession));
 		
 		SoyListData povList = new SoyListData();
 		for(IPointOfView pov : povs) {

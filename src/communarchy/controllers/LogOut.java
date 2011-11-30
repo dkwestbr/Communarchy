@@ -11,7 +11,7 @@ import communarchy.facts.PMSession;
 import communarchy.facts.implementations.ApplicationUser;
 import communarchy.facts.implementations.UnauthenticatedUser;
 import communarchy.facts.interfaces.IUser;
-import communarchy.facts.mappers.UserMapper;
+import communarchy.facts.mappers.BasicMapper;
 import communarchy.utils.constants.IHttpSessionConstants;
 
 /**
@@ -37,7 +37,7 @@ public class LogOut extends HttpServlet {
 			
 			IUser user = (IUser) session.getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
 			if(user.isAuthenticated()) {
-				pmSession.getMapper(UserMapper.class).updateUser((ApplicationUser) user);
+				pmSession.getMapper(BasicMapper.class).persist((ApplicationUser) user);
 			}
 			
 			user = UnauthenticatedUser.getNewUser();

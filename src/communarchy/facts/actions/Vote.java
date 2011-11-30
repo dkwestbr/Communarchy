@@ -33,6 +33,9 @@ public class Vote implements IVote, Serializable, IEntity {
     @Persistent
 	private Key userKey;
 	
+    public static final String P_POV_KEY = "povKey";
+    public static final String P_USER_KEY = "userKey";
+    
 	public Vote() {}
 	
 	public Vote(Key pointId, Key povId, Key userId) {
@@ -68,5 +71,10 @@ public class Vote implements IVote, Serializable, IEntity {
 	
 	public static String BuildVoteQueryKey(Key povId, Key userId) {
 		return String.format("Vote(%s_%s)", povId.toString(), userId.toString());
+	}
+
+	@Override
+	public String getNewObjectKey() {
+		return String.format("new_%s_%s_%s", Vote.class.getName(), povKey.toString(), userKey.toString());
 	}	
 }

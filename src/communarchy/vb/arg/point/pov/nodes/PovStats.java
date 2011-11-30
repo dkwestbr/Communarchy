@@ -1,6 +1,5 @@
 package communarchy.vb.arg.point.pov.nodes;
 
-
 import javax.servlet.http.HttpServletRequest;
 
 import com.google.template.soy.data.SoyMapData;
@@ -8,7 +7,8 @@ import com.google.template.soy.data.SoyMapData;
 import communarchy.facts.PMSession;
 import communarchy.facts.interfaces.IPointOfView;
 import communarchy.facts.interfaces.IUser;
-import communarchy.facts.mappers.PovMapper;
+import communarchy.facts.mappers.CountMapper;
+import communarchy.facts.queries.list.GetVoteCountQuery;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 
@@ -38,7 +38,7 @@ public class PovStats extends AbstractTemplateWrapper implements
 			HttpServletRequest request, IPointOfView scopedResource) {
 		
 		SoyMapData pMap = new SoyMapData();
-		pMap.put(P_POV_VOTE_COUNT, pmSession.getMapper(PovMapper.class).getPovVoteCount(scopedResource.getKey()));
+		pMap.put(P_POV_VOTE_COUNT, pmSession.getMapper(CountMapper.class).getCount(new GetVoteCountQuery(scopedResource.getKey())));
 		
 		return pMap;
 	}

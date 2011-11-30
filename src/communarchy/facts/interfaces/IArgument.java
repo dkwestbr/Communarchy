@@ -5,7 +5,7 @@ import java.util.Date;
 
 import com.google.appengine.api.datastore.Key;
 
-public interface IArgument extends Serializable {
+public interface IArgument extends Serializable, IEntity {
 	public Key getArgId();
 	public Key getPosterId();
 	public String getTitle();

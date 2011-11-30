@@ -86,6 +86,10 @@ public class CommunarchyCache {
 		put(catalyst, key, value, updateRegistry);
 	}
 	
+	public <T> void updateEntityLists(Class<T> type) {
+		
+	}
+	
 	public void clearEntity(String catalyst) {
 		clear(catalyst, updateRegistry);
 	}

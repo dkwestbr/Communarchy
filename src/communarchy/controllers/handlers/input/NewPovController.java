@@ -24,8 +24,9 @@ import communarchy.facts.implementations.Point;
 import communarchy.facts.implementations.PointOfView;
 import communarchy.facts.implementations.UserStance;
 import communarchy.facts.interfaces.IPoint;
-import communarchy.facts.mappers.PointMapper;
-import communarchy.facts.mappers.PovMapper;
+import communarchy.facts.mappers.BasicMapper;
+import communarchy.facts.mappers.UniqueEntityMapper;
+import communarchy.facts.queries.entity.UserStanceQuery;
 import communarchy.utils.constants.IHttpSessionConstants;
 
 public class NewPovController extends AbstractInputHandler {
@@ -75,18 +76,17 @@ public class NewPovController extends AbstractInputHandler {
 				int stanceId = UserStance.getStanceAsId(stance);
 				long id = Long.parseLong(newPovMatcher.group(2));
 				Key pointKey = KeyFactory.createKey(Point.class.getSimpleName(), id);
-				IPoint point = pmSession.getMapper(PointMapper.class).selectPostById(pointKey);
+				IPoint point = pmSession.getMapper(BasicMapper.class).getById(Point.class, pointKey);
 				if(point == null) {
 					response.sendError(HttpServletResponse.SC_NOT_FOUND);
 				} else {
-					UserStance userStance = pmSession.getMapper(PointMapper.class)
-							.selectStance(point.getKey(), user.getUserId());
+					UserStance userStance = pmSession.getMapper(UniqueEntityMapper.class).getUnique(new UserStanceQuery(pointKey, user.getUserId()));
 					if(userStance == null || userStance.getStance() != stanceId) {
 						response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 					} else {
 						PointOfView pov = new PointOfView(point.getKey(), user.getUserId(), 
 								validInputs.get("pov").getContent(), stanceId);
-						pmSession.getMapper(PovMapper.class).insertNewPost(pov);
+						pmSession.getMapper(BasicMapper.class).persist(pov);
 						response.sendRedirect(getRedirectURI(request.getRequestURI(), pmSession));
 					}
 				}
@@ -115,15 +115,14 @@ public class NewPovController extends AbstractInputHandler {
 
 	@Override
 	protected String getRedirectURI(String originatingURI, PMSession pmSession) throws MalformedURLException {
-		// /point/pov/new/pointId becomes /arg/argId
-		Pattern argIdPattern = Pattern.compile("/point/pov/new/(agree|neutral|disagree)/([0-9]+)");
-		Matcher argIdMatcher = argIdPattern.matcher(originatingURI);
+		Pattern pointIdPattern = Pattern.compile("/point/pov/new/(agree|neutral|disagree)/([0-9]+)");
+		Matcher pointIdMatcher = pointIdPattern.matcher(originatingURI);
 		
 		Long argId = null;
-		if(argIdMatcher.find()) {
-			Long id = Long.parseLong(argIdMatcher.group(2));
-			Key argKey = KeyFactory.createKey(Point.class.getSimpleName(), id);
-			IPoint point = pmSession.getMapper(PointMapper.class).selectPostById(argKey);
+		if(pointIdMatcher.find()) {
+			Long id = Long.parseLong(pointIdMatcher.group(2));
+			Key pointKey = KeyFactory.createKey(Point.class.getSimpleName(), id);
+			IPoint point = pmSession.getMapper(BasicMapper.class).getById(Point.class, pointKey);
 			argId = point.getParentId().getId();
 		}
 		

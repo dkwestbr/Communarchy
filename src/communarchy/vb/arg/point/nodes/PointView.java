@@ -9,7 +9,8 @@ import communarchy.facts.implementations.UserStance;
 import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.interfaces.IUserStance;
-import communarchy.facts.mappers.PointMapper;
+import communarchy.facts.mappers.UniqueEntityMapper;
+import communarchy.facts.queries.entity.UserStanceQuery;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.arg.point.branches.GetStanceCountHeaders;
@@ -53,7 +54,12 @@ public class PointView extends AbstractTemplateWrapper implements
 		pMap.put(P_ID, String.format("%d", scopedResource.getKey().getId()));
 		pMap.put(P_POINT, scopedResource.getPoint());
 		
-		IUserStance userStance = pmSession.getMapper(PointMapper.class).selectStance(scopedResource.getKey(), user.getUserId());
+		IUserStance userStance = null;
+		if(scopedResource != null && scopedResource.getKey() != null
+				&& user != null && user.getUserId() != null) {
+			userStance = pmSession.getMapper(UniqueEntityMapper.class).getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId()));
+		}
+		
 		if(userStance == null) {
 			pMap.put(P_SELECTED_STANCE, " ");
 		} else {

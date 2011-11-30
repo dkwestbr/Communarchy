@@ -4,12 +4,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.google.template.soy.data.SoyMapData;
 
+import communarchy.controllers.strategies.limits.VoteLimit;
 import communarchy.facts.PMSession;
 import communarchy.facts.implementations.Stance;
 import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.interfaces.IUserStance;
-import communarchy.facts.mappers.PointMapper;
+import communarchy.facts.mappers.UniqueEntityMapper;
+import communarchy.facts.queries.entity.UserStanceQuery;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 
@@ -43,15 +45,19 @@ public class HeaderUserSupports extends AbstractTemplateWrapper implements
 		
 		SoyMapData pMap = new SoyMapData();
 		
-		IUserStance userStance = pmSession.getMapper(PointMapper.class)
-				.selectStance(scopedResource.getKey(), user.getUserId());
+		IUserStance userStance = null;
+		if(user.getUserId() != null) {
+			userStance = pmSession.getMapper(UniqueEntityMapper.class)
+				.getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId()));
+		}
 		
 		pMap.put(P_TAKE_STANCE_ACTION, String.format("/point/takestance/%s/%d", 
 				Stance.getStanceUrlPath(userStance.getStance()), scopedResource.getKey().getId()));
 		
+		pMap.put(P_VOTES_REMAINING, VoteLimit.GetVotesRemaining(pmSession, scopedResource.getKey(), userStance.getStance(), user.getUserId()));
+		
 		pMap.put(P_LABEL, Stance.getStanceAsString(userStance.getStance()));
 		pMap.put(P_STANCE, Stance.getStanceUrlPath(userStance.getStance()));
-		pMap.put(P_VOTES_REMAINING, pmSession.getMapper(PointMapper.class).getMaxVoteCount(scopedResource.getKey(), userStance.getStance()));
 		
 		return pMap;
 	}

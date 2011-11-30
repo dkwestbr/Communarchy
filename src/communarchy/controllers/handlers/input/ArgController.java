@@ -26,7 +26,7 @@ import communarchy.facts.PMSession;
 import communarchy.facts.implementations.Argument;
 import communarchy.facts.interfaces.IArgument;
 import communarchy.facts.interfaces.IUser;
-import communarchy.facts.mappers.ArgumentMapper;
+import communarchy.facts.mappers.BasicMapper;
 import communarchy.utils.constants.IHttpSessionConstants;
 import communarchy.vb.arg.ArgRoot;
 
@@ -67,7 +67,7 @@ public class ArgController extends AbstractInputHandler {
 				long id = Long.parseLong(argIdMatcher.group(1));
 				Key argKey = KeyFactory.createKey(Argument.class.getSimpleName(), id);
 				
-				IArgument arg = pmSession.getMapper(ArgumentMapper.class).selectPostById(argKey);
+				IArgument arg = pmSession.getMapper(BasicMapper.class).getById(Argument.class, argKey);
 				
 				if(arg == null) {
 					response.sendError(HttpServletResponse.SC_NOT_FOUND);

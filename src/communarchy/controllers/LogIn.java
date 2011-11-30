@@ -15,8 +15,8 @@ import com.google.template.soy.tofu.SoyTofu;
 import communarchy.facts.PMSession;
 import communarchy.facts.implementations.ApplicationUser;
 import communarchy.facts.interfaces.IUser;
-import communarchy.facts.mappers.UserMapper;
-import communarchy.facts.mappers.interfaces.IUserMapper;
+import communarchy.facts.mappers.UniqueEntityMapper;
+import communarchy.facts.queries.entity.GetUserByName;
 import communarchy.utils.constants.IHttpSessionConstants;
 import communarchy.vb.login.LoginRoot;
 
@@ -69,13 +69,14 @@ public class LogIn extends HttpServlet {
 		String userName = request.getParameter("user");
 		
 		try {
-			IUserMapper mapper = pmSession.getMapper(UserMapper.class);
+			UniqueEntityMapper mapper = pmSession.getMapper(UniqueEntityMapper.class);
 			
 			System.out.println("Logging in: " + userName + " -------");
-			ApplicationUser user = mapper.getUserByDisplayName(userName);
+			GetUserByName query = new GetUserByName(userName);
+			
+			ApplicationUser user = mapper.getUnique(query);
 			if(user == null) {
-				user = new ApplicationUser(userName);
-				mapper.updateUser(user);
+				user = mapper.persistUnique(query);
 				request.getSession().removeAttribute(IHttpSessionConstants.LOGIN_MESSAGE);
 			}
 			

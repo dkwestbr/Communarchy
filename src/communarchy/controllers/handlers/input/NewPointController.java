@@ -23,8 +23,7 @@ import communarchy.facts.implementations.ApplicationUser;
 import communarchy.facts.implementations.Argument;
 import communarchy.facts.implementations.Point;
 import communarchy.facts.interfaces.IArgument;
-import communarchy.facts.mappers.ArgumentMapper;
-import communarchy.facts.mappers.PointMapper;
+import communarchy.facts.mappers.BasicMapper;
 import communarchy.utils.constants.IHttpSessionConstants;
 
 public class NewPointController extends AbstractInputHandler {
@@ -73,13 +72,13 @@ public class NewPointController extends AbstractInputHandler {
 				long id = Long.parseLong(argIdMatcher.group(1));
 				Key argKey = KeyFactory.createKey(Argument.class.getSimpleName(), id);
 				
-				IArgument arg = pmSession.getMapper(ArgumentMapper.class).selectPostById(argKey);
+				IArgument arg = pmSession.getMapper(BasicMapper.class).getById(Argument.class, argKey);
 				
 				if(arg == null) {
 					response.sendError(HttpServletResponse.SC_NOT_FOUND);
 				} else {
 					Point point = new Point(arg.getArgId(), user.getUserId(), validInputs.get("point").getContent());
-					pmSession.getMapper(PointMapper.class).insertNewPost(point);
+					pmSession.getMapper(BasicMapper.class).persist(point);
 					response.sendRedirect(getRedirectURI(request.getRequestURI(), pmSession));
 				} 
 			} else {

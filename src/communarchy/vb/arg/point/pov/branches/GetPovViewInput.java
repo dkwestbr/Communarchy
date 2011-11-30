@@ -9,7 +9,8 @@ import communarchy.controllers.handlers.input.validation.ValidationResult;
 import communarchy.facts.PMSession;
 import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.interfaces.IUser;
-import communarchy.facts.mappers.PointMapper;
+import communarchy.facts.mappers.UniqueEntityMapper;
+import communarchy.facts.queries.entity.UserStanceQuery;
 import communarchy.utils.constants.IHttpSessionConstants;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
@@ -49,8 +50,8 @@ public class GetPovViewInput extends AbstractTemplateWrapper implements
 		
 		SoyMapData pMap = new SoyMapData();
 		
-		if (user.isAuthenticated() &&
-				pmSession.getMapper(PointMapper.class).selectStance(scopedResource.getKey(), user.getUserId()) != null) {
+		if (user.isAuthenticated() && user.getUserId() != null &&
+				pmSession.getMapper(UniqueEntityMapper.class).getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId())) != null) {
 		
 			pMap.put(P_STANCE_TAKEN, "true");
 			Map<String, ValidationResult> results = (Map<String, ValidationResult>) request.getSession().getAttribute(IHttpSessionConstants.VALIDATION_RESULTS_NEW_POV);

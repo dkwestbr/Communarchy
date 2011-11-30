@@ -5,11 +5,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.google.template.soy.data.SoyMapData;
 
+import communarchy.controllers.strategies.limits.VoteLimit;
 import communarchy.facts.PMSession;
 import communarchy.facts.actions.interfaces.IVote;
 import communarchy.facts.interfaces.IPointOfView;
 import communarchy.facts.interfaces.IUser;
-import communarchy.facts.mappers.PovMapper;
+import communarchy.facts.mappers.UniqueEntityMapper;
+import communarchy.facts.queries.entity.GetVoteQuery;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.arg.point.pov.nodes.AllowVote;
@@ -49,22 +51,18 @@ public class GetVoteButtons extends AbstractTemplateWrapper implements
 
 		SoyMapData pMap = new SoyMapData();
 		
-		IVote vote = pmSession.getMapper(PovMapper.class).selectVote(scopedResource.getKey(), user.getUserId());
+		IVote vote = pmSession.getMapper(UniqueEntityMapper.class)
+				.getUnique(new GetVoteQuery(scopedResource.getParentPointId(), scopedResource.getKey(), user.getUserId()));
 		if(vote != null) {
 			pMap.put(P_IS_DISABLED, " ");
 			pMap.put(P_VOTE_PARAMS, AlreadyVoted.get().getParams(pmSession, user, request, scopedResource));
 		} else if(user.getUserId().equals(scopedResource.getPosterId())) {
 			pMap.put(P_USER_IS_AUTHOR, " ");
 			pMap.put(P_VOTE_PARAMS, NoVotesRemaining.get().getParams(pmSession, user, request, scopedResource));
-		} 
-		
-		/*
-		else if(pointMapper.getVoteCount(scopedResource.getParentPointId(), user.getUserId()) 
-				== pointMapper.getMaxVoteCount(scopedResource.getParentPointId(), scopedResource.getStance())) {
+		} else if(VoteLimit.AllowVote(pmSession, scopedResource.getKey(), user.getUserId())) {
 			pMap.put(P_NO_VOTES_REMAINING, " ");
 			pMap.put(P_VOTE_PARAMS, NoVotesRemaining.get().getParams(pmSession, user, request, scopedResource));
-		} 
-		*/
+		}
 		
 		else {
 			pMap.put(P_VOTE_PARAMS, AllowVote.get().getParams(pmSession, user, request, scopedResource));

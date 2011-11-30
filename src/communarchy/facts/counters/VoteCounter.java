@@ -25,4 +25,15 @@ public class VoteCounter extends AbstractCounter<Vote> {
 	public Key getPovId() {
 		return povKey;
 	}
+
+	@Override
+	public Key getKey() {
+		return povKey;
+	}
+
+	@Override
+	public String getNewObjectKey() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

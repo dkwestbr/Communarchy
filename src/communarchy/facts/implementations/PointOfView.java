@@ -18,6 +18,11 @@ public class PointOfView implements IPointOfView, Serializable {
 	
 	private static transient final long serialVersionUID = 1L;
 
+	public static final String P_POV_ID = "povId";
+	public static final String P_POINT_ID = "parentPointId";
+	public static final String P_POSTER_ID = "posterId";
+	public static final String P_STANCE = "stance";
+	
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Key povId;
@@ -76,5 +81,10 @@ public class PointOfView implements IPointOfView, Serializable {
 	@Override
 	public Key getKey() {
 		return povId;
+	}
+
+	@Override
+	public String getNewObjectKey() {
+		return String.format("new_%s_%s_%d", PointOfView.class.getName(), parentPointId.toString(), stance);
 	}
 }

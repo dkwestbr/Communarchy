@@ -1,11 +1,11 @@
-package communarchy.controllers.rankingStrategies;
+package communarchy.controllers.strategies.displayRank;
 
 import java.util.Comparator;
 
 import communarchy.facts.PMSession;
 import communarchy.facts.interfaces.IPointOfView;
-import communarchy.facts.mappers.PovMapper;
-import communarchy.facts.mappers.interfaces.IPovMapper;
+import communarchy.facts.mappers.CountMapper;
+import communarchy.facts.queries.list.GetVoteCountQuery;
 
 public class PovRankStrategy implements Comparator<IPointOfView> {
 
@@ -20,14 +20,22 @@ public class PovRankStrategy implements Comparator<IPointOfView> {
 	
 	@Override
 	public int compare(IPointOfView pov1, IPointOfView pov2) {
-		IPovMapper povMapper = pmSession.getMapper(PovMapper.class);
-		Integer pov1Votes = povMapper.getPovVoteCount(pov1.getKey());
-		if(pov1Votes == null)
-			pov1Votes = 0;
+		CountMapper voteCountMapper = pmSession.getMapper(CountMapper.class);
 		
-		Integer pov2Votes = povMapper.getPovVoteCount(pov2.getKey());
-		if(pov2Votes == null)
+		GetVoteCountQuery query1 = new GetVoteCountQuery(pov1.getKey());
+		Integer pov1Votes = voteCountMapper.getCount(query1);
+		
+		if(pov1Votes == null) {
+			pov1Votes = 0;
+		}
+		
+
+		GetVoteCountQuery query2 = new GetVoteCountQuery(pov2.getKey());
+		Integer pov2Votes = voteCountMapper.getCount(query2);
+		
+		if(pov2Votes == null) {
 			pov2Votes = 0;
+		}
 
 		if(pov1Votes > pov2Votes) {
 			return -1;
@@ -37,5 +45,4 @@ public class PovRankStrategy implements Comparator<IPointOfView> {
 			return 0;
 		} 
 	}
-
 }

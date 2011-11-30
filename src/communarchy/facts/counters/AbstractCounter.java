@@ -11,10 +11,11 @@ import javax.jdo.annotations.PrimaryKey;
 import com.google.appengine.api.datastore.Key;
 
 import communarchy.facts.interfaces.ICounter;
+import communarchy.facts.interfaces.IEntity;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
 @Inheritance(strategy=InheritanceStrategy.SUBCLASS_TABLE)
-public abstract class AbstractCounter<T> implements ICounter {
+public abstract class AbstractCounter<T> implements ICounter, IEntity {
 	
 	/**
 	 * 
@@ -24,7 +25,7 @@ public abstract class AbstractCounter<T> implements ICounter {
 	@PrimaryKey
 	@SuppressWarnings("unused")
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key resourceId;
+	protected Key resourceId;
 	
 	@Persistent
 	protected Integer count;

@@ -8,12 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.template.soy.data.SoyListData;
 import com.google.template.soy.data.SoyMapData;
 
-import communarchy.controllers.rankingStrategies.PointRankStrategy;
+import communarchy.controllers.strategies.displayRank.PointRankStrategy;
 import communarchy.facts.PMSession;
+import communarchy.facts.implementations.Point;
 import communarchy.facts.interfaces.IArgument;
 import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.interfaces.IUser;
-import communarchy.facts.mappers.ArgumentMapper;
+import communarchy.facts.mappers.QueryMapper;
+import communarchy.facts.queries.list.PointsByArgument;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.arg.point.nodes.PointSeperator;
@@ -48,7 +50,7 @@ public class GetPoints extends AbstractTemplateWrapper implements
 			HttpServletRequest request, IArgument scopedResource) {
 		
 		SoyMapData pMap = new SoyMapData();
-		List<IPoint> points = pmSession.getMapper(ArgumentMapper.class).selectChildrenPosts(scopedResource.getArgId());
+		List<Point> points = pmSession.getMapper(QueryMapper.class).runListQuery(new PointsByArgument(scopedResource.getArgId()));
 		Collections.sort(points, new PointRankStrategy(pmSession));
 		
 		SoyListData pointList = new SoyListData();
