@@ -48,7 +48,7 @@ public class GetPovViewHeader extends AbstractTemplateWrapper implements
 		
 		IUserStance userStance = null;
 		if(user.getUserId() != null) {
-			userStance = pmSession.getMapper(UniqueEntityMapper.class).getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId()));
+			userStance = pmSession.getMapper(UniqueEntityMapper.class).getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId(), subset));
 		}
 		
 		if(userStance != null && userStance.getStance().equals(subset)) {

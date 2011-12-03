@@ -10,6 +10,6 @@ public interface IListQuery<T extends IEntity> extends IQuery<T> {
 	public List<T> runListQuery(PMSession pmSession);
 	public Class<T> getType();
 	public String getExpiryKey();
-	public String getRankChangeKey();
+	//public List<String> getRankChangeKeys();
 	public boolean isRanked();
 }

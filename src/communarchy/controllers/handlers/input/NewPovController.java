@@ -80,7 +80,7 @@ public class NewPovController extends AbstractInputHandler {
 				if(point == null) {
 					response.sendError(HttpServletResponse.SC_NOT_FOUND);
 				} else {
-					UserStance userStance = pmSession.getMapper(UniqueEntityMapper.class).getUnique(new UserStanceQuery(pointKey, user.getUserId()));
+					UserStance userStance = pmSession.getMapper(UniqueEntityMapper.class).getUnique(new UserStanceQuery(pointKey, user.getUserId(), null));
 					if(userStance == null || userStance.getStance() != stanceId) {
 						response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 					} else {

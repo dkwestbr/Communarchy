@@ -16,15 +16,17 @@ public class UserStanceQuery implements IEntityQuery<UserStance> {
 	
 	private Key pointKey;
 	private Key userKey;
+	private Integer stance;
 	private String memcacheKey;
 	
-	public UserStanceQuery(Key pointKey, Key userKey) {
+	public UserStanceQuery(Key pointKey, Key userKey, Integer stance) {
 		if(pointKey == null || userKey == null) {
 			throw new NullPointerException("Parameters may not be null");
 		}
 		
 		this.pointKey = pointKey;
 		this.userKey = userKey;
+		this.stance = stance;
 		
 		this.memcacheKey = String.format("%s_%s_%s", UserStanceQuery.class.toString(), pointKey.toString(), userKey.toString());
 	}
@@ -36,7 +38,7 @@ public class UserStanceQuery implements IEntityQuery<UserStance> {
 
 	@Override
 	public UserStance getNewEntity() {
-		return null;
+		return new UserStance(userKey, pointKey, stance);
 	}
 
 	@Override
@@ -53,5 +55,10 @@ public class UserStanceQuery implements IEntityQuery<UserStance> {
 		}
 		
 		return results == null || results.isEmpty() ? null : results.get(0);
+	}
+
+	@Override
+	public Class<UserStance> getResourceType() {
+		return UserStance.class;
 	}
 }

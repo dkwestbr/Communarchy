@@ -58,4 +58,9 @@ public class GetVoteCountShard implements IEntityQuery<VoteCounter> {
 	    
 	    return results == null || results.isEmpty() ? null : results.get(0);
 	}
+
+	@Override
+	public Class<VoteCounter> getResourceType() {
+		return VoteCounter.class;
+	}
 }

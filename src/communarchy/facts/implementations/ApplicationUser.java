@@ -106,8 +106,7 @@ public class ApplicationUser implements IUser, Serializable, IEntity {
 	}
 
 	@Override
-	public String getNewObjectKey() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getMemcacheCheckinKey() {
+		return String.format("%s(%s)", ApplicationUser.class.getName(), this.displayName);
 	}
 }

@@ -57,7 +57,7 @@ public class PointView extends AbstractTemplateWrapper implements
 		IUserStance userStance = null;
 		if(scopedResource != null && scopedResource.getKey() != null
 				&& user != null && user.getUserId() != null) {
-			userStance = pmSession.getMapper(UniqueEntityMapper.class).getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId()));
+			userStance = pmSession.getMapper(UniqueEntityMapper.class).getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId(), null));
 		}
 		
 		if(userStance == null) {

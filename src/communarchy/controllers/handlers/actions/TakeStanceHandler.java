@@ -24,6 +24,7 @@ import communarchy.facts.queries.entity.GetStanceCountShard;
 import communarchy.facts.queries.entity.GetVoteCountShard;
 import communarchy.facts.queries.entity.UserStanceQuery;
 import communarchy.facts.queries.list.VotesCastQuery;
+import communarchy.utils.caching.MemcacheWrapper;
 
 public class TakeStanceHandler extends AbstractActionHandler<Point> {
 
@@ -53,17 +54,16 @@ public class TakeStanceHandler extends AbstractActionHandler<Point> {
 			HttpServletResponse response, Point resource, String command,
 			ApplicationUser user, PMSession pmSession) throws IOException {
 		
+		UserStanceQuery query = new UserStanceQuery(resource.getKey(), user.getUserId(), Stance.getStanceAsId(command)); 
 		UserStance existingStance = pmSession.getMapper(UniqueEntityMapper.class)
-				.getUnique(new UserStanceQuery(resource.getKey(), user.getUserId()));
+				.getUnique(query);
 
 		if(existingStance == null) {
 			Transaction tx = pmSession.getPM().currentTransaction();
 			try {
 				tx.begin();
-				existingStance = new UserStance(user.getUserId(), resource.getKey(), 
-						Stance.getStanceAsId(command));
+				existingStance = pmSession.getMapper(UniqueEntityMapper.class).persistUnique(query);
 				pmSession.getMapper(CountMapper.class).increment(new GetStanceCountShard(existingStance.getPoint(), existingStance.getStance()));
-				pmSession.getMapper(BasicMapper.class).persist(existingStance);
 				tx.commit();
 			} finally {
 				if(tx.isActive()) {
@@ -74,7 +74,7 @@ public class TakeStanceHandler extends AbstractActionHandler<Point> {
 			
 			/*
 			 * This transaction sucks; but GAE doesn't support transactions on more than 5 entity types or on more than 5 operations on 
-			 * the same entity type; therefor it had to be broken up.  There is likely problems with this; but it will work most of the time,
+			 * the same entity type; therefore it had to be broken up.  There is likely problems with this; but it will work most of the time,
 			 * so I'm ok with that for now.
 			 */
 			Transaction tx = pmSession.getPM().currentTransaction();
@@ -84,6 +84,7 @@ public class TakeStanceHandler extends AbstractActionHandler<Point> {
 			try {
 				tx.begin();
 				pmSession.getMapper(CountMapper.class).decrement(new GetStanceCountShard(existingStance.getPoint(), existingStance.getStance()));
+				MemcacheWrapper.get().checkOut(existingStance.getMemcacheCheckinKey());
 				existingStance.setStance(Stance.getStanceAsId(command));
 				pmSession.getMapper(CountMapper.class).increment(new GetStanceCountShard(existingStance.getPoint(), existingStance.getStance()));
 				pmSession.getMapper(BasicMapper.class).persist(existingStance);

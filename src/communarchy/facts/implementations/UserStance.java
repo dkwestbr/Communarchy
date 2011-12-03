@@ -1,5 +1,7 @@
 package communarchy.facts.implementations;
 
+import java.util.List;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -77,7 +79,7 @@ public class UserStance extends Stance implements IUserStance, IEntity {
 	}
 
 	@Override
-	public String getNewObjectKey() {
-		return null;
+	public List<String> getMemcacheCheckinKey() {
+		return String.format("%s(%s_%s_%d)", UserStance.class.toString(), point.toString(), user.toString(), stance);
 	}
 }

@@ -73,7 +73,7 @@ public class GetStanceCount implements IListQuery<StanceCounter> {
 	}
 
 	@Override
-	public String getRankChangeKey() {
+	public String getRankChangeKeys() {
 		return null;
 	}
 

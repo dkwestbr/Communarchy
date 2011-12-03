@@ -11,12 +11,14 @@ public class UniqueEntityMapper extends AbstractMapper<UniqueEntityMapper> {
 			return null;
 		}
 		
-		String key = MemcacheWrapper.buildKey(QueryMapper.class, "runEntityQuery", queryObject.getMemcacheInnerKey());
+		String key = MemcacheWrapper.BuildKey(queryObject.getResourceType(), "getUnique", queryObject.getMemcacheInnerKey());
 		U result = MemcacheWrapper.get().get(key);
 		if(result == null && !MemcacheWrapper.get().contains(key)) {
 			result = queryObject.runQuery(pmSession);
-			//MemcacheWrapper.get().put(key, result);
-			//MemcacheWrapper.get().checkIn(result.getKey().toString(), key);
+			MemcacheWrapper.get().put(key, result);
+			if(result != null) {
+				MemcacheWrapper.get().checkIn(result.getMemcacheCheckinKey(), key);
+			}
 		}
 		
 		return result;
@@ -29,17 +31,23 @@ public class UniqueEntityMapper extends AbstractMapper<UniqueEntityMapper> {
 		
 		T existingVal = getUnique(existsQuery);
 		
+		String key = MemcacheWrapper.BuildKey(existsQuery.getResourceType(), "getUnique", existsQuery.getMemcacheInnerKey());
+		MemcacheWrapper.get().remove(key);
+		
 		if(existingVal != null) {
 			return existingVal;
 		}
 		
 		existingVal = existsQuery.getNewEntity();
+		/*
+		if(existingVal == null && MemcacheWrapper.get().contains(key)) {
+			MemcacheWrapper.get().remove(key);
+			existingVal = existsQuery.getNewEntity();
+		}
+		*/
 
 		pmSession.getPM().makePersistent(existingVal);
-		String key = MemcacheWrapper.buildKey(BasicMapper.class, "get", existingVal.getKey().toString());
-		//MemcacheWrapper.get().put(key, existingVal);
-		//MemcacheWrapper.get().checkOut(existingVal.getNewObjectKey());
-		//MemcacheWrapper.get().checkIn(existingVal.getKey().toString(), key);
+		MemcacheWrapper.get().checkOut(existingVal.getMemcacheCheckinKey());
 		
 		return existingVal;
 	}
@@ -49,16 +57,16 @@ public class UniqueEntityMapper extends AbstractMapper<UniqueEntityMapper> {
 			throw new NullPointerException("Null entities cannot be persisted");
 		}
 		
+		String key = MemcacheWrapper.BuildKey(existsQuery.getResourceType(), "getUnique", existsQuery.getMemcacheInnerKey());
+		MemcacheWrapper.get().remove(key);
+		
 		T existingVal = getUnique(existsQuery);
 		
 		if(existingVal == null) {
 			return;
 		}
 		
-		String key = MemcacheWrapper.buildKey(BasicMapper.class, "get", existingVal.getKey().toString());
-		//MemcacheWrapper.get().remove(key);
-		//MemcacheWrapper.get().checkOut(existingVal.getKey().toString());
-		//MemcacheWrapper.get().checkOut(existingVal.getNewObjectKey());
+		MemcacheWrapper.get().checkOut(existingVal.getMemcacheCheckinKey());
 		pmSession.getPM().deletePersistent(existingVal);
 	}
 }

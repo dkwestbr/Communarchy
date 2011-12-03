@@ -65,7 +65,7 @@ public class GetVoteCountQuery implements IListQuery<VoteCounter> {
 	}
 
 	@Override
-	public String getRankChangeKey() {
+	public String getRankChangeKeys() {
 		return null;
 	}
 

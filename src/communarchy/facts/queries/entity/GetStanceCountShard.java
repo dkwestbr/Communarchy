@@ -73,4 +73,9 @@ public class GetStanceCountShard implements IEntityQuery<StanceCounter> {
 	    
 	    return results == null || results.isEmpty() ? null : results.get(0);
 	}
+
+	@Override
+	public Class<StanceCounter> getResourceType() {
+		return StanceCounter.class;
+	}
 }

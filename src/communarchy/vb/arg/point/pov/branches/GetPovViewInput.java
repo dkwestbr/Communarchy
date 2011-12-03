@@ -51,7 +51,7 @@ public class GetPovViewInput extends AbstractTemplateWrapper implements
 		SoyMapData pMap = new SoyMapData();
 		
 		if (user.isAuthenticated() && user.getUserId() != null &&
-				pmSession.getMapper(UniqueEntityMapper.class).getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId())) != null) {
+				pmSession.getMapper(UniqueEntityMapper.class).getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId(), null)) != null) {
 		
 			pMap.put(P_STANCE_TAKEN, "true");
 			Map<String, ValidationResult> results = (Map<String, ValidationResult>) request.getSession().getAttribute(IHttpSessionConstants.VALIDATION_RESULTS_NEW_POV);

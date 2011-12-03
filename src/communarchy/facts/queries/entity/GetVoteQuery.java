@@ -54,4 +54,9 @@ public class GetVoteQuery implements IEntityQuery<Vote> {
 		
 		return results == null || results.isEmpty() ? null : results.get(0);
 	}
+
+	@Override
+	public Class<Vote> getResourceType() {
+		return Vote.class;
+	}
 }

@@ -96,8 +96,7 @@ public class Argument implements IArgument, Serializable {
 	}
 
 	@Override
-	public String getNewObjectKey() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getMemcacheCheckinKey() {
+		return String.format("%s(%s_%s)", Argument.class.getName(), posterId.toString(), title);
 	}
 }
