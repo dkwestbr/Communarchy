@@ -43,7 +43,7 @@ public class PovInputWithErrors extends AbstractTemplateWrapper implements
 		SoyMapData pMap = new SoyMapData();
 		IUserStance stance = null;
 		if(user.getUserId() != null) {
-			stance = pmSession.getMapper(UniqueEntityMapper.class).getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId(), null));
+			stance = pmSession.getMapper(UniqueEntityMapper.class).getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId()));
 		}
 		
 		pMap.put(P_ACTION, String.format("/point/pov/new/%s/%d", 

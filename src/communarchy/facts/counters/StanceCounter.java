@@ -51,7 +51,8 @@ public class StanceCounter extends AbstractCounter<UserStance> {
 	}
 
 	@Override
-	public String getMemcacheCheckinKey() {
-		return String.format("%s(%s_%d)", StanceCounter.class.getName(), point.toString(), stance);
+	public String getNewObjectKey() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

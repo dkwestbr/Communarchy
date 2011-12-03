@@ -46,9 +46,4 @@ public class GetUserByName implements IEntityQuery<ApplicationUser> {
 		
 		return users == null || users.isEmpty() ? null : users.get(0);
 	}
-
-	@Override
-	public Class<ApplicationUser> getResourceType() {
-		return ApplicationUser.class;
-	}
 }

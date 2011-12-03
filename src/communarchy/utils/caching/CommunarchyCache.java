@@ -78,7 +78,7 @@ public class CommunarchyCache {
 	}
 
 	public void putList(String catalyst, String key, List<IEntity> entities) {
-		String value = MemcacheWrapper.joinKeys(entities);
+		String value = ListUtils.joinKeys(entities);
 		put(catalyst, key, value, updateListRegistry);
 	}
 		

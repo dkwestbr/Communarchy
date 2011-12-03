@@ -48,7 +48,7 @@ public class HeaderUserSupports extends AbstractTemplateWrapper implements
 		IUserStance userStance = null;
 		if(user.getUserId() != null) {
 			userStance = pmSession.getMapper(UniqueEntityMapper.class)
-				.getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId(), null));
+				.getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId()));
 		}
 		
 		pMap.put(P_TAKE_STANCE_ACTION, String.format("/point/takestance/%s/%d", 

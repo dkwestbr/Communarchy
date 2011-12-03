@@ -58,7 +58,7 @@ public class VotesCastQuery implements IListQuery<Vote> {
 	}
 
 	@Override
-	public String getRankChangeKeys() {
+	public String getRankChangeKey() {
 		return null;
 	}
 

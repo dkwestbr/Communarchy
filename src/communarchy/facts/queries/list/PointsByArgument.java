@@ -1,14 +1,11 @@
 package communarchy.facts.queries.list;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.jdo.Query;
 
 import com.google.appengine.api.datastore.Key;
 
-import communarchy.controllers.strategies.displayRank.PointRankStrategy;
 import communarchy.facts.PMSession;
 import communarchy.facts.implementations.Point;
 
@@ -19,13 +16,11 @@ public class PointsByArgument implements IListQuery<Point> {
 	
 	private Key argId;
 	private String memcacheKey;
-	private List<String> rankChangeKeys;
 	
 	public PointsByArgument(Key argId) {
 		this.argId = argId;
 		
 		this.memcacheKey = String.format("%s_%s", PointsByArgument.class.getName(), argId);
-		this.rankChangeKeys = new ArrayList<String>();
 	}
 	
 	@Override
@@ -42,8 +37,7 @@ public class PointsByArgument implements IListQuery<Point> {
 		try {
 			q.setFilter("parentArgId == parentIdParam");
 			q.declareParameters(String.format("%s parentIdParam", Key.class.getName()));
-			points = (List<Point>) q.execute(argId);
-			Collections.sort(points, new PointRankStrategy(pmSession));
+			points = (List<Point>) q.execute(argId);	
 		} finally {
 			q.closeAll();
 		}
@@ -63,8 +57,9 @@ public class PointsByArgument implements IListQuery<Point> {
 	}
 
 	@Override
-	public List<String> getRankChangeKeys() {
-		return this.rankChangeKeys;
+	public String getRankChangeKey() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

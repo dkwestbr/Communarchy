@@ -84,7 +84,7 @@ public class PointOfView implements IPointOfView, Serializable {
 	}
 
 	@Override
-	public String getMemcacheCheckinKey() {
+	public String getNewObjectKey() {
 		return String.format("new_%s_%s_%d", PointOfView.class.getName(), parentPointId.toString(), stance);
 	}
 }

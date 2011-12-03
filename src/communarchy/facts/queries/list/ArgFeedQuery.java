@@ -1,6 +1,5 @@
 package communarchy.facts.queries.list;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,13 +22,11 @@ public class ArgFeedQuery implements IListQuery<Argument> {
 	private String startCursor;
 	
 	private String memcacheKey;
-	private List<String> rankChangeKeys;
 	
 	public ArgFeedQuery(String startCursor) {
 		this.startCursor = startCursor;
 		
 		this.memcacheKey = String.format("%s_%s", ArgFeedQuery.class.getName(), startCursor);
-		this.rankChangeKeys = new ArrayList<String>();
 	}
 	
 	@Override
@@ -66,8 +63,9 @@ public class ArgFeedQuery implements IListQuery<Argument> {
 	}
 
 	@Override
-	public List<String> getRankChangeKeys() {
-		return rankChangeKeys;
+	public String getRankChangeKey() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

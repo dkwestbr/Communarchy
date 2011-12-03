@@ -11,11 +11,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
 
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.memcache.AsyncMemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
-import communarchy.facts.interfaces.IEntity;
 
 public class MemcacheWrapper {
 	private static MemcacheWrapper INSTANCE = null;
@@ -43,12 +40,6 @@ public class MemcacheWrapper {
 			} finally {
 				lock.unlock();
 			}
-		}
-	}
-	
-	public void checkIn(List<String> listeners, String key) {
-		for(String listener : listeners) {
-			checkIn(listener, key);
 		}
 	}
 	
@@ -101,12 +92,8 @@ public class MemcacheWrapper {
 		return val;
 	}
 	
-	public static String BuildKey(Class<?> type, String method, String innerKey) {
+	public static <T> String buildKey(Class<T> type, String method, String innerKey) {
 		return String.format("%s_%s(%s)", type.getName(), method, innerKey);
-	}
-	
-	public static String BuildParentKey(Class<?> type, String parent) {
-		return String.format("PARENT_%s(%s)", type.getName(), parent);
 	}
 	
 	public void put(String key, Serializable value) {
@@ -119,31 +106,5 @@ public class MemcacheWrapper {
 		AsyncMemcacheService asyncCache = MemcacheServiceFactory.getAsyncMemcacheService();
 		Future<Boolean> futureVal = asyncCache.delete(key);	
 		while(!futureVal.isDone() && !futureVal.isCancelled()) {}	
-	}
-
-	public static <T extends IEntity> String joinKeys(List<T> entities) {
-		if(entities == null || entities.isEmpty()) {
-			return null;
-		}
-		
-		StringBuilder out = new StringBuilder();
-		for(IEntity entity : entities) {
-			out.append(String.format("%d;", entity.getKey().getId()));
-		}
-		return out.toString();
-	}
-
-	public static List<Key> keyStringToKeyList(String idString, String keyType) {
-		if(idString == null || !idString.contains(";")) {
-			return null;
-		}
-		
-		String[] ids = idString.split(";");
-		List<Key> keyList = new ArrayList<Key>();
-		for(String id : ids) {
-			keyList.add(KeyFactory.createKey(keyType, Long.parseLong(id)));
-		}
-		
-		return keyList;
 	}
 }

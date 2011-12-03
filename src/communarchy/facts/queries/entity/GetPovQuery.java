@@ -60,9 +60,4 @@ public class GetPovQuery implements IEntityQuery<PointOfView> {
 		
 		return results == null || results.isEmpty() ? null : results.get(0);
 	}
-
-	@Override
-	public Class<PointOfView> getResourceType() {
-		return PointOfView.class;
-	}
 }

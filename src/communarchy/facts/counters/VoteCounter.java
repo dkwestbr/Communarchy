@@ -32,7 +32,8 @@ public class VoteCounter extends AbstractCounter<Vote> {
 	}
 
 	@Override
-	public String getMemcacheCheckinKey() {
-		return String.format("%s(%s)", VoteCounter.class, povKey.toString());
+	public String getNewObjectKey() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

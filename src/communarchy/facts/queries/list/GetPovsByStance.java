@@ -1,13 +1,11 @@
 package communarchy.facts.queries.list;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.jdo.Query;
 
 import com.google.appengine.api.datastore.Key;
 
-import communarchy.controllers.strategies.displayRank.PovRankStrategy;
 import communarchy.facts.PMSession;
 import communarchy.facts.implementations.PointOfView;
 
@@ -37,7 +35,6 @@ public class GetPovsByStance implements IListQuery<PointOfView> {
 			q.setFilter("parentPointId == parentIdParam && stance == stanceParam");
 			q.declareParameters(String.format("%s parentIdParam, int stanceParam", Key.class.getName()));
 			povs = (List<PointOfView>) q.execute(pointId, stance);
-			Collections.sort(povs, new PovRankStrategy(pmSession));
 		} finally {
 			q.closeAll();
 		}
@@ -62,7 +59,7 @@ public class GetPovsByStance implements IListQuery<PointOfView> {
 	}
 
 	@Override
-	public String getRankChangeKeys() {
+	public String getRankChangeKey() {
 		// TODO Auto-generated method stub
 		return null;
 	}

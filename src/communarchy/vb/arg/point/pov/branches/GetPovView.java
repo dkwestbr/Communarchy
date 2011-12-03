@@ -50,7 +50,7 @@ public class GetPovView extends AbstractTemplateWrapper implements
 		UserStance userStance = null;
 		if(user.getUserId() != null) {
 			userStance = pmSession.getMapper(UniqueEntityMapper.class)
-				.getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId(), subset));
+				.getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId()));
 		}
 		
 		if(userStance == null) {

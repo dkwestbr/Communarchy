@@ -69,7 +69,7 @@ public class Point implements IPoint, Serializable {
 	}
 
 	@Override
-	public String getMemcacheCheckinKey() {
+	public String getNewObjectKey() {
 		return String.format("new_%s_%s", Point.class.toString(), parentArgId.toString());
 	}
 }

@@ -74,7 +74,7 @@ public class Vote implements IVote, Serializable, IEntity {
 	}
 
 	@Override
-	public String getMemcacheCheckinKey() {
+	public String getNewObjectKey() {
 		return String.format("new_%s_%s_%s", Vote.class.getName(), povKey.toString(), userKey.toString());
 	}	
 }
