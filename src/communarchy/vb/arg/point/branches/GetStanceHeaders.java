@@ -6,7 +6,7 @@ import com.google.template.soy.data.SoyListData;
 import com.google.template.soy.data.SoyMapData;
 
 import communarchy.facts.PMSession;
-import communarchy.facts.interfaces.IPoint;
+import communarchy.facts.implementations.Point;
 import communarchy.facts.interfaces.IUser;
 import communarchy.utils.constants.IRestrictions;
 import communarchy.vb.AbstractTemplateWrapper;
@@ -14,7 +14,7 @@ import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.arg.point.pov.branches.GetPovViewHeader;
 
 public class GetStanceHeaders extends AbstractTemplateWrapper implements
-		IResourceTemplateWrapper<IPoint> {
+		IResourceTemplateWrapper<Point> {
 
 	private static GetStanceHeaders INSTANCE;
 	private GetStanceHeaders() {}
@@ -37,7 +37,7 @@ public class GetStanceHeaders extends AbstractTemplateWrapper implements
 	
 	@Override
 	public SoyMapData getParams(PMSession pmSession, IUser user,
-			HttpServletRequest request, IPoint scopedResource) {
+			HttpServletRequest request, Point scopedResource) {
 		
 		SoyMapData pMap = new SoyMapData();
 		

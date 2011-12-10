@@ -6,14 +6,14 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.template.soy.data.SoyMapData;
 
 import communarchy.facts.PMSession;
-import communarchy.facts.interfaces.IArgument;
+import communarchy.facts.implementations.Argument;
 import communarchy.facts.interfaces.IUser;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.arg.point.branches.GetPointView;
 import communarchy.vb.global.nodes.ThickBorder;
 
-public class ArgViewWrapper extends AbstractTemplateWrapper implements IResourceTemplateWrapper<IArgument> {
+public class ArgViewWrapper extends AbstractTemplateWrapper implements IResourceTemplateWrapper<Argument> {
 
 	private static ArgViewWrapper INSTANCE;
 	
@@ -43,7 +43,7 @@ public class ArgViewWrapper extends AbstractTemplateWrapper implements IResource
 	
 	@Override
 	public SoyMapData getParams(PMSession pmSession, IUser user, HttpServletRequest request,
-			IArgument arg) {
+			Argument arg) {
 
 		SoyMapData paramMap = new SoyMapData();
 		

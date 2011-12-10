@@ -6,30 +6,39 @@ import communarchy.facts.counters.AbstractCounter;
 import communarchy.facts.mappers.interfaces.AbstractMapper;
 import communarchy.facts.queries.entity.IEntityQuery;
 import communarchy.facts.queries.list.IListQuery;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 
 public class CountMapper extends AbstractMapper<CountMapper> {
 	
-	public <U extends AbstractCounter<?>, T extends IEntityQuery<U>> void increment(T query) {
-		U shard = query.runQuery(pmSession);
-		if(shard == null) {
-			shard = query.getNewEntity();
+	public <U extends AbstractCounter<?, U>, V extends IEntityQuery<U>> void increment(V query) throws CommunarchyPersistenceException {
+		if(query == null) {
+			throw new CommunarchyPersistenceException("Shard query may not be null");
 		}
 		
-	    shard.increment();
-	    pmSession.getMapper(BasicMapper.class).persist(shard);
-	}
-	
-	public <U extends AbstractCounter<?>, T extends IEntityQuery<U>> void decrement(T query) {
-		U shard = query.runQuery(pmSession);
+		U shard = pmSession.getMapper(UniqueEntityMapper.class).selectUnique(query);
 		if(shard == null) {
-			shard = query.getNewEntity();
+			shard = pmSession.getMapper(UniqueEntityMapper.class).insertUnique(query);
 		}
 		
-	    shard.decrement();
-	    pmSession.getMapper(BasicMapper.class).persist(shard);
+		shard.increment();
+		shard = pmSession.getMapper(UniqueEntityMapper.class).updateUnique(query, shard);
 	}
 	
-	public <U extends AbstractCounter<?>, T extends IListQuery<U>> int getCount(T query) {
+	public <U extends AbstractCounter<?, U>, V extends IEntityQuery<U>> void decrement(V query) throws CommunarchyPersistenceException {
+		if(query == null) {
+			throw new CommunarchyPersistenceException("Shard query may not be null");
+		}
+		
+		U shard = pmSession.getMapper(UniqueEntityMapper.class).selectUnique(query);
+		if(shard == null) {
+			shard = pmSession.getMapper(UniqueEntityMapper.class).insertUnique(query);
+		}
+		
+		shard.decrement();
+		shard = pmSession.getMapper(UniqueEntityMapper.class).updateUnique(query, shard);
+	}
+	
+	public <U extends AbstractCounter<?, U>, T extends IListQuery<U>> int getCount(T query) throws CommunarchyPersistenceException {
 		List<U> shards = pmSession.getMapper(QueryMapper.class).runListQuery(query);
 		Integer count = 0;
 		if(shards != null && !shards.isEmpty()) {

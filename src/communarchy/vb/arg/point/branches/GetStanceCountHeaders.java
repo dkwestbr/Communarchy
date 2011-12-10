@@ -13,6 +13,7 @@ import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.arg.point.nodes.StanceCountHeader;
 
+@SuppressWarnings("rawtypes")
 public class GetStanceCountHeaders extends AbstractTemplateWrapper implements
 		IResourceTemplateWrapper<IPoint> {
 

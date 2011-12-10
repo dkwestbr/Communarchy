@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 
 import com.google.appengine.api.memcache.AsyncMemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
+import communarchy.facts.interfaces.IEntity;
+import communarchy.facts.queries.IQuery;
 
 public class MemcacheWrapper {
 	private static MemcacheWrapper INSTANCE = null;
@@ -26,7 +28,19 @@ public class MemcacheWrapper {
 		cacheKeyRegistry = new ConcurrentHashMap<String, List<String>>();
 	}
 	
-	public void checkIn(String listen, String key) {
+	public void checkIn(IQuery<?> query, String key) {
+		for(String checkInKey : query.getCheckInKeys()) {
+			checkIn(checkInKey, key);
+		}
+	}
+	
+	public void checkIn(IEntity<?> val, String key) {
+		for(String checkInKey : val.getCheckOutKeys()) {
+			checkIn(checkInKey, key);
+		}
+	}
+	
+	private void checkIn(String listen, String key) {
 		if(cacheKeyRegistry.containsKey(listen)) {
 			cacheKeyRegistry.get(listen).add(key);
 		} else {
@@ -43,7 +57,23 @@ public class MemcacheWrapper {
 		}
 	}
 	
-	public void checkOut(String listen) {
+	public void checkOut(IEntity<?> entity) {
+		if(entity == null) {
+			return;
+		}
+		
+		if(entity.getKey() != null) {
+			checkOut(String.format("%s(%s)", entity.getClass().getName(), entity.getKey().toString()));
+		}
+		
+		for(String listener : entity.getCheckOutKeys()) {
+			checkOut(listener);
+		}
+		
+		checkOut(entity.getClass().getName());
+	}
+	
+	private void checkOut(String listen) {
 		if(cacheKeyRegistry.containsKey(listen)) {
 			AsyncMemcacheService asyncCache = MemcacheServiceFactory.getAsyncMemcacheService();
 			Future<Set<String>> futureVal = asyncCache.deleteAll(cacheKeyRegistry.get(listen));

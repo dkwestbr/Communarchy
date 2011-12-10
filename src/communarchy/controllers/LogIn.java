@@ -74,9 +74,9 @@ public class LogIn extends HttpServlet {
 			System.out.println("Logging in: " + userName + " -------");
 			GetUserByName query = new GetUserByName(userName);
 			
-			ApplicationUser user = mapper.getUnique(query);
+			ApplicationUser user = mapper.selectUnique(query);
 			if(user == null) {
-				user = mapper.persistUnique(query);
+				user = mapper.insertUnique(query);
 				request.getSession().removeAttribute(IHttpSessionConstants.LOGIN_MESSAGE);
 			}
 			

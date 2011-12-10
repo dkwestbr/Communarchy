@@ -1,5 +1,6 @@
 package communarchy.facts.queries.list;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jdo.Query;
@@ -17,10 +18,14 @@ public class GetVoteCountQuery implements IListQuery<VoteCounter> {
 	
 	private Key povId;
 	
+	private List<String> checkInKeys;
+	
 	public GetVoteCountQuery(Key povId) {
 		this.povId = povId;
 		
 		this.memCacheKey = String.format("%s_%s", GetVoteCountQuery.class.getName(), povId.toString());
+		this.checkInKeys = new ArrayList<String>();
+		this.checkInKeys.add(String.format("%s(%s)", VoteCounter.class.getName(), povId.toString()));
 	}
 
 	@Override
@@ -37,15 +42,8 @@ public class GetVoteCountQuery implements IListQuery<VoteCounter> {
 		
 		List<VoteCounter> results = null;
 	
-	    Integer count = 0;
 	    try {
 	    	results = (List<VoteCounter>) query.execute(povId);
-	    	
-	    	if(results != null) {
-	    		for(VoteCounter result : results) {
-	    			count += result.getCount();
-	    		}
-	    	}
 	    } finally {
 	    	query.closeAll();
 	    }
@@ -54,23 +52,12 @@ public class GetVoteCountQuery implements IListQuery<VoteCounter> {
 	}
 
 	@Override
-	public Class<VoteCounter> getType() {
+	public List<String> getCheckInKeys() {
+		return this.checkInKeys;
+	}
+
+	@Override
+	public Class<VoteCounter> getResourceType() {
 		return VoteCounter.class;
-	}
-
-	@Override
-	public String getExpiryKey() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getRankChangeKey() {
-		return null;
-	}
-
-	@Override
-	public boolean isRanked() {
-		return false;
 	}
 }

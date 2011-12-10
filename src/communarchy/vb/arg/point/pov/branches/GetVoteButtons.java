@@ -12,12 +12,14 @@ import communarchy.facts.interfaces.IPointOfView;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.mappers.UniqueEntityMapper;
 import communarchy.facts.queries.entity.GetVoteQuery;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.arg.point.pov.nodes.AllowVote;
 import communarchy.vb.arg.point.pov.nodes.AlreadyVoted;
 import communarchy.vb.arg.point.pov.nodes.NoVotesRemaining;
 
+@SuppressWarnings("rawtypes")
 public class GetVoteButtons extends AbstractTemplateWrapper implements
 		IResourceTemplateWrapper<IPointOfView> {
 
@@ -51,21 +53,24 @@ public class GetVoteButtons extends AbstractTemplateWrapper implements
 
 		SoyMapData pMap = new SoyMapData();
 		
-		IVote vote = pmSession.getMapper(UniqueEntityMapper.class)
-				.getUnique(new GetVoteQuery(scopedResource.getParentPointId(), scopedResource.getKey(), user.getUserId()));
-		if(vote != null) {
-			pMap.put(P_IS_DISABLED, " ");
-			pMap.put(P_VOTE_PARAMS, AlreadyVoted.get().getParams(pmSession, user, request, scopedResource));
-		} else if(user.getUserId().equals(scopedResource.getPosterId())) {
-			pMap.put(P_USER_IS_AUTHOR, " ");
-			pMap.put(P_VOTE_PARAMS, NoVotesRemaining.get().getParams(pmSession, user, request, scopedResource));
-		} else if(VoteLimit.AllowVote(pmSession, scopedResource.getKey(), user.getUserId())) {
-			pMap.put(P_NO_VOTES_REMAINING, " ");
-			pMap.put(P_VOTE_PARAMS, NoVotesRemaining.get().getParams(pmSession, user, request, scopedResource));
-		}
-		
-		else {
-			pMap.put(P_VOTE_PARAMS, AllowVote.get().getParams(pmSession, user, request, scopedResource));
+		try {
+			IVote vote = pmSession.getMapper(UniqueEntityMapper.class)
+					.selectUnique(new GetVoteQuery(scopedResource.getParentPointId(), scopedResource.getKey(), user.getUserId()));
+			if(vote != null) {
+				pMap.put(P_IS_DISABLED, " ");
+				pMap.put(P_VOTE_PARAMS, AlreadyVoted.get().getParams(pmSession, user, request, scopedResource));
+			} else if(user.getUserId().equals(scopedResource.getPosterId())) {
+				pMap.put(P_USER_IS_AUTHOR, " ");
+				pMap.put(P_VOTE_PARAMS, NoVotesRemaining.get().getParams(pmSession, user, request, scopedResource));
+			} else if(VoteLimit.AllowVote(pmSession, scopedResource.getKey(), user.getUserId())) {
+				pMap.put(P_NO_VOTES_REMAINING, " ");
+				pMap.put(P_VOTE_PARAMS, NoVotesRemaining.get().getParams(pmSession, user, request, scopedResource));
+			} else {
+				pMap.put(P_VOTE_PARAMS, AllowVote.get().getParams(pmSession, user, request, scopedResource));
+			}
+			
+		} catch (CommunarchyPersistenceException e) {
+			e.printStackTrace();
 		}
 		
 		return pMap;

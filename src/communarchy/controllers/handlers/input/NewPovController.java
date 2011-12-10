@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,8 +29,12 @@ import communarchy.facts.mappers.BasicMapper;
 import communarchy.facts.mappers.UniqueEntityMapper;
 import communarchy.facts.queries.entity.UserStanceQuery;
 import communarchy.utils.constants.IHttpSessionConstants;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 
 public class NewPovController extends AbstractInputHandler {
+	
+	private static final Logger log =
+		      Logger.getLogger(NewPovController.class.getName());
 	
 	/**
 	 * 
@@ -58,6 +63,7 @@ public class NewPovController extends AbstractInputHandler {
 		});
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void performPost(HttpServletRequest request,
 			HttpServletResponse response,
@@ -76,17 +82,17 @@ public class NewPovController extends AbstractInputHandler {
 				int stanceId = UserStance.getStanceAsId(stance);
 				long id = Long.parseLong(newPovMatcher.group(2));
 				Key pointKey = KeyFactory.createKey(Point.class.getSimpleName(), id);
-				IPoint point = pmSession.getMapper(BasicMapper.class).getById(Point.class, pointKey);
+				IPoint point = pmSession.getMapper(BasicMapper.class).select(Point.class, pointKey);
 				if(point == null) {
 					response.sendError(HttpServletResponse.SC_NOT_FOUND);
 				} else {
-					UserStance userStance = pmSession.getMapper(UniqueEntityMapper.class).getUnique(new UserStanceQuery(pointKey, user.getUserId()));
+					UserStance userStance = pmSession.getMapper(UniqueEntityMapper.class).selectUnique(new UserStanceQuery(pointKey, user.getUserId(), null));
 					if(userStance == null || userStance.getStance() != stanceId) {
 						response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 					} else {
 						PointOfView pov = new PointOfView(point.getKey(), user.getUserId(), 
 								validInputs.get("pov").getContent(), stanceId);
-						pmSession.getMapper(BasicMapper.class).persist(pov);
+						pmSession.getMapper(BasicMapper.class).insert(pov);
 						response.sendRedirect(getRedirectURI(request.getRequestURI(), pmSession));
 					}
 				}
@@ -96,6 +102,9 @@ public class NewPovController extends AbstractInputHandler {
 		} catch (SoyTofuException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			throw e;
+		} catch (CommunarchyPersistenceException e) {
+			log.warning(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			pmSession.close();
 			out.close();
@@ -113,8 +122,11 @@ public class NewPovController extends AbstractInputHandler {
 		return IHttpSessionConstants.VALIDATION_RESULTS_NEW_POINT;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
-	protected String getRedirectURI(String originatingURI, PMSession pmSession) throws MalformedURLException {
+	protected String getRedirectURI(String originatingURI, PMSession pmSession) 
+			throws MalformedURLException, CommunarchyPersistenceException {
+		
 		Pattern pointIdPattern = Pattern.compile("/point/pov/new/(agree|neutral|disagree)/([0-9]+)");
 		Matcher pointIdMatcher = pointIdPattern.matcher(originatingURI);
 		
@@ -122,7 +134,7 @@ public class NewPovController extends AbstractInputHandler {
 		if(pointIdMatcher.find()) {
 			Long id = Long.parseLong(pointIdMatcher.group(2));
 			Key pointKey = KeyFactory.createKey(Point.class.getSimpleName(), id);
-			IPoint point = pmSession.getMapper(BasicMapper.class).getById(Point.class, pointKey);
+			IPoint point = pmSession.getMapper(BasicMapper.class).select(Point.class, pointKey);
 			argId = point.getParentId().getId();
 		}
 		

@@ -12,6 +12,7 @@ import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.global.nodes.ThickBorder;
 
+@SuppressWarnings("rawtypes")
 public class NewPoint extends AbstractTemplateWrapper implements
 		IResourceTemplateWrapper<IArgument> {
 

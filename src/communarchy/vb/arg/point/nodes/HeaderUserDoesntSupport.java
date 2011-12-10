@@ -11,6 +11,7 @@ import communarchy.facts.interfaces.IUser;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceSubsetWrapper;
 
+@SuppressWarnings("rawtypes")
 public class HeaderUserDoesntSupport extends AbstractTemplateWrapper implements
 	IResourceSubsetWrapper<IPoint, Integer> {
 	

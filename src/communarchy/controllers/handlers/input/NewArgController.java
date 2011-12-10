@@ -23,6 +23,7 @@ import communarchy.facts.implementations.Argument;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.mappers.BasicMapper;
 import communarchy.utils.constants.IHttpSessionConstants;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 import communarchy.vb.newarg.NewArgRoot;
 
 public class NewArgController extends AbstractInputHandler {
@@ -101,7 +102,7 @@ public class NewArgController extends AbstractInputHandler {
 
 	@Override
 	public void performPost(HttpServletRequest request,
-			HttpServletResponse response, Map<String, ValidationResult> validInputs) {
+			HttpServletResponse response, Map<String, ValidationResult> validInputs) throws CommunarchyPersistenceException {
 		
 		String title = validInputs.get("title").getContent();
 		String content = validInputs.get("content").getContent();
@@ -109,7 +110,7 @@ public class NewArgController extends AbstractInputHandler {
 		PMSession pmSession = PMSession.getOpenSession();
 		
 		Argument arg = new Argument(user.getUserId(), title, content);
-		pmSession.getMapper(BasicMapper.class).persist(arg);
+		pmSession.getMapper(BasicMapper.class).insert(arg);
 		
 		try {
 			response.sendRedirect(String.format("/arg/%d", arg.getArgId().getId()));

@@ -13,6 +13,7 @@ import communarchy.facts.implementations.UnauthenticatedUser;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.mappers.BasicMapper;
 import communarchy.utils.constants.IHttpSessionConstants;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 
 /**
  * Servlet implementation class LogOut
@@ -37,7 +38,11 @@ public class LogOut extends HttpServlet {
 			
 			IUser user = (IUser) session.getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
 			if(user.isAuthenticated()) {
-				pmSession.getMapper(BasicMapper.class).persist((ApplicationUser) user);
+				try {
+					pmSession.getMapper(BasicMapper.class).update((ApplicationUser) user);
+				} catch (CommunarchyPersistenceException e) {
+					e.printStackTrace();
+				}
 			}
 			
 			user = UnauthenticatedUser.getNewUser();

@@ -1,5 +1,8 @@
 package communarchy.facts.counters;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -9,7 +12,7 @@ import communarchy.facts.implementations.UserStance;
 import communarchy.facts.interfaces.IStance;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
-public class StanceCounter extends AbstractCounter<UserStance> {
+public class StanceCounter extends AbstractCounter<UserStance, StanceCounter> {
 		
 	/**
 	 * 
@@ -21,6 +24,8 @@ public class StanceCounter extends AbstractCounter<UserStance> {
 	
 	@Persistent
 	private Integer stance;
+	
+	private List<String> checkOutKeys;
 	
 	public StanceCounter(IStance resource, Integer shardNum) {
 		super(shardNum);
@@ -35,6 +40,15 @@ public class StanceCounter extends AbstractCounter<UserStance> {
 	private void init(Key pointId, Integer stance) {
 		this.point = pointId;
 		this.stance = stance;
+		
+		InitCheckOutKeys(this);
+	}
+	
+	private static void InitCheckOutKeys(StanceCounter counter) {
+		counter.checkOutKeys = new ArrayList<String>();
+		counter.checkOutKeys.add(String.format("%s(%s)", StanceCounter.class.getName(), counter.point.toString()));
+		counter.checkOutKeys.add(String.format("%s(%s_%d)", StanceCounter.class.getName(), counter.point.toString(), counter.stance));
+		counter.checkOutKeys.add(String.format("%s(%s_%d_%d)", StanceCounter.class.getName(), counter.point.toString(), counter.stance, counter.shardNum));
 	}
 	
 	public Key getPointKey() {
@@ -46,13 +60,18 @@ public class StanceCounter extends AbstractCounter<UserStance> {
 	}
 
 	@Override
-	public Key getKey() {
-		return resourceId;
+	public List<String> getCheckOutKeys() {
+		if(this.checkOutKeys == null || this.checkOutKeys.isEmpty()) {
+			InitCheckOutKeys(this);
+		}
+		
+		return this.checkOutKeys;
 	}
 
 	@Override
-	public String getNewObjectKey() {
-		// TODO Auto-generated method stub
-		return null;
+	public void update(StanceCounter updateValue) {
+		this.shardNum = updateValue.getShardNum();
+		this.stance = updateValue.getStance();
+		this.point = updateValue.getPointKey();
 	}
 }

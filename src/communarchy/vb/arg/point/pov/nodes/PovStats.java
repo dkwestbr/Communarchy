@@ -9,9 +9,11 @@ import communarchy.facts.interfaces.IPointOfView;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.mappers.CountMapper;
 import communarchy.facts.queries.list.GetVoteCountQuery;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 
+@SuppressWarnings("rawtypes")
 public class PovStats extends AbstractTemplateWrapper implements
 		IResourceTemplateWrapper<IPointOfView> {
 
@@ -38,7 +40,11 @@ public class PovStats extends AbstractTemplateWrapper implements
 			HttpServletRequest request, IPointOfView scopedResource) {
 		
 		SoyMapData pMap = new SoyMapData();
-		pMap.put(P_POV_VOTE_COUNT, pmSession.getMapper(CountMapper.class).getCount(new GetVoteCountQuery(scopedResource.getKey())));
+		try {
+			pMap.put(P_POV_VOTE_COUNT, pmSession.getMapper(CountMapper.class).getCount(new GetVoteCountQuery(scopedResource.getKey())));
+		} catch (CommunarchyPersistenceException e) {
+			e.printStackTrace();
+		}
 		
 		return pMap;
 	}

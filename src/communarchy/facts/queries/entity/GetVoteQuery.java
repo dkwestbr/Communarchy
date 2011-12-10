@@ -1,5 +1,6 @@
 package communarchy.facts.queries.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jdo.Query;
@@ -19,12 +20,17 @@ public class GetVoteQuery implements IEntityQuery<Vote> {
 	private Key pointId;
 	private Key userId;
 	
+	private List<String> checkInKeys;
+	
 	public GetVoteQuery(Key pointId, Key povId, Key userId) {
 		this.pointId = pointId;
 		this.povId = povId;
 		this.userId = userId;
 		
 		this.memCacheKey = String.format("%s_%s_%s", GetVoteQuery.class.getName(), povId.toString(), userId.toString());
+		
+		this.checkInKeys = new ArrayList<String>();
+		this.checkInKeys.add(String.format("%s(%s_%s)", Vote.class.getName(), povId.toString(), userId.toString()));
 	}
 
 	@Override
@@ -53,5 +59,10 @@ public class GetVoteQuery implements IEntityQuery<Vote> {
 		}
 		
 		return results == null || results.isEmpty() ? null : results.get(0);
+	}
+
+	@Override
+	public List<String> getCheckInKeys() {
+		return this.checkInKeys;
 	}
 }

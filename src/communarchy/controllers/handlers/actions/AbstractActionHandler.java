@@ -1,6 +1,7 @@
 package communarchy.controllers.handlers.actions;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,8 +15,12 @@ import communarchy.facts.PMSession;
 import communarchy.facts.implementations.ApplicationUser;
 import communarchy.facts.interfaces.IUser;
 import communarchy.utils.constants.IHttpSessionConstants;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 
 public abstract class AbstractActionHandler<T> extends HttpServlet {
+	
+	private static final Logger log =
+		      Logger.getLogger(AbstractActionHandler.class.getName());
 	
 	/**
 	 * 
@@ -24,7 +29,7 @@ public abstract class AbstractActionHandler<T> extends HttpServlet {
 	
 	protected abstract void performAction(HttpServletRequest request, HttpServletResponse response, 
 			T resource, String action, ApplicationUser user, PMSession pmSession) throws IOException;
-	protected abstract T getResource(long id, PMSession pmSession);
+	protected abstract T getResource(long id, PMSession pmSession) throws CommunarchyPersistenceException;
 	protected abstract String getMatcherPattern();
 	protected abstract boolean handlesAction(String action);
 	
@@ -53,7 +58,12 @@ public abstract class AbstractActionHandler<T> extends HttpServlet {
 			if(idMatcher.find()) {
 				String action = idMatcher.group(1);
 				long id = Long.parseLong(idMatcher.group(2));
-				T resource = getResource(id, pmSession);
+				T resource = null;
+				try {
+					resource = getResource(id, pmSession);
+				} catch (CommunarchyPersistenceException e) {
+					log.warning(e.getMessage());
+				}
 				
 				if(resource == null || !handlesAction(action)) {
 					response.sendError(HttpServletResponse.SC_NOT_FOUND);

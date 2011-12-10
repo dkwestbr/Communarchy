@@ -1,7 +1,9 @@
 package communarchy.facts.implementations;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
@@ -14,7 +16,7 @@ import com.google.appengine.api.datastore.Text;
 import communarchy.facts.interfaces.IPointOfView;
 
 @PersistenceCapable
-public class PointOfView implements IPointOfView, Serializable {
+public class PointOfView implements IPointOfView<PointOfView>, Serializable {
 	
 	private static transient final long serialVersionUID = 1L;
 
@@ -45,6 +47,8 @@ public class PointOfView implements IPointOfView, Serializable {
 	@Persistent
 	private Date updateDate;
 	
+	private List<String> checkOutKeys;
+	
 	public PointOfView(){}
 	
 	public PointOfView(Key parent_point_id, Key poster_id, String pov, Integer stance) {
@@ -59,6 +63,22 @@ public class PointOfView implements IPointOfView, Serializable {
 		this.stance = stance;
 		this.createDate = new Date();
 		this.updateDate = createDate;
+		
+		InitCheckOutKeys(this);
+	}
+	
+	private static void InitCheckOutKeys(PointOfView pov) {
+		pov.checkOutKeys = new ArrayList<String>();
+		pov.checkOutKeys.add(String.format("%s(%s)", PointOfView.class.getName(),
+				pov.getPosterId().toString()));
+		pov.checkOutKeys.add(String.format("%s(%s)",
+				PointOfView.class.getName(), pov.getParentPointId().toString()));
+		pov.checkOutKeys.add(String.format("%s(%s_%s)",
+				PointOfView.class.getName(), pov.getParentPointId().toString(), pov.getPosterId().toString()));
+		pov.checkOutKeys.add(String.format("%s(%s_%d)",
+				PointOfView.class.getName(), pov.getParentPointId().toString(), pov.getStance()));
+		pov.checkOutKeys.add(String.format("%s(%s_%s_%d)",
+				PointOfView.class.getName(), pov.getPosterId().toString(), pov.getParentPointId().toString(), pov.getStance()));
 	}
 	
 	public Key getParentPointId() {
@@ -84,7 +104,29 @@ public class PointOfView implements IPointOfView, Serializable {
 	}
 
 	@Override
-	public String getNewObjectKey() {
-		return String.format("new_%s_%s_%d", PointOfView.class.getName(), parentPointId.toString(), stance);
+	public List<String> getCheckOutKeys() {
+		if(this.checkOutKeys == null || this.checkOutKeys.isEmpty()) {
+			InitCheckOutKeys(this);
+		}
+		
+		return this.checkOutKeys;
+	}
+
+
+	@Override
+	public Text getRawPov() {
+		return this.pov;
+	}
+
+	@Override
+	public Date getUpdateDate() {
+		return this.updateDate;
+	}
+	
+	@Override
+	public void update(PointOfView updateValue) {
+		this.updateDate = updateValue.getUpdateDate();
+		this.pov = updateValue.getRawPov();
+		this.checkOutKeys = updateValue.getCheckOutKeys();
 	}
 }

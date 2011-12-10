@@ -1,5 +1,6 @@
 package communarchy.facts.queries.list;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jdo.Query;
@@ -17,10 +18,15 @@ public class PointsByArgument implements IListQuery<Point> {
 	private Key argId;
 	private String memcacheKey;
 	
+	private List<String> checkInKeys;
+	
 	public PointsByArgument(Key argId) {
 		this.argId = argId;
 		
 		this.memcacheKey = String.format("%s_%s", PointsByArgument.class.getName(), argId);
+		
+		this.checkInKeys = new ArrayList<String>();
+		this.checkInKeys.add(String.format("%s(%s)", Point.class.getName(), argId.toString()));
 	}
 	
 	@Override
@@ -46,24 +52,12 @@ public class PointsByArgument implements IListQuery<Point> {
 	}
 
 	@Override
-	public Class<Point> getType() {
+	public List<String> getCheckInKeys() {
+		return this.checkInKeys;
+	}
+
+	@Override
+	public Class<Point> getResourceType() {
 		return Point.class;
-	}
-
-	@Override
-	public String getExpiryKey() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getRankChangeKey() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isRanked() {
-		return true;
 	}
 }

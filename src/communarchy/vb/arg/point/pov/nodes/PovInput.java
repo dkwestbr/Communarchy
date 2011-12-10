@@ -11,9 +11,11 @@ import communarchy.facts.interfaces.IUser;
 import communarchy.facts.interfaces.IUserStance;
 import communarchy.facts.mappers.UniqueEntityMapper;
 import communarchy.facts.queries.entity.UserStanceQuery;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 
+@SuppressWarnings("rawtypes")
 public class PovInput extends AbstractTemplateWrapper implements
 	IResourceTemplateWrapper<IPoint> {
 
@@ -43,7 +45,11 @@ public class PovInput extends AbstractTemplateWrapper implements
 		SoyMapData pMap = new SoyMapData();
 		IUserStance stance = null;
 		if(user.getUserId() != null) {
-			stance = pmSession.getMapper(UniqueEntityMapper.class).getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId()));
+			try {
+				stance = pmSession.getMapper(UniqueEntityMapper.class).selectUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId(), null));
+			} catch (CommunarchyPersistenceException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		pMap.put(P_ACTION, String.format("/point/pov/new/%s/%d", 

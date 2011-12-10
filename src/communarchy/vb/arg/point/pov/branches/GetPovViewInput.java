@@ -12,10 +12,12 @@ import communarchy.facts.interfaces.IUser;
 import communarchy.facts.mappers.UniqueEntityMapper;
 import communarchy.facts.queries.entity.UserStanceQuery;
 import communarchy.utils.constants.IHttpSessionConstants;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.arg.point.pov.nodes.PovInput;
 
+@SuppressWarnings("rawtypes")
 public class GetPovViewInput extends AbstractTemplateWrapper implements
 		IResourceTemplateWrapper<IPoint> {
 
@@ -50,23 +52,27 @@ public class GetPovViewInput extends AbstractTemplateWrapper implements
 		
 		SoyMapData pMap = new SoyMapData();
 		
-		if (user.isAuthenticated() && user.getUserId() != null &&
-				pmSession.getMapper(UniqueEntityMapper.class).getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId())) != null) {
-		
-			pMap.put(P_STANCE_TAKEN, "true");
-			Map<String, ValidationResult> results = (Map<String, ValidationResult>) request.getSession().getAttribute(IHttpSessionConstants.VALIDATION_RESULTS_NEW_POV);
-			if(results != null && results.get("pov") != null && !results.get("pov").isValid()) {
-				pMap.put(P_HAS_ERRORS, "true");
-				pMap.put(P_POV_SET, PovInputWithErrors.get().getParams(pmSession, user, request, scopedResource));
+		try {
+			if (user.isAuthenticated() && user.getUserId() != null &&
+					pmSession.getMapper(UniqueEntityMapper.class).selectUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId(), null)) != null) {
+			
+				pMap.put(P_STANCE_TAKEN, "true");
+				Map<String, ValidationResult> results = (Map<String, ValidationResult>) request.getSession().getAttribute(IHttpSessionConstants.VALIDATION_RESULTS_NEW_POV);
+				if(results != null && results.get("pov") != null && !results.get("pov").isValid()) {
+					pMap.put(P_HAS_ERRORS, "true");
+					pMap.put(P_POV_SET, PovInputWithErrors.get().getParams(pmSession, user, request, scopedResource));
+				} else {
+					
+					pMap.put(P_HAS_ERRORS, "");
+					pMap.put(P_POV_SET, PovInput.get().getParams(pmSession, user, request, scopedResource));
+				}
 			} else {
-				
+				pMap.put(P_STANCE_TAKEN, "");
 				pMap.put(P_HAS_ERRORS, "");
-				pMap.put(P_POV_SET, PovInput.get().getParams(pmSession, user, request, scopedResource));
+				pMap.put(P_POV_SET, "");
 			}
-		} else {
-			pMap.put(P_STANCE_TAKEN, "");
-			pMap.put(P_HAS_ERRORS, "");
-			pMap.put(P_POV_SET, "");
+		} catch (CommunarchyPersistenceException e) {
+			e.printStackTrace();
 		}
 		
 		return pMap;

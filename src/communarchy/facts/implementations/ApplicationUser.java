@@ -1,7 +1,9 @@
 package communarchy.facts.implementations;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -15,7 +17,7 @@ import communarchy.facts.interfaces.IEntity;
 import communarchy.facts.interfaces.IUser;
 
 @PersistenceCapable
-public class ApplicationUser implements IUser, Serializable, IEntity {
+public class ApplicationUser implements IUser, Serializable, IEntity<ApplicationUser> {
 	/**
 	 * 
 	 */
@@ -34,6 +36,8 @@ public class ApplicationUser implements IUser, Serializable, IEntity {
 	@Persistent
 	private String href;
 	
+	private List<String> checkOutKeys;
+	
 	private String TEMPL_HREF_KEY = "href";
 	private String TEMPL_DISPLAY_NAME_KEY = "displayName";
 	
@@ -49,6 +53,13 @@ public class ApplicationUser implements IUser, Serializable, IEntity {
 		this.displayName = displayName;
 		this.userRoleId = userRoleId;
 		this.href = href;
+		
+		InitCheckOutKeys(this);
+	}
+	
+	private static void InitCheckOutKeys(ApplicationUser user) {
+		user.checkOutKeys = new ArrayList<String>();
+		user.checkOutKeys.add(String.format("%s(%s)", ApplicationUser.class.getName(), user.getDisplayName()));
 	}
 	
 	@Override
@@ -93,6 +104,7 @@ public class ApplicationUser implements IUser, Serializable, IEntity {
 	@Override
 	public void setUserRoleId(Integer id) {
 		this.userRoleId = id;
+		InitCheckOutKeys(this);
 	}
 
 	@Override
@@ -106,8 +118,18 @@ public class ApplicationUser implements IUser, Serializable, IEntity {
 	}
 
 	@Override
-	public String getNewObjectKey() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<String> getCheckOutKeys() {
+		if(this.checkOutKeys == null || this.checkOutKeys.isEmpty()) {
+			InitCheckOutKeys(this);
+		}
+		
+		return this.checkOutKeys;
+	}
+
+	@Override
+	public void update(ApplicationUser updateValue) {
+		this.displayName = updateValue.getDisplayName();
+		this.userRoleId = updateValue.getUserRoleId();
+		this.checkOutKeys = updateValue.getCheckOutKeys();
 	}
 }

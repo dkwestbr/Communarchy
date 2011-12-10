@@ -1,10 +1,6 @@
 package communarchy.vb.main.branches;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-
-import org.datanucleus.store.appengine.query.JDOCursorHelper;
 
 import com.google.template.soy.data.SoyListData;
 import com.google.template.soy.data.SoyMapData;
@@ -47,11 +43,12 @@ public class GetArgFeed extends AbstractTemplateWrapper implements IParamBuilder
 		
 		SoyListData argList = new SoyListData();
 		ArgFeedQuery query = new ArgFeedQuery(null);
-		List<Argument> results = pmSession.getMapper(QueryMapper.class).runListQuery(query);
-		PageSet<Argument> pageSet = new PageSet<Argument>(results, null, JDOCursorHelper.getCursor(results).toWebSafeString());
+		PageSet<Argument> pageSet = pmSession.getMapper(QueryMapper.class).runPagedListQuery(query);
 		
-		for(Argument arg : pageSet.getPages()) {
-			argList.add(ArgFeedElement.get().getParams(pmSession, user, request, arg));
+		if(pageSet != null) {
+			for(Argument arg : pageSet.getPages(pmSession)) {
+				argList.add(ArgFeedElement.get().getParams(pmSession, user, request, arg));
+			}
 		}
 		
 		pMap.put(P_ARGS, argList);

@@ -10,9 +10,11 @@ import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.mappers.CountMapper;
 import communarchy.facts.queries.list.GetStanceCount;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceSubsetWrapper;
 
+@SuppressWarnings("rawtypes")
 public class StanceCountHeader extends AbstractTemplateWrapper implements
 	IResourceSubsetWrapper<IPoint, Integer> {
 
@@ -43,7 +45,13 @@ public class StanceCountHeader extends AbstractTemplateWrapper implements
 		SoyMapData pMap = new SoyMapData();
 		
 		pMap.put(P_PERSON_IMG, Stance.getStanceUrlPath(subset));
-		pMap.put(P_STANCE_COUNT, pmSession.getMapper(CountMapper.class).getCount(new GetStanceCount(scopedResource.getKey(), subset)));
+		Integer count = 0;
+		try {
+			count = pmSession.getMapper(CountMapper.class).getCount(new GetStanceCount(scopedResource.getKey(), subset));
+		} catch (CommunarchyPersistenceException e) {
+			e.printStackTrace();
+		}
+		pMap.put(P_STANCE_COUNT, count);
 		
 		return pMap;
 	}

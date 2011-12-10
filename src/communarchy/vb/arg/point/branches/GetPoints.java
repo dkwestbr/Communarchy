@@ -1,5 +1,6 @@
 package communarchy.vb.arg.point.branches;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,19 +11,19 @@ import com.google.template.soy.data.SoyMapData;
 
 import communarchy.controllers.strategies.displayRank.PointRankStrategy;
 import communarchy.facts.PMSession;
+import communarchy.facts.implementations.Argument;
 import communarchy.facts.implementations.Point;
-import communarchy.facts.interfaces.IArgument;
-import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.mappers.QueryMapper;
 import communarchy.facts.queries.list.PointsByArgument;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.arg.point.nodes.PointSeperator;
 import communarchy.vb.arg.point.nodes.PointView;
 
 public class GetPoints extends AbstractTemplateWrapper implements
-		IResourceTemplateWrapper<IArgument> {
+		IResourceTemplateWrapper<Argument> {
 
 	private static GetPoints INSTANCE;
 	private GetPoints() {}
@@ -47,14 +48,22 @@ public class GetPoints extends AbstractTemplateWrapper implements
 	
 	@Override
 	public SoyMapData getParams(PMSession pmSession, IUser user,
-			HttpServletRequest request, IArgument scopedResource) {
+			HttpServletRequest request, Argument scopedResource) {
 		
 		SoyMapData pMap = new SoyMapData();
-		List<Point> points = pmSession.getMapper(QueryMapper.class).runListQuery(new PointsByArgument(scopedResource.getArgId()));
+		List<Point> points = null;
+		try {
+			points = pmSession.getMapper(QueryMapper.class).runListQuery(new PointsByArgument(scopedResource.getArgId()));
+		} catch (CommunarchyPersistenceException e) {
+			e.printStackTrace();
+		} finally {
+			points = points == null ? new ArrayList<Point>() : points;
+		}
+		
 		Collections.sort(points, new PointRankStrategy(pmSession));
 		
 		SoyListData pointList = new SoyListData();
-		for(IPoint point : points) {
+		for(Point point : points) {
 			pointList.add(PointView.get().getParams(pmSession, user, request, point));
 		}
 		

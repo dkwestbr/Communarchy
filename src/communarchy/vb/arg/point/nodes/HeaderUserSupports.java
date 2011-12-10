@@ -12,9 +12,11 @@ import communarchy.facts.interfaces.IUser;
 import communarchy.facts.interfaces.IUserStance;
 import communarchy.facts.mappers.UniqueEntityMapper;
 import communarchy.facts.queries.entity.UserStanceQuery;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 
+@SuppressWarnings("rawtypes")
 public class HeaderUserSupports extends AbstractTemplateWrapper implements
 	IResourceTemplateWrapper<IPoint> {
 
@@ -45,19 +47,23 @@ public class HeaderUserSupports extends AbstractTemplateWrapper implements
 		
 		SoyMapData pMap = new SoyMapData();
 		
-		IUserStance userStance = null;
-		if(user.getUserId() != null) {
-			userStance = pmSession.getMapper(UniqueEntityMapper.class)
-				.getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId()));
+		try {
+			IUserStance userStance = null;
+			if(user.getUserId() != null) {
+				userStance = pmSession.getMapper(UniqueEntityMapper.class)
+					.selectUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId(), null));
+			}
+			
+			pMap.put(P_TAKE_STANCE_ACTION, String.format("/point/takestance/%s/%d", 
+					Stance.getStanceUrlPath(userStance.getStance()), scopedResource.getKey().getId()));
+			
+			pMap.put(P_VOTES_REMAINING, VoteLimit.GetVotesRemaining(pmSession, scopedResource.getKey(), userStance.getStance(), user.getUserId()));
+			
+			pMap.put(P_LABEL, Stance.getStanceAsString(userStance.getStance()));
+			pMap.put(P_STANCE, Stance.getStanceUrlPath(userStance.getStance()));
+		} catch(CommunarchyPersistenceException e) {
+			e.printStackTrace();
 		}
-		
-		pMap.put(P_TAKE_STANCE_ACTION, String.format("/point/takestance/%s/%d", 
-				Stance.getStanceUrlPath(userStance.getStance()), scopedResource.getKey().getId()));
-		
-		pMap.put(P_VOTES_REMAINING, VoteLimit.GetVotesRemaining(pmSession, scopedResource.getKey(), userStance.getStance(), user.getUserId()));
-		
-		pMap.put(P_LABEL, Stance.getStanceAsString(userStance.getStance()));
-		pMap.put(P_STANCE, Stance.getStanceUrlPath(userStance.getStance()));
 		
 		return pMap;
 	}

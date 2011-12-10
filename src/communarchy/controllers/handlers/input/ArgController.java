@@ -24,10 +24,10 @@ import communarchy.controllers.handlers.input.validation.IUserInput;
 import communarchy.controllers.handlers.input.validation.ValidationResult;
 import communarchy.facts.PMSession;
 import communarchy.facts.implementations.Argument;
-import communarchy.facts.interfaces.IArgument;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.mappers.BasicMapper;
 import communarchy.utils.constants.IHttpSessionConstants;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 import communarchy.vb.arg.ArgRoot;
 
 public class ArgController extends AbstractInputHandler {
@@ -67,7 +67,7 @@ public class ArgController extends AbstractInputHandler {
 				long id = Long.parseLong(argIdMatcher.group(1));
 				Key argKey = KeyFactory.createKey(Argument.class.getSimpleName(), id);
 				
-				IArgument arg = pmSession.getMapper(BasicMapper.class).getById(Argument.class, argKey);
+				Argument arg = pmSession.getMapper(BasicMapper.class).select(Argument.class, argKey);
 				
 				if(arg == null) {
 					response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -87,6 +87,9 @@ public class ArgController extends AbstractInputHandler {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			log.warning(e.getMessage());
 			throw e;
+		} catch (CommunarchyPersistenceException e) {
+			log.warning(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			out.close();
 			pmSession.close();

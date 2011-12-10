@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,19 +17,25 @@ import communarchy.controllers.handlers.input.validation.ValidationResult;
 import communarchy.facts.PMSession;
 import communarchy.facts.interfaces.IUser;
 import communarchy.utils.constants.IHttpSessionConstants;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 
 public abstract class AbstractInputHandler extends HttpServlet {
 
+	private static final Logger log =
+		      Logger.getLogger(AbstractInputHandler.class.getName());
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public abstract void performPost(HttpServletRequest request, HttpServletResponse response, Map<String, ValidationResult> validInputs) throws IOException;
+	public abstract void performPost(HttpServletRequest request, HttpServletResponse response, Map<String, ValidationResult> validInputs) 
+			throws IOException, CommunarchyPersistenceException;
 	public abstract void performGet(HttpServletRequest request, HttpServletResponse response) throws IOException;
 	
 	protected abstract String getValidationKey();
-	protected abstract String getRedirectURI(String originatingURI, PMSession pmSession) throws MalformedURLException;
+	protected abstract String getRedirectURI(String originatingURI, PMSession pmSession) 
+			throws MalformedURLException, CommunarchyPersistenceException;
 	
 	protected Map<String, IUserInput> requiredFieldMap;
 	
@@ -57,12 +64,21 @@ public abstract class AbstractInputHandler extends HttpServlet {
 			
 			if(isValid) {
 				request.getSession().removeAttribute(getValidationKey());
-				performPost(request, response, results);
+				try {
+					performPost(request, response, results);
+				} catch (CommunarchyPersistenceException e) {
+					log.warning(e.getMessage());
+					e.printStackTrace();
+				}
 			} else {
 				PMSession pmSession = PMSession.getOpenSession();
 				try {
-				request.getSession().setAttribute(getValidationKey(), results);
-				response.sendRedirect(getRedirectURI(request.getRequestURI(), pmSession));
+					request.getSession().setAttribute(getValidationKey(), results);
+					response.sendRedirect(getRedirectURI(request.getRequestURI(), pmSession));
+				} catch (CommunarchyPersistenceException e) {
+					response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					log.warning(e.getMessage());
+					e.printStackTrace();
 				} finally {
 					pmSession.close();
 				}
@@ -100,6 +116,10 @@ public abstract class AbstractInputHandler extends HttpServlet {
 				response.sendRedirect(getRedirectURI(request.getRequestURI(), 
 						PMSession.getOpenSession()));
 			}
+		} catch (CommunarchyPersistenceException e) {
+			log.warning(e.getMessage());
+			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		} finally {
 			pmSession.close();
 		}

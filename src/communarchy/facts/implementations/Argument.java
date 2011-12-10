@@ -1,7 +1,9 @@
 package communarchy.facts.implementations;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
@@ -14,7 +16,7 @@ import com.google.appengine.api.datastore.Text;
 import communarchy.facts.interfaces.IArgument;
 
 @PersistenceCapable
-public class Argument implements IArgument, Serializable {
+public class Argument implements IArgument<Argument>, Serializable {
 
 	/**
 	 * 
@@ -40,6 +42,8 @@ public class Argument implements IArgument, Serializable {
 	@Persistent
 	private Date updateDate;
 	
+	private List<String> checkOutKeys;
+	
 	public Argument(){}
 	
 	public Argument(Key poster_id, String title, String content) {
@@ -53,6 +57,14 @@ public class Argument implements IArgument, Serializable {
 		this.content = new Text(content);
 		this.createDate = new Date();
 		this.updateDate = createDate;
+		
+		InitCheckOutKeys(this);
+	}
+	
+	private static void InitCheckOutKeys(Argument arg) {
+		arg.checkOutKeys = new ArrayList<String>();
+		arg.checkOutKeys.add(String.format("%s(%s)", Argument.class.getName(), arg.getPosterId().toString()));
+		arg.checkOutKeys.add(String.format("%s(%s)", Argument.class.getName(), arg.getTitle().toString()));
 	}
 
 	@Override
@@ -96,8 +108,25 @@ public class Argument implements IArgument, Serializable {
 	}
 
 	@Override
-	public String getNewObjectKey() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<String> getCheckOutKeys() {
+		if(this.checkOutKeys == null || this.checkOutKeys.isEmpty()) {
+			InitCheckOutKeys(this);
+		}
+		
+		return this.checkOutKeys;
+	}
+
+
+	@Override
+	public Text getRawContent() {
+		return this.content;
+	}
+	
+	@Override
+	public void update(Argument updateValue) {
+		this.content = updateValue.getRawContent();
+		this.checkOutKeys = updateValue.getCheckOutKeys();
+		this.title = updateValue.getTitle();
+		this.updateDate = updateValue.getUpdateDate();
 	}
 }

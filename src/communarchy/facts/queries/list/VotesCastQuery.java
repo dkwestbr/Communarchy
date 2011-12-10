@@ -1,5 +1,6 @@
 package communarchy.facts.queries.list;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jdo.Query;
@@ -18,11 +19,16 @@ public class VotesCastQuery implements IListQuery<Vote> {
 	private Key userId;
 	private String memcacheKey;
 	
+	private List<String> checkInKeys;
+	
 	public VotesCastQuery(Key pointId, Key userId) {
 		this.pointId = pointId;
 		this.userId = userId;
 		
 		this.memcacheKey = String.format("%s_%s_%s", VotesCastQuery.class, pointId.toString(), userId.toString());
+		
+		this.checkInKeys = new ArrayList<String>();
+		this.checkInKeys.add(String.format("%s(%s_%s)", Vote.class.getName(), pointId.toString(), userId.toString()));
 	}
 	
 	@Override
@@ -47,23 +53,12 @@ public class VotesCastQuery implements IListQuery<Vote> {
 	}
 
 	@Override
-	public Class<Vote> getType() {
+	public List<String> getCheckInKeys() {
+		return this.checkInKeys;
+	}
+
+	@Override
+	public Class<Vote> getResourceType() {
 		return Vote.class;
-	}
-
-	@Override
-	public String getExpiryKey() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getRankChangeKey() {
-		return null;
-	}
-
-	@Override
-	public boolean isRanked() {
-		return false;
 	}
 }

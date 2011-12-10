@@ -12,6 +12,7 @@ import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.arg.point.pov.branches.GetVoteButtons;
 
+@SuppressWarnings("rawtypes")
 public class UserSupports extends AbstractTemplateWrapper implements
 		IResourceTemplateWrapper<IPointOfView> {
 

@@ -1,5 +1,6 @@
 package communarchy.facts.queries.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -57,5 +58,11 @@ public class GetVoteCountShard implements IEntityQuery<VoteCounter> {
 	    }
 	    
 	    return results == null || results.isEmpty() ? null : results.get(0);
+	}
+
+	private static List<String> EMPTY_LIST = new ArrayList<String>();
+	@Override
+	public List<String> getCheckInKeys() {
+		return EMPTY_LIST;
 	}
 }

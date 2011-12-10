@@ -15,7 +15,7 @@ import communarchy.facts.interfaces.IEntity;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
 @Inheritance(strategy=InheritanceStrategy.SUBCLASS_TABLE)
-public abstract class AbstractCounter<T> implements ICounter, IEntity {
+public abstract class AbstractCounter<T extends IEntity<T>, U> implements ICounter, IEntity<U> {
 	
 	/**
 	 * 
@@ -23,7 +23,6 @@ public abstract class AbstractCounter<T> implements ICounter, IEntity {
 	private static final long serialVersionUID = 1L;
 
 	@PrimaryKey
-	@SuppressWarnings("unused")
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	protected Key resourceId;
 	
@@ -54,5 +53,10 @@ public abstract class AbstractCounter<T> implements ICounter, IEntity {
 	
 	public void decrement() {
 		--count;
+	}
+	
+	@Override
+	public Key getKey() {
+		return resourceId;
 	}
 }

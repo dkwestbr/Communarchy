@@ -1,7 +1,9 @@
 package communarchy.facts.implementations;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
@@ -14,7 +16,7 @@ import com.google.appengine.api.datastore.Text;
 import communarchy.facts.interfaces.IPoint;
 
 @PersistenceCapable
-public class Point implements IPoint, Serializable {
+public class Point implements IPoint<Point>, Serializable {
 	private static transient final long serialVersionUID = 1L;
 
 	@PrimaryKey
@@ -36,6 +38,8 @@ public class Point implements IPoint, Serializable {
 	@Persistent
 	private Date updateDate;
 	
+	private List<String> checkOutKeys;
+	
 	public Point(){}
 	
 	public Point(Key parent_arg_id, Key poster_id, String point) {
@@ -49,6 +53,18 @@ public class Point implements IPoint, Serializable {
 		this.point = new Text(point);
 		this.createDate = new Date();
 		this.updateDate = createDate;
+		
+		InitCheckOutKeys(this);
+	}
+	
+	private static void InitCheckOutKeys(Point point) {
+		point.checkOutKeys = new ArrayList<String>();
+		point.checkOutKeys.add(String.format("%s(%s)", 
+				Point.class.getName(), point.getPosterId().toString()));
+		point.checkOutKeys.add(String.format("%s(%s)", 
+				Point.class.getName(), point.getParentId().toString()));
+		point.checkOutKeys.add(String.format("%s(%s_%s)", 
+				Point.class.getName(), point.getParentId().toString(), point.getPosterId().toString()));
 	}
 	
 	public Key getPosterId() {
@@ -69,7 +85,28 @@ public class Point implements IPoint, Serializable {
 	}
 
 	@Override
-	public String getNewObjectKey() {
-		return String.format("new_%s_%s", Point.class.toString(), parentArgId.toString());
+	public List<String> getCheckOutKeys() {
+		if(this.checkOutKeys == null || this.checkOutKeys.isEmpty()) {
+			InitCheckOutKeys(this);
+		}
+		
+		return this.checkOutKeys;
+	}
+
+	@Override
+	public Text getRawPoint() {
+		return this.point;
+	}
+
+	@Override
+	public Date getUpdateDate() {
+		return this.updateDate;
+	}
+	
+	@Override
+	public void update(Point updateValue) {
+		this.point = updateValue.getRawPoint();
+		this.updateDate = updateValue.getUpdateDate();
+		this.checkOutKeys = updateValue.getCheckOutKeys();
 	}
 }

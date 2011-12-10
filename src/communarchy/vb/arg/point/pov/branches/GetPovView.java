@@ -5,17 +5,18 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.template.soy.data.SoyMapData;
 
 import communarchy.facts.PMSession;
+import communarchy.facts.implementations.Point;
 import communarchy.facts.implementations.UserStance;
-import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.mappers.UniqueEntityMapper;
 import communarchy.facts.queries.entity.UserStanceQuery;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceSubsetWrapper;
 import communarchy.vb.arg.point.pov.nodes.UserAbstains;
 
 public class GetPovView extends AbstractTemplateWrapper implements
-		IResourceSubsetWrapper<IPoint, Integer> {
+		IResourceSubsetWrapper<Point, Integer> {
 
 	private static GetPovView INSTANCE;
 	private GetPovView() {}
@@ -42,15 +43,19 @@ public class GetPovView extends AbstractTemplateWrapper implements
 	
 	@Override
 	public SoyMapData getParams(PMSession pmSession, IUser user,
-			HttpServletRequest request, IPoint scopedResource,
+			HttpServletRequest request, Point scopedResource,
 			Integer subset) {
 		
 		SoyMapData pMap = new SoyMapData();
 		
 		UserStance userStance = null;
 		if(user.getUserId() != null) {
-			userStance = pmSession.getMapper(UniqueEntityMapper.class)
-				.getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId()));
+			try {
+				userStance = pmSession.getMapper(UniqueEntityMapper.class)
+					.selectUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId(), subset));
+			} catch(CommunarchyPersistenceException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		if(userStance == null) {

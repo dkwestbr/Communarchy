@@ -11,6 +11,7 @@ import communarchy.facts.interfaces.IUser;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 
+@SuppressWarnings("rawtypes")
 public class ReclaimVoteInactive extends AbstractTemplateWrapper implements
 		IResourceTemplateWrapper<IPointOfView> {
 

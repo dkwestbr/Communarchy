@@ -11,6 +11,7 @@ import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceSubsetWrapper;
 import communarchy.vb.arg.point.pov.branches.GetUnsupportedPov;
 
+@SuppressWarnings("rawtypes")
 public class UserAbstains extends AbstractTemplateWrapper implements
 		IResourceSubsetWrapper<IPoint, Integer> {
 

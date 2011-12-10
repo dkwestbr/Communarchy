@@ -1,5 +1,6 @@
 package communarchy.facts.queries.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -21,6 +22,8 @@ public class GetStanceCountShard implements IEntityQuery<StanceCounter> {
 	private Integer shardNum;
 	private String memcacheKey;
 	
+	private List<String> checkInKeys;
+	
 	@SuppressWarnings("unused")
 	private GetStanceCountShard() {}
 	
@@ -37,9 +40,11 @@ public class GetStanceCountShard implements IEntityQuery<StanceCounter> {
 		this.stance = stance;
 		
 		this.shardNum = RANDOM.nextInt(NUM_RANDOMS);
-		
 		this.memcacheKey = String.format("%s_%s_%d_%d", 
 				GetStanceCountShard.class.getName(), pointId, stance, shardNum);
+		
+		this.checkInKeys = new ArrayList<String>();
+		this.checkInKeys.add(String.format("%s(%s_%d_%d)", StanceCounter.class.getName(), pointId.toString(), stance, shardNum));
 	}
 	
 	@Override
@@ -62,8 +67,6 @@ public class GetStanceCountShard implements IEntityQuery<StanceCounter> {
 												Integer.class.getName()));
 		
 		List<StanceCounter> results = null;
-	
-	    
 	    try {
 	    	results = (List<StanceCounter>) query.execute(pointId,
 					stance, shardNum);
@@ -72,5 +75,10 @@ public class GetStanceCountShard implements IEntityQuery<StanceCounter> {
 	    }
 	    
 	    return results == null || results.isEmpty() ? null : results.get(0);
+	}
+
+	@Override
+	public List<String> getCheckInKeys() {
+		return this.checkInKeys;
 	}
 }

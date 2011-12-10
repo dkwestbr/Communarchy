@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.template.soy.data.SoyMapData;
 
 import communarchy.facts.PMSession;
-import communarchy.facts.interfaces.IPoint;
+import communarchy.facts.implementations.Point;
 import communarchy.facts.interfaces.IUser;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceSubsetWrapper;
@@ -13,7 +13,7 @@ import communarchy.vb.arg.point.pov.branches.GetPovView;
 import communarchy.vb.arg.point.pov.branches.GetPovViewHeader;
 
 public class PovColumn extends AbstractTemplateWrapper implements
-		IResourceSubsetWrapper<IPoint, Integer> {
+		IResourceSubsetWrapper<Point, Integer> {
 
 	private static PovColumn INSTANCE;
 	private PovColumn() {}
@@ -38,7 +38,7 @@ public class PovColumn extends AbstractTemplateWrapper implements
 	
 	@Override
 	public SoyMapData getParams(PMSession pmSession, IUser user,
-			HttpServletRequest request, IPoint scopedResource, Integer subset) {
+			HttpServletRequest request, Point scopedResource, Integer subset) {
 		
 		SoyMapData pMap = new SoyMapData();
 		pMap.put(P_BUTTON_SET, GetPovViewHeader.get().getParams(pmSession, user, request, scopedResource, subset));

@@ -1,5 +1,6 @@
 package communarchy.facts.queries.list;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,7 @@ import com.google.appengine.api.datastore.Cursor;
 import communarchy.facts.PMSession;
 import communarchy.facts.implementations.Argument;
 
-public class ArgFeedQuery implements IListQuery<Argument> {
+public class ArgFeedQuery implements IPagedQuery<Argument> {
 
 	@SuppressWarnings("unused")
 	private ArgFeedQuery() {}
@@ -23,10 +24,14 @@ public class ArgFeedQuery implements IListQuery<Argument> {
 	
 	private String memcacheKey;
 	
+	private List<String> checkInKeys;
+	
 	public ArgFeedQuery(String startCursor) {
 		this.startCursor = startCursor;
 		
 		this.memcacheKey = String.format("%s_%s", ArgFeedQuery.class.getName(), startCursor);
+		this.checkInKeys = new ArrayList<String>();
+		this.checkInKeys.add(Argument.class.getName());
 	}
 	
 	@Override
@@ -52,24 +57,17 @@ public class ArgFeedQuery implements IListQuery<Argument> {
 	}
 
 	@Override
-	public Class<Argument> getType() {
+	public List<String> getCheckInKeys() {
+		return this.checkInKeys;
+	}
+
+	@Override
+	public Class<Argument> getResourceType() {
 		return Argument.class;
 	}
 
 	@Override
-	public String getExpiryKey() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getRankChangeKey() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isRanked() {
-		return true;
+	public String getStartCursorString() {
+		return startCursor;
 	}
 }

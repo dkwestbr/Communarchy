@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,12 +23,15 @@ import communarchy.facts.PMSession;
 import communarchy.facts.implementations.ApplicationUser;
 import communarchy.facts.implementations.Argument;
 import communarchy.facts.implementations.Point;
-import communarchy.facts.interfaces.IArgument;
 import communarchy.facts.mappers.BasicMapper;
 import communarchy.utils.constants.IHttpSessionConstants;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 
 public class NewPointController extends AbstractInputHandler {
 
+	private static final Logger log =
+		      Logger.getLogger(NewPointController.class.getName());
+	
 	/**
 	 * 
 	 */
@@ -72,13 +76,12 @@ public class NewPointController extends AbstractInputHandler {
 				long id = Long.parseLong(argIdMatcher.group(1));
 				Key argKey = KeyFactory.createKey(Argument.class.getSimpleName(), id);
 				
-				IArgument arg = pmSession.getMapper(BasicMapper.class).getById(Argument.class, argKey);
-				
+				Argument arg = pmSession.getMapper(BasicMapper.class).select(Argument.class, argKey);
 				if(arg == null) {
 					response.sendError(HttpServletResponse.SC_NOT_FOUND);
 				} else {
 					Point point = new Point(arg.getArgId(), user.getUserId(), validInputs.get("point").getContent());
-					pmSession.getMapper(BasicMapper.class).persist(point);
+					pmSession.getMapper(BasicMapper.class).insert(point);
 					response.sendRedirect(getRedirectURI(request.getRequestURI(), pmSession));
 				} 
 			} else {
@@ -87,6 +90,9 @@ public class NewPointController extends AbstractInputHandler {
 		} catch (SoyTofuException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			throw e;
+		} catch (CommunarchyPersistenceException e) {
+			log.warning(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			out.close();
 			pmSession.close();

@@ -5,12 +5,13 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.template.soy.data.SoyMapData;
 
 import communarchy.facts.PMSession;
+import communarchy.facts.implementations.Point;
 import communarchy.facts.implementations.UserStance;
-import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.interfaces.IUserStance;
 import communarchy.facts.mappers.UniqueEntityMapper;
 import communarchy.facts.queries.entity.UserStanceQuery;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.arg.point.branches.GetStanceCountHeaders;
@@ -18,7 +19,7 @@ import communarchy.vb.arg.point.pov.branches.GetPovViewInput;
 import communarchy.vb.arg.point.pov.nodes.PovColumn;
 
 public class PointView extends AbstractTemplateWrapper implements
-		IResourceTemplateWrapper<IPoint> {
+		IResourceTemplateWrapper<Point> {
 
 	private static PointView INSTANCE;
 	private PointView() {}
@@ -48,7 +49,7 @@ public class PointView extends AbstractTemplateWrapper implements
 	
 	@Override
 	public SoyMapData getParams(PMSession pmSession, IUser user, HttpServletRequest request,
-			IPoint scopedResource) {
+			Point scopedResource) {
 		
 		SoyMapData pMap = new SoyMapData();
 		pMap.put(P_ID, String.format("%d", scopedResource.getKey().getId()));
@@ -57,7 +58,11 @@ public class PointView extends AbstractTemplateWrapper implements
 		IUserStance userStance = null;
 		if(scopedResource != null && scopedResource.getKey() != null
 				&& user != null && user.getUserId() != null) {
-			userStance = pmSession.getMapper(UniqueEntityMapper.class).getUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId()));
+			try {
+				userStance = pmSession.getMapper(UniqueEntityMapper.class).selectUnique(new UserStanceQuery(scopedResource.getKey(), user.getUserId(), null));
+			} catch (CommunarchyPersistenceException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		if(userStance == null) {

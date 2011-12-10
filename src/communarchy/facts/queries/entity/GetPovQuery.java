@@ -1,5 +1,6 @@
 package communarchy.facts.queries.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jdo.Query;
@@ -21,6 +22,8 @@ public class GetPovQuery implements IEntityQuery<PointOfView> {
 	private String pov;
 	private Integer stance;
 	
+	private List<String> checkInKeys;
+	
 	public GetPovQuery(Key pointId, Key userId, String pov, Integer stance) {
 		this.pointId = pointId;
 		this.userId = userId;
@@ -28,6 +31,9 @@ public class GetPovQuery implements IEntityQuery<PointOfView> {
 		this.stance = stance;
 		
 		this.memCacheKey = String.format("%s_%s_%s_%d", GetPovQuery.class.getName(), pointId.toString(), userId.toString(), stance);
+		
+		this.checkInKeys = new ArrayList<String>();
+		this.checkInKeys.add(String.format("%s(%s_%s_%d)", PointOfView.class.getName(), userId.toString(), pointId.toString(), stance));
 	}
 
 	@Override
@@ -59,5 +65,10 @@ public class GetPovQuery implements IEntityQuery<PointOfView> {
 		}
 		
 		return results == null || results.isEmpty() ? null : results.get(0);
+	}
+
+	@Override
+	public List<String> getCheckInKeys() {
+		return this.checkInKeys;
 	}
 }

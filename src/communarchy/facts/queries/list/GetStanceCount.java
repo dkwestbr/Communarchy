@@ -1,5 +1,6 @@
 package communarchy.facts.queries.list;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jdo.Query;
@@ -19,6 +20,8 @@ public class GetStanceCount implements IListQuery<StanceCounter> {
 	@SuppressWarnings("unused")
 	private GetStanceCount() {}
 	
+	private List<String> checkInKeys;
+	
 	public GetStanceCount(Stance stance) {
 		init(stance.getPoint(), stance.getStance());
 	}
@@ -33,6 +36,9 @@ public class GetStanceCount implements IListQuery<StanceCounter> {
 		
 		this.memcacheKey = String.format("%s_%s_%d", 
 				GetStanceCount.class.getName(), pointId, stance);
+		
+		this.checkInKeys = new ArrayList<String>();
+		this.checkInKeys.add(String.format("%s(%s_%d)", StanceCounter.class.getName(), pointId.toString(), stance));
 	}
 	
 	@Override
@@ -62,23 +68,12 @@ public class GetStanceCount implements IListQuery<StanceCounter> {
 	}
 
 	@Override
-	public Class<StanceCounter> getType() {
+	public List<String> getCheckInKeys() {
+		return this.checkInKeys;
+	}
+
+	@Override
+	public Class<StanceCounter> getResourceType() {
 		return StanceCounter.class;
-	}
-
-	@Override
-	public String getExpiryKey() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getRankChangeKey() {
-		return null;
-	}
-
-	@Override
-	public boolean isRanked() {
-		return false;
 	}
 }

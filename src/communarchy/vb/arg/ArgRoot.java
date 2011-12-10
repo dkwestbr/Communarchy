@@ -10,7 +10,7 @@ import com.google.template.soy.SoyFileSet.Builder;
 import com.google.template.soy.data.SoyListData;
 import com.google.template.soy.data.SoyMapData;
 import communarchy.facts.PMSession;
-import communarchy.facts.interfaces.IArgument;
+import communarchy.facts.implementations.Argument;
 import communarchy.facts.interfaces.IUser;
 import communarchy.utils.constants.IHttpSessionConstants;
 import communarchy.vb.AbstractTemplateWrapper;
@@ -20,7 +20,7 @@ import communarchy.vb.arg.nodes.ArgViewWrapper;
 import communarchy.vb.global.branches.HeaderWrapper;
 import communarchy.vb.global.nodes.NavigationBarWrapper;
 
-public class ArgRoot extends AbstractTemplateWrapper implements IRootTemplate, IResourceTemplateWrapper<IArgument> {
+public class ArgRoot extends AbstractTemplateWrapper implements IRootTemplate, IResourceTemplateWrapper<Argument> {
 	
 	private static ArgRoot INSTANCE;
 	private ArgRoot() {}
@@ -60,7 +60,7 @@ public class ArgRoot extends AbstractTemplateWrapper implements IRootTemplate, I
 
 	@Override
 	public SoyMapData getParams(PMSession pmSession, IUser user,
-			HttpServletRequest request, IArgument arg) {
+			HttpServletRequest request, Argument arg) {
 		
 		SoyMapData pMap = new SoyMapData();
 		

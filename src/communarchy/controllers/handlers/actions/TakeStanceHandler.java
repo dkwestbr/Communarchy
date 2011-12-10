@@ -2,6 +2,7 @@ package communarchy.controllers.handlers.actions;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.jdo.Transaction;
 import javax.servlet.http.HttpServletRequest;
@@ -24,9 +25,13 @@ import communarchy.facts.queries.entity.GetStanceCountShard;
 import communarchy.facts.queries.entity.GetVoteCountShard;
 import communarchy.facts.queries.entity.UserStanceQuery;
 import communarchy.facts.queries.list.VotesCastQuery;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 
 public class TakeStanceHandler extends AbstractActionHandler<Point> {
 
+	private static final Logger log =
+		      Logger.getLogger(TakeStanceHandler.class.getName());
+	
 	/**
 	 * 
 	 */
@@ -43,9 +48,9 @@ public class TakeStanceHandler extends AbstractActionHandler<Point> {
 	}
 
 	@Override
-	protected Point getResource(long id, PMSession pmSession) {
+	protected Point getResource(long id, PMSession pmSession) throws CommunarchyPersistenceException {
 		Key key = KeyFactory.createKey(Point.class.getSimpleName(), id);
-		return pmSession.getMapper(BasicMapper.class).getById(Point.class, key);
+		return pmSession.getMapper(BasicMapper.class).select(Point.class, key);
 	}
 	
 	@Override
@@ -53,64 +58,68 @@ public class TakeStanceHandler extends AbstractActionHandler<Point> {
 			HttpServletResponse response, Point resource, String command,
 			ApplicationUser user, PMSession pmSession) throws IOException {
 		
-		UserStance existingStance = pmSession.getMapper(UniqueEntityMapper.class)
-				.getUnique(new UserStanceQuery(resource.getKey(), user.getUserId()));
-
-		if(existingStance == null) {
-			Transaction tx = pmSession.getPM().currentTransaction();
-			try {
-				tx.begin();
-				existingStance = new UserStance(user.getUserId(), resource.getKey(), 
-						Stance.getStanceAsId(command));
-				pmSession.getMapper(CountMapper.class).increment(new GetStanceCountShard(existingStance.getPoint(), existingStance.getStance()));
-				pmSession.getMapper(BasicMapper.class).persist(existingStance);
-				tx.commit();
-			} finally {
-				if(tx.isActive()) {
-					tx.rollback();
+		try {
+			UserStanceQuery query = new UserStanceQuery(resource.getKey(), user.getUserId(), Stance.getStanceAsId(command)); 
+			UserStance existingStance = pmSession.getMapper(UniqueEntityMapper.class)
+					.selectUnique(query);
+	
+			if(existingStance == null) {
+				Transaction tx = pmSession.getPM().currentTransaction();
+				try {
+					tx.begin();
+					existingStance = pmSession.getMapper(UniqueEntityMapper.class).insertUnique(query);
+					pmSession.getMapper(CountMapper.class).increment(new GetStanceCountShard(existingStance.getPoint(), existingStance.getStance()));
+					tx.commit();
+				} finally {
+					if(tx.isActive()) {
+						tx.rollback();
+					}
 				}
-			}
-		} else if(!existingStance.getStance().equals(Stance.getStanceAsId(command))) {
-			
-			/*
-			 * This transaction sucks; but GAE doesn't support transactions on more than 5 entity types or on more than 5 operations on 
-			 * the same entity type; therefor it had to be broken up.  There is likely problems with this; but it will work most of the time,
-			 * so I'm ok with that for now.
-			 */
-			Transaction tx = pmSession.getPM().currentTransaction();
-			List<Vote> votes = pmSession.getMapper(QueryMapper.class).runListQuery(new VotesCastQuery(resource.getKey(), user.getUserId()));
-			
-			boolean isSuccesful = false;
-			try {
-				tx.begin();
-				pmSession.getMapper(CountMapper.class).decrement(new GetStanceCountShard(existingStance.getPoint(), existingStance.getStance()));
-				existingStance.setStance(Stance.getStanceAsId(command));
-				pmSession.getMapper(CountMapper.class).increment(new GetStanceCountShard(existingStance.getPoint(), existingStance.getStance()));
-				pmSession.getMapper(BasicMapper.class).persist(existingStance);
-				tx.commit();
-			} finally {
-				if(tx.isActive()) {
-					tx.rollback();
-				} else {
-					isSuccesful = true;
+			} else if(!existingStance.getStance().equals(Stance.getStanceAsId(command))) {
+				
+				/*
+				 * This transaction sucks; but GAE doesn't support transactions on more than 5 entity types or on more than 5 operations on 
+				 * the same entity type; therefore it had to be broken up.  There is likely problems with this; but it will work most of the time,
+				 * so I'm ok with that for now.
+				 */
+				Transaction tx = pmSession.getPM().currentTransaction();
+				List<Vote> votes = pmSession.getMapper(QueryMapper.class).runListQuery(new VotesCastQuery(resource.getKey(), user.getUserId()));
+				
+				boolean isSuccesful = false;
+				try {
+					tx.begin();
+					pmSession.getMapper(CountMapper.class).decrement(new GetStanceCountShard(existingStance.getPoint(), existingStance.getStance()));
+					existingStance.setStance(Stance.getStanceAsId(command));
+					pmSession.getMapper(UniqueEntityMapper.class).updateUnique(query, existingStance);
+					pmSession.getMapper(CountMapper.class).increment(new GetStanceCountShard(existingStance.getPoint(), existingStance.getStance()));
+					tx.commit();
+				} finally {
+					if(tx.isActive()) {
+						tx.rollback();
+					} else {
+						isSuccesful = true;
+					}
 				}
-			}
-			
-			if(isSuccesful == true) {
-				for(Vote deleteMe : votes) {
-					tx = pmSession.getPM().currentTransaction();
-					try {
-						tx.begin();
-						pmSession.getMapper(CountMapper.class).decrement(new GetVoteCountShard(deleteMe.getPovKey()));
-						pmSession.getMapper(BasicMapper.class).delete(deleteMe);
-						tx.commit();
-					} finally {
-						if(tx.isActive()) {
-							tx.rollback();
+				
+				if(isSuccesful == true) {
+					for(Vote deleteMe : votes) {
+						tx = pmSession.getPM().currentTransaction();
+						try {
+							tx.begin();
+							pmSession.getMapper(CountMapper.class).decrement(new GetVoteCountShard(deleteMe.getPovKey()));
+							pmSession.getMapper(BasicMapper.class).delete(deleteMe);
+							tx.commit();
+						} finally {
+							if(tx.isActive()) {
+								tx.rollback();
+							}
 						}
 					}
 				}
 			}
+		} catch(CommunarchyPersistenceException e) {
+			log.warning(e.getMessage());
+			e.printStackTrace();
 		}
 		
 		response.sendRedirect(String.format("/arg/%d", resource.getParentId().getId()));

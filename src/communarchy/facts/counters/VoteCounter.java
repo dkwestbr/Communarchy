@@ -1,5 +1,8 @@
 package communarchy.facts.counters;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -7,7 +10,7 @@ import com.google.appengine.api.datastore.Key;
 import communarchy.facts.actions.Vote;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class VoteCounter extends AbstractCounter<Vote> {
+public class VoteCounter extends AbstractCounter<Vote, VoteCounter> {
 	
 	/**
 	 * 
@@ -16,6 +19,8 @@ public class VoteCounter extends AbstractCounter<Vote> {
 	
 	@Persistent
 	private Key povKey;
+	
+	private List<String> checkOutKeys;
 	
 	public VoteCounter(Key povKey, Integer shardNum) {
 		super(shardNum);
@@ -27,13 +32,18 @@ public class VoteCounter extends AbstractCounter<Vote> {
 	}
 
 	@Override
-	public Key getKey() {
-		return povKey;
+	public List<String> getCheckOutKeys() {
+		if(this.checkOutKeys == null || this.checkOutKeys.isEmpty()) {
+			this.checkOutKeys = new ArrayList<String>();
+			this.checkOutKeys.add(String.format("%s(%s)", VoteCounter.class.getName(), povKey.toString()));
+			this.checkOutKeys.add(String.format("%s(%s_%d)", VoteCounter.class.getName(), povKey.toString(), shardNum));
+		}
+		
+		return this.checkOutKeys;
 	}
 
 	@Override
-	public String getNewObjectKey() {
-		// TODO Auto-generated method stub
-		return null;
+	public void update(VoteCounter updateValue) {
+		this.count = updateValue.getCount();
 	}
 }

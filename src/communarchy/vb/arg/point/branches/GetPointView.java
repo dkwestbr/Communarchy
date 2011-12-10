@@ -8,7 +8,7 @@ import com.google.template.soy.data.SoyMapData;
 
 import communarchy.controllers.handlers.input.validation.ValidationResult;
 import communarchy.facts.PMSession;
-import communarchy.facts.interfaces.IArgument;
+import communarchy.facts.implementations.Argument;
 import communarchy.facts.interfaces.IUser;
 import communarchy.utils.constants.IHttpSessionConstants;
 import communarchy.vb.AbstractTemplateWrapper;
@@ -17,7 +17,7 @@ import communarchy.vb.arg.nodes.NewPoint;
 import communarchy.vb.arg.nodes.NewPointWithErrors;
 
 public class GetPointView extends AbstractTemplateWrapper implements
-		IResourceTemplateWrapper<IArgument> {
+		IResourceTemplateWrapper<Argument> {
 
 	private static GetPointView INSTANCE;
 	private GetPointView() {}
@@ -40,7 +40,7 @@ public class GetPointView extends AbstractTemplateWrapper implements
 	@Override
 	@SuppressWarnings("unchecked")
 	public SoyMapData getParams(PMSession pmSession, IUser user, HttpServletRequest request,
-			IArgument scopedResource) {
+			Argument scopedResource) {
 
 		Map<String, ValidationResult> results = (Map<String, ValidationResult>) request.getSession().getAttribute(IHttpSessionConstants.VALIDATION_RESULTS_NEW_POINT);
 		SoyMapData pMap = new SoyMapData();

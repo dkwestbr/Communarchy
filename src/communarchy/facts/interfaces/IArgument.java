@@ -4,13 +4,15 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
-public interface IArgument extends Serializable, IEntity {
+public interface IArgument<T extends IEntity<T>> extends Serializable, IEntity<T> {
 	public Key getArgId();
 	public Key getPosterId();
 	public String getTitle();
 	public String getWebFriendlyTitle();
 	public String getContent();
+	public Text getRawContent();
 	public Date getPostDate();
 	public Date getUpdateDate();
 }
