@@ -77,7 +77,11 @@ public class MemcacheWrapper {
 		if(cacheKeyRegistry.containsKey(listen)) {
 			AsyncMemcacheService asyncCache = MemcacheServiceFactory.getAsyncMemcacheService();
 			Future<Set<String>> futureVal = asyncCache.deleteAll(cacheKeyRegistry.get(listen));
-			while(!futureVal.isDone() && !futureVal.isCancelled()) {}
+			while(!futureVal.isDone()) {
+				if(futureVal.isCancelled()) {
+					break;
+				}
+			}
 			cacheKeyRegistry.remove(listen);
 		}
 	}
@@ -94,7 +98,11 @@ public class MemcacheWrapper {
 		boolean returnVal = false;
 		try {	
 			Future<Boolean> future = MemcacheServiceFactory.getAsyncMemcacheService().contains(key);
-			while(!future.isDone() && !future.isCancelled()) {}
+			while(!future.isDone()) {
+				if(future.isCancelled()) {
+					break;
+				}
+			}
 			Boolean val = future.get();
 			returnVal = val == null ? false : val;
 		} catch (InterruptedException e) {
@@ -111,7 +119,11 @@ public class MemcacheWrapper {
 		T val = null;
 		try {
 			Future<Object> future = MemcacheServiceFactory.getAsyncMemcacheService().get(key);	
-			while(!future.isDone() && !future.isCancelled()) {}	
+			while(!future.isDone()) {
+				if(future.isCancelled()) {
+					break;
+				}
+			}
 			val = (T) future.get();
 		} catch (InterruptedException e) {
 			log.warning("Unable to retrieve object from memcache");
@@ -129,12 +141,20 @@ public class MemcacheWrapper {
 	public void put(String key, Serializable value) {
 		AsyncMemcacheService asyncCache = MemcacheServiceFactory.getAsyncMemcacheService();
 	    Future<Void> futureValue = asyncCache.put(key, value);
-	    while(!futureValue.isDone() && !futureValue.isCancelled()) {}
+		while(!futureValue.isDone()) {
+			if(futureValue.isCancelled()) {
+				break;
+			}
+		}
 	}
 	
 	public void remove(String key) {
 		AsyncMemcacheService asyncCache = MemcacheServiceFactory.getAsyncMemcacheService();
 		Future<Boolean> futureVal = asyncCache.delete(key);	
-		while(!futureVal.isDone() && !futureVal.isCancelled()) {}	
+		while(!futureVal.isDone()) {
+			if(futureVal.isCancelled()) {
+				break;
+			}
+		}
 	}
 }

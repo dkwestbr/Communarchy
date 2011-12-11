@@ -18,12 +18,14 @@ public class HeaderUserDoesntSupport extends AbstractTemplateWrapper implements
 	private static HeaderUserDoesntSupport INSTANCE;
 	private HeaderUserDoesntSupport() {}
 	
-	public static final String P_TAKE_STANCE_ACTION = "takestanceAction";
-	public static final String P_STANCE = "stance";
+	private static final String P_TAKE_STANCE_ACTION = "takestanceAction";
+	private static final String P_STANCE = "stance";
+	private static final String P_COUNT_PARAMS = "countParams";
 	
 	public static HeaderUserDoesntSupport get() {
 		if(INSTANCE == null) {
 			INSTANCE = new HeaderUserDoesntSupport();
+			INSTANCE.possiblePaths.add(EmptyVoteCount.get());
 		}
 		
 		return INSTANCE;
@@ -44,6 +46,7 @@ public class HeaderUserDoesntSupport extends AbstractTemplateWrapper implements
 				Stance.getStanceUrlPath(subset), scopedResource.getKey().getId()));
 		
 		pMap.put(P_STANCE, Stance.getStanceAsString(subset));
+		pMap.put(P_COUNT_PARAMS, EmptyVoteCount.get().getParams(pmSession, user, request, null));
 		
 		return pMap;
 	}

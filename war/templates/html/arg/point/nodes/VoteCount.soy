@@ -1,0 +1,14 @@
+{namespace communarchy.templates.html.arg.point.nodes}
+
+/**
+ *  Displays votes remaining to the user
+ *
+ *  @param count The amount of votes remaining
+ */
+{template .VoteCount}
+	<div class="votes-remaining-wrapper center">
+		<div class="float-left votes-remaining-digit">{$count}</div>
+		<div class="float-left votes-remaining-msg">votes left</div>
+		<div class="clear"></div>
+	</div>
+{/template}

@@ -1,0 +1,15 @@
+{namespace communarchy.templates.html.arg.point.branches}
+
+/**
+ *  The button container for each stance
+ *
+ *  @param count
+ *  @param viewParams
+ */
+{template .GetVoteCountDisplay}
+	{if $count > -1}
+		{call communarchy.templates.html.arg.point.nodes.VoteCount data="$viewParams" /}
+	{else}
+		{call communarchy.templates.html.arg.point.nodes.EmptyVoteCount data="$viewParams" /}
+	{/if}
+{/template}

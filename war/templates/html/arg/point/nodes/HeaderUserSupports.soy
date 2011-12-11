@@ -6,7 +6,7 @@
  *  @param takestanceAction action to perform when user wants to align with this stance
  *  @param stance css target based on stance chosen
  *  @param label Stance represented by this pov
- *  @param votesLeft The amount of votes the user has left
+ *  @param voteDisplayParams The amount of votes the user has left
  */
 {template .HeaderUserSupports}
 	<div class="stance pov-column pov-header-supports {$stance}">
@@ -16,9 +16,5 @@
 			</div>
 		</form>
 	</div>
-	<div class="votes-remaining-wrapper center">
-		<div class="float-left votes-remaining-digit">{$votesLeft}</div>
-		<div class="float-left votes-remaining-msg">votes left</div>
-		<div class="clear"></div>
-	</div>
+	{call communarchy.templates.html.arg.point.branches.GetVoteCountDisplay data="$voteDisplayParams" /}
 {/template}

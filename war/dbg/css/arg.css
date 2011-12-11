@@ -108,6 +108,9 @@
 	padding-bottom: 15px;
 	padding-left: 10px;
 	padding-top: 10px;
+	overflow: auto;
+	overflow-y: hidden;
+	-ms-overflow-y: hidden;
 }
 
 .new-point-input {
@@ -147,12 +150,6 @@
 	font-size: 20px;
 }
 
-.first-pov-wrapper {
-	border-top: dashed 1px;
-	padding-top: 15px;
-	padding-left: 15px;
-}
-
 .new-pov-errs {
 	height: 215px;
 	color: #F02;
@@ -165,11 +162,13 @@
 }
 
 .point-container {
-	border-bottom: solid 1px;
 }
 
 .point {
 	font-size: 30px;
+	overflow: auto;
+	overflow-y: hidden;
+	-ms-overflow-y: hidden;
 	padding-top: 10px;
 	padding-bottom: 10px;
 	color: #07C;
@@ -177,7 +176,6 @@
 
 .point-header {
 	text-align: left;
-	border-bottom: 1px dashed;
 }
 
 .pov-agree {

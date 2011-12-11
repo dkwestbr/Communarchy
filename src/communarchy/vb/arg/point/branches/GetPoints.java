@@ -19,8 +19,8 @@ import communarchy.facts.queries.list.PointsByArgument;
 import communarchy.utils.exceptions.CommunarchyPersistenceException;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
-import communarchy.vb.arg.point.nodes.PointSeperator;
 import communarchy.vb.arg.point.nodes.PointView;
+import communarchy.vb.global.nodes.ThickBorder;
 
 public class GetPoints extends AbstractTemplateWrapper implements
 		IResourceTemplateWrapper<Argument> {
@@ -32,7 +32,7 @@ public class GetPoints extends AbstractTemplateWrapper implements
 		if(INSTANCE == null) {
 			INSTANCE = new GetPoints();
 			INSTANCE.possiblePaths.add(PointView.get());
-			INSTANCE.possiblePaths.add(PointSeperator.get());
+			INSTANCE.possiblePaths.add(ThickBorder.get());
 		}
 		
 		return INSTANCE;
@@ -67,7 +67,7 @@ public class GetPoints extends AbstractTemplateWrapper implements
 			pointList.add(PointView.get().getParams(pmSession, user, request, point));
 		}
 		
-		pMap.put(P_POINT_SEPERATOR, PointSeperator.get().getParams(pmSession, user, request));
+		pMap.put(P_POINT_SEPERATOR, ThickBorder.get().getParams(pmSession, user, request));
 		pMap.put(P_POINT_SET, pointList);
 		
 		return pMap;

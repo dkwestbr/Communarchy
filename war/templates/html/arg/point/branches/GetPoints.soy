@@ -9,8 +9,6 @@
 {template .GetPoints}
 {foreach $point in $pointSet}
 	{call communarchy.templates.html.arg.point.nodes.PointView data="$point" /}
-	{if not isLast($point)}
-		{call communarchy.templates.html.arg.point.nodes.PointSeperator data="$pointSeperator" /}
-	{/if}
+	{call communarchy.templates.html.global.nodes.ThickBorder data="$pointSeperator" /}
 {/foreach}
 {/template}

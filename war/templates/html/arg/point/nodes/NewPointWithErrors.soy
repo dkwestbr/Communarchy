@@ -6,10 +6,8 @@
  *  @param newPointAction Action handler for this point
  *  @param point Point about to be made of arg in view
  *  @param pointErrors List of problems with argument header
- *  @param borderSet 
  */
 {template .NewPointWithErrors}
-{call communarchy.templates.html.global.nodes.ThickBorder data="$borderSet" /}
 <div class="create-point">
 	<form method="post" action="{$newPointAction}">
 	    <div class="suggestion-box">

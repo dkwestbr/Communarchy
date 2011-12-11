@@ -16,7 +16,6 @@ import communarchy.utils.constants.IHttpSessionConstants;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.global.branches.GetErrors;
-import communarchy.vb.global.nodes.ThickBorder;
 
 public class NewPointWithErrors extends AbstractTemplateWrapper implements
 		IResourceTemplateWrapper<ValidationResult> {
@@ -27,7 +26,6 @@ public class NewPointWithErrors extends AbstractTemplateWrapper implements
 	public static NewPointWithErrors get() {
 		if(INSTANCE == null) {
 			INSTANCE = new NewPointWithErrors();
-			INSTANCE.possiblePaths.add(ThickBorder.get());
 			INSTANCE.possiblePaths.add(GetErrors.get());
 		}
 		
@@ -40,7 +38,6 @@ public class NewPointWithErrors extends AbstractTemplateWrapper implements
 	}
 
 	private static final String PARAM_NEW_POINT_ACTION = "newPointAction";
-	private static final String PARAM_BORDER_SET = "borderSet";
 	private static final String PARAM_POINT = "point";
 	private static final String PARAM_POINT_ERRORS = "pointErrors";
 	
@@ -66,7 +63,6 @@ public class NewPointWithErrors extends AbstractTemplateWrapper implements
 		
 		paramMap.put(PARAM_POINT_ERRORS, GetErrors.get().getParams(pmSession, user, request, pointErrors.getErrors()));
 		paramMap.put(PARAM_POINT, pointErrors.getContent());
-		paramMap.put(PARAM_BORDER_SET, ThickBorder.get().getParams(pmSession, user, request));
 		
 		return paramMap;
 	}

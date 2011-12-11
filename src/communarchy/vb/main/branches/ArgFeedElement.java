@@ -39,7 +39,7 @@ public class ArgFeedElement extends AbstractTemplateWrapper implements
 		
 		SoyMapData pMap = new SoyMapData();
 		
-		pMap.put(P_ID, scopedResource.getArgId().getId());
+		pMap.put(P_ID, Long.toString(scopedResource.getArgId().getId()));
 		pMap.put(P_TITLE, scopedResource.getTitle());
 		pMap.put(P_HREF, String.format("/arg/%s/%s", scopedResource.getArgId().getId(), scopedResource.getWebFriendlyTitle()));
 		

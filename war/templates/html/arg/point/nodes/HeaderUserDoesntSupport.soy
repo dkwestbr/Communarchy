@@ -5,6 +5,7 @@
  *
  *  @param takestanceAction action to perform when user wants to align with this stance
  *  @param stance Stance represented by this pov
+ *  @param countParams parameters for counter
  */
 {template .HeaderUserDoesntSupport}
 	<div class="stance pov-column pov-header">
@@ -14,5 +15,5 @@
 			</div>
 		</form>
 	</div>
-	<div class="votes-remaining-place-holder"></div>
+	{call communarchy.templates.html.arg.point.nodes.EmptyVoteCount data="$countParams" /}
 {/template}
