@@ -15,8 +15,10 @@ import com.google.template.soy.tofu.SoyTofu;
 import communarchy.facts.PMSession;
 import communarchy.facts.implementations.ApplicationUser;
 import communarchy.facts.interfaces.IUser;
+import communarchy.facts.mappers.CountMapper;
 import communarchy.facts.mappers.UniqueEntityMapper;
 import communarchy.facts.queries.entity.GetUserByName;
+import communarchy.facts.queries.entity.GetUserCountShard;
 import communarchy.utils.constants.IHttpSessionConstants;
 import communarchy.vb.login.LoginRoot;
 
@@ -77,6 +79,7 @@ public class LogIn extends HttpServlet {
 			ApplicationUser user = mapper.selectUnique(query);
 			if(user == null) {
 				user = mapper.insertUnique(query);
+				pmSession.getMapper(CountMapper.class).increment(new GetUserCountShard());
 				request.getSession().removeAttribute(IHttpSessionConstants.LOGIN_MESSAGE);
 			}
 			

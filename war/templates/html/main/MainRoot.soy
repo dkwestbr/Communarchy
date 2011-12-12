@@ -8,15 +8,16 @@
  *  @param args this is why i hate mandotory commefweefnts, or not...whatefwae fafw e you.
  */
 {template .Root autoescape="false"}
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8"></meta>
 		<title>Communarchy</title>
 		{call communarchy.templates.html.global.branches.Head data="$headerParams" /}
 	</head>
 	<body id="body">
+		{call communarchy.templates.html.global.nodes.NavigationBar data="$argBarData" /}
 		<div class="main-container">
-			{call communarchy.templates.html.global.nodes.NavigationBar data="$argBarData" /}
 			<div>
 				<div id="ArgPanel" class="content-container">
 					<div id="dynamic-arg-div">

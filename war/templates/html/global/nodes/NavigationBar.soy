@@ -6,20 +6,32 @@
  *  @param createArgAction Url to go to when user want to create argument
  *  @param mainAction Url to go to when loading main page
  *  @param accountManagerParams Parameters for the user account manager
+ *  @param userCount How many users are currently on Communarchy
  */
 {template .NavigationBar}
-<div id="top" class="main-header main-border">
-	<div class="center">
-		<a class="btn main-btn center" href="{$mainAction}">Current Discussions</a>
-	</div>
-	<div class="arg-control-panel">
-		<div class="float-left">
-			{call communarchy.templates.html.global.branches.GetAccountManager data="$accountManagerParams" /}
+<div id="top">
+	<div id="tippy-top"></div>
+	<div class="main-container">
+		<div class="top-bar">
+			<div class="float-right">
+				{call communarchy.templates.html.global.branches.GetAccountManager data="$accountManagerParams" /}
+			</div>
+			<div class="clear"></div>
 		</div>
-		<div class="float-right">
-			<a class="btn main-btn" href="{$createArgAction}">Create New Discussion</a>
+		<div class="arg-control-panel">
+			<div class="float-left">
+				<div class="logo-panel">
+					<div class="logo-image center"></div>
+					<div class="logo-text">Communarchy</div>
+					<div class="logo-count">{$userCount}</div>
+					<a class="logo-button" href="{$mainAction}"><span class="logo-clickable"></span></a>
+				</div>
+			</div>
+			<div class="float-right new-proposal-container">
+				<a class="btn main-btn" href="{$createArgAction}">New Discussion</a>
+			</div>
+			<div class="clear"></div>
 		</div>
-		<div class="clear"></div>
 	</div>
 </div>
 <div class="v-spacer"><!-- LEAVE EMPTY --></div>

@@ -14,10 +14,6 @@
 	border-width:2px;
 }
 
-.arg-control-panel {
-	padding-top: 36px;
-}
-
 .east-container {
 	height:1000px;
 	width:190px;
@@ -66,12 +62,6 @@
 
 .new-arg-input {
 	width: 500px;
-}
-
-.user {
-	padding-left: 3px;
-	padding-top: 2px;
-	cursor: pointer;
 }
 
 .user-text {
@@ -123,10 +113,6 @@
 
 .arg-feed-el:hover {
 	background-color: #DEB236;
-}
-
-.main-btn {
-	width: 260px;
 }
 
 .bg-even {

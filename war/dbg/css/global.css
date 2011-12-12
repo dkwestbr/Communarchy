@@ -1,7 +1,12 @@
+.arg-control-panel {
+	padding-top: 10px;
+}
+
 body {
 	text-align: center;
 	min-width: 1000px;
 	min-height: 2000px;
+	margin: 0px;
 }
 
 .border-top {
@@ -78,6 +83,70 @@ body {
 	padding-left: 20px;
 }
 
+.logo-panel {
+	padding-left: 325px;
+	position: relative;
+}
+
+.logo-image {
+	background-image: url("/dbg/images/ppl.png");
+	background-repeat: no-repeat;
+	background-position: 1% 0%;
+	height: 44px;
+	width: 98px;
+}
+
+.logo-count {
+	text-align: center;
+	font-size: 25px;
+}
+
+.logo-button {}
+
+.logo-clickable {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 1;
+}
+
+.logo-text {
+	text-align: center;
+	font-size: 35px;
+	color: #750;
+	font-weight: bold;
+	font-family: sans-serif;
+}
+
 .logout-text {
 	font-size: 10px;
+}
+
+.main-btn {
+	width: 260px;
+	font-size: 25px;
+	padding-right: 7px;
+	padding-left: 7px;
+}
+
+.new-proposal-container {
+	padding-top: 40px;
+}
+
+#tippy-top {
+	background-color: #EB3;
+	height: 31px;
+	margin-bottom: -31px;
+}
+
+.top-bar {
+	padding-top: 7px;
+}
+
+.user {
+	padding-left: 5px;
+	padding-top: 2px;
+	cursor: pointer;
 }

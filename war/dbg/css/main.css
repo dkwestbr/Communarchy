@@ -15,7 +15,6 @@
 }
 
 .arg-control-panel {
-	padding-top: 36px;
 }
 
 .east-container {
@@ -66,12 +65,6 @@
 
 .new-arg-input {
 	width: 500px;
-}
-
-.user {
-	padding-left: 3px;
-	padding-top: 2px;
-	cursor: pointer;
 }
 
 .user-text {
