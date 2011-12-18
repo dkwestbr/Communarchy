@@ -8,11 +8,10 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import com.google.appengine.api.datastore.Key;
 
-import communarchy.facts.implementations.UserStance;
 import communarchy.facts.interfaces.IStance;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
-public class StanceCounter extends AbstractCounter<UserStance, StanceCounter> {
+public class StanceCounter extends AbstractCounter<StanceCounter> {
 		
 	/**
 	 * 

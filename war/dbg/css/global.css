@@ -84,7 +84,6 @@ body {
 }
 
 .logo-panel {
-	padding-left: 325px;
 	position: relative;
 }
 
@@ -118,6 +117,11 @@ body {
 	color: #750;
 	font-weight: bold;
 	font-family: sans-serif;
+}
+
+.logo-spacer {
+	width: 325px;
+	min-height: 1px;
 }
 
 .logout-text {

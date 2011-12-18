@@ -9,7 +9,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import communarchy.facts.implementations.ApplicationUser;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class UserCounter extends AbstractCounter<ApplicationUser, UserCounter> {
+public class UserCounter extends AbstractCounter<UserCounter> {
 
 	/**
 	 * 

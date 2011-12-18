@@ -6,43 +6,43 @@ import java.util.List;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
+
 import com.google.appengine.api.datastore.Key;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class VoteCounter extends AbstractCounter<VoteCounter> {
-	
+public class RepCounter extends AbstractCounter<RepCounter> {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
 	@Persistent
-	private Key povKey;
+	private Key userKey;
 	
 	private List<String> checkOutKeys;
 	
-	public VoteCounter(Key povKey, Integer shardNum) {
-		super(shardNum);
-		this.povKey = povKey;
-	}
+	@SuppressWarnings("unused")
+	private RepCounter() {}
 	
-	public Key getPovId() {
-		return povKey;
+	public RepCounter(Key userKey, int shardNum) {
+		super(shardNum);
+		this.userKey = userKey;
 	}
 
 	@Override
 	public List<String> getCheckOutKeys() {
 		if(this.checkOutKeys == null || this.checkOutKeys.isEmpty()) {
 			this.checkOutKeys = new ArrayList<String>();
-			this.checkOutKeys.add(String.format("%s(%s)", VoteCounter.class.getName(), povKey.toString()));
-			this.checkOutKeys.add(String.format("%s(%s_%d)", VoteCounter.class.getName(), povKey.toString(), shardNum));
+			this.checkOutKeys.add(String.format("%s(%s)", RepCounter.class.getName(), userKey.toString()));
+			this.checkOutKeys.add(String.format("%s(%s_%d)", RepCounter.class.getName(), userKey.toString(), shardNum));
 		}
 		
-		return this.checkOutKeys;
+		return checkOutKeys;
 	}
 
 	@Override
-	public void update(VoteCounter updateValue) {
+	public void update(RepCounter updateValue) {
 		this.count = updateValue.getCount();
 	}
 }

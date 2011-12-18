@@ -97,7 +97,8 @@
 }
 
 .pov-reclaim-container {
-
+	margin-top: -9px;
+	margin-left: 2px;
 }
 
 .pov-width {
@@ -299,6 +300,131 @@ tr {
 	vertical-align: top;
 }
 
+.selected-agree .upvote-active {
+	background-position: 28% 31%;
+}
+
+.selected-neutral .upvote-active {
+	background-position: 36% 31%;
+}
+
+.selected-disagree .upvote-active {
+	background-position: 45% 31%;
+}
+
+.selected-agree .upvote-active-nh {
+	background-position: 28% 31%;
+}
+
+.selected-neutral .upvote-active-nh {
+	background-position: 36% 31%;
+}
+
+.selected-disagree .upvote-active-nh {
+	background-position: 45% 31%;
+}
+
+.selected-agree .upvote-inactive {
+	background-position: 0% 50%;
+}
+
+.selected-neutral .upvote-inactive {
+	background-position: 8% 31%;
+}
+
+.selected-disagree .upvote-inactive {
+	background-position: 17% 6%;
+}
+
+.selected-agree .upvote-active:hover {
+	cursor: pointer;
+	background-position: 0% 50%;
+}
+
+.selected-disagree .upvote-active:hover {
+	cursor: pointer;
+	background-position: 17% 6%;
+}
+
+.selected-neutral .upvote-active:hover {
+	cursor: pointer;
+	background-position: 8% 6%;
+}
+
+.selected-agree .reclaimvote-active {
+	background-position: 83% 88%;
+}
+
+.selected-neutral .reclaimvote-active {
+	background-position: 91% 31%;
+}
+
+.selected-disagree .reclaimvote-active {
+	background-position: 100% 31%;
+}
+
+.selected-agree .reclaimvote-inactive {
+	background-position: 55% 31%;
+}
+
+.selected-neutral .reclaimvote-inactive {
+	background-position: 63% 31%;
+}
+
+.selected-disagree .reclaimvote-inactive {
+	background-position: 72% 31%;
+}
+
+.selected-agree .reclaimvote-active:hover {
+	cursor: pointer;
+	background-position: 55% 88%;
+}
+
+.selected-disagree .reclaimvote-active:hover {
+	cursor: pointer;
+	background-position: 72% 31%;
+}
+
+.selected-neutral .reclaimvote-active:hover {
+	cursor: pointer;
+	background-position: 63% 6%;
+}
+
+.reclaimvote-active {
+	background-image: url("/dbg/images/vote_btns.png");
+	background-repeat: no-repeat;
+	height: 21px;
+	width: 25px;
+	font-size: 0px;
+	background-position: 0% 61%;
+	border: none;
+}
+
+.reclaimvote-active-nh {
+	background-image: url("/dbg/images/vote_btns.png");
+	background-repeat: no-repeat;
+	height: 21px;
+	width: 25px;
+	font-size: 0px;
+	background-position: 0% 92%;
+	border: none;
+}
+
+.reclaimvote-active:hover {
+	cursor: pointer;
+	background-position: 0% 92%;
+}
+
+.reclaimvote-inactive {
+	background-image: url("/dbg/images/vote_btns.png");
+	background-repeat: no-repeat;
+	height: 21px;
+	width: 25px;
+	font-size: 0px;
+	background-position: 0% 61%;
+	border: none;
+}
+
 .take-stance-btn {
 	background-color: #DEB236;
 	cursor: pointer;
@@ -378,7 +504,6 @@ tr {
 .pov-upvote-container {
 	width: 33px;
 	padding-top: 6px;
-	padding-left: 20px;
 }
 
 .pov-voted {
@@ -433,33 +558,26 @@ tr {
 .upvote-active {
 	background-image: url("/dbg/images/vote_btns.png");
 	background-repeat: no-repeat;
-	height: 27px;
-	width: 40px;
+	height: 21px;
+	width: 25px;
 	font-size: 0px;
-	background-position: 37% 31%;
 	border: none;
 }
 
 .upvote-active-nh {
 	background-image: url("/dbg/images/vote_btns.png");
 	background-repeat: no-repeat;
-	height: 27px;
-	width: 40px;
+	height: 21px;
+	width: 25px;
 	font-size: 0px;
-	background-position: 37% 31%;
 	border: none;
-}
-
-.upvote-active:hover {
-	cursor: pointer;
-	background-position: 37% 6%;
 }
 
 .upvote-inactive {
 	background-image: url("/dbg/images/vote_btns.png");
 	background-repeat: no-repeat;
-	height: 27px;
-	width: 40px;
+	height: 21px;
+	width: 25px;
 	font-size: 0px;
 	background-position: 37% 6%;
 	border: none;
@@ -510,41 +628,6 @@ tr {
 	padding-top: 15px;
 	font-size: 20px;
 	padding-left: 5px;
-}
-
-.reclaimvote-active {
-	background-image: url("/dbg/images/vote_btns.png");
-	background-repeat: no-repeat;
-	height: 25px;
-	width: 65px;
-	font-size: 0px;
-	background-position: 0% 61%;
-	border: none;
-}
-
-.reclaimvote-active-nh {
-	background-image: url("/dbg/images/vote_btns.png");
-	background-repeat: no-repeat;
-	height: 25px;
-	width: 65px;
-	font-size: 0px;
-	background-position: 0% 92%;
-	border: none;
-}
-
-.reclaimvote-active:hover {
-	cursor: pointer;
-	background-position: 0% 92%;
-}
-
-.reclaimvote-inactive {
-	background-image: url("/dbg/images/vote_btns.png");
-	background-repeat: no-repeat;
-	height: 25px;
-	width: 65px;
-	font-size: 0px;
-	background-position: 0% 61%;
-	border: none;
 }
 
 .stance-count {
@@ -634,8 +717,14 @@ tr {
 	width: 246px;
 }
 
+.vote-count {
+	text-align: center;
+	width: 25px;
+}
+
 .vote-wrapper {
 	padding-right: 5px;
+	padding-left: 5px;
 }
 
 .v-count-wrapper {

@@ -47,8 +47,8 @@ public class UserSupports extends AbstractTemplateWrapper implements
 		
 		pMap.put(P_ID, String.format("%d", scopedResource.getKey().getId()));
 		pMap.put(P_CONTENT, scopedResource.getPov());
-		pMap.put(P_POV_STATS, PovStats.get()
-				.getParams(pmSession, user, request, scopedResource));
+		//pMap.put(P_POV_STATS, PovStats.get()
+		//		.getParams(pmSession, user, request, scopedResource));
 		pMap.put(P_VOTE_BUTTON_PARAMS, GetVoteButtons.get().getParams(pmSession, user, request, scopedResource));
 		
 		return pMap;

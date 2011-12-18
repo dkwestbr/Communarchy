@@ -5,8 +5,14 @@
  *
  *  @param upvoteParams parameters for rendering vote/up button
  *  @param reclaimvoteParams parameters for rendering reclaim vote button
+ *  @param count votes cast
  */
 {template .AlreadyVoted}
-	{call communarchy.templates.html.arg.point.pov.nodes.UpvoteInactive data="$upvoteParams" /}
-	{call communarchy.templates.html.arg.point.pov.nodes.ReclaimVoteActive data="$reclaimvoteParams" /}
+	<div class="vote-top">
+		{call communarchy.templates.html.arg.point.pov.nodes.UpvoteInactive data="$upvoteParams" /}
+	</div>
+	<div class="vote-count">{$count}</div>
+	<div class="vote-bottom">
+		{call communarchy.templates.html.arg.point.pov.nodes.ReclaimVoteActive data="$reclaimvoteParams" /}
+	</div>
 {/template}

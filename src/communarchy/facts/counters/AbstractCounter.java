@@ -15,7 +15,7 @@ import communarchy.facts.interfaces.IEntity;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
 @Inheritance(strategy=InheritanceStrategy.SUBCLASS_TABLE)
-public abstract class AbstractCounter<T extends IEntity<T>, U> implements ICounter, IEntity<U> {
+public abstract class AbstractCounter<U> implements ICounter, IEntity<U> {
 	
 	/**
 	 * 

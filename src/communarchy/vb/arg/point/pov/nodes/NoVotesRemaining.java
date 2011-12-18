@@ -8,6 +8,9 @@ import com.google.template.soy.data.SoyMapData;
 import communarchy.facts.PMSession;
 import communarchy.facts.interfaces.IPointOfView;
 import communarchy.facts.interfaces.IUser;
+import communarchy.facts.mappers.CountMapper;
+import communarchy.facts.queries.list.GetVoteCountQuery;
+import communarchy.utils.exceptions.CommunarchyPersistenceException;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 
@@ -18,8 +21,9 @@ public class NoVotesRemaining extends AbstractTemplateWrapper implements
 	private static NoVotesRemaining INSTANCE;
 	private NoVotesRemaining() {}
 	
-	public static final String P_UPVOTE_PARAMS = "upvoteParams";
-	public static final String P_RECLAIM_VOTE_PARAMS = "reclaimvoteParams";
+	private static final String P_UPVOTE_PARAMS = "upvoteParams";
+	private static final String P_RECLAIM_VOTE_PARAMS = "reclaimvoteParams";
+	private static final String P_COUNT = "count";
 	
 	public static NoVotesRemaining get() {
 		if(INSTANCE == null) {
@@ -45,6 +49,12 @@ public class NoVotesRemaining extends AbstractTemplateWrapper implements
 		
 		pMap.put(P_UPVOTE_PARAMS, UpvoteInactive.get().getParams(pmSession, user, request, scopedResource));
 		pMap.put(P_RECLAIM_VOTE_PARAMS, ReclaimVoteActive.get().getParams(pmSession, user, request, scopedResource));
+		
+		try {
+			pMap.put(P_COUNT, pmSession.getMapper(CountMapper.class).getCount(new GetVoteCountQuery(scopedResource.getKey())));
+		} catch (CommunarchyPersistenceException e) {
+			e.printStackTrace();
+		}
 		
 		return pMap;
 	}
