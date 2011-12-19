@@ -10,6 +10,7 @@ import communarchy.facts.interfaces.IPointOfView;
 import communarchy.facts.interfaces.IUser;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
+import communarchy.vb.arg.point.pov.branches.GetVoteButtons;
 
 @SuppressWarnings("rawtypes")
 public class UserDoesntSupport extends AbstractTemplateWrapper implements
@@ -20,7 +21,7 @@ public class UserDoesntSupport extends AbstractTemplateWrapper implements
 	
 	private static final String P_ID = "id";
 	private static final String P_CONTENT = "content";
-	private static final String P_POV_STATS = "povStats";
+	private static final String P_VOTE_BUTTON_PARAMS = "voteButtonParams";
 	
 	public static UserDoesntSupport get() {
 		if(INSTANCE == null) {
@@ -44,7 +45,7 @@ public class UserDoesntSupport extends AbstractTemplateWrapper implements
 		
 		pMap.put(P_ID, String.format("%d", scopedResource.getKey().getId()));
 		pMap.put(P_CONTENT, scopedResource.getPov());
-		pMap.put(P_POV_STATS, PovStats.get().getParams(pmSession, user, request, scopedResource));
+		pMap.put(P_VOTE_BUTTON_PARAMS, GetVoteButtons.get().getParams(pmSession, user, request, scopedResource));
 		
 		return pMap;
 	}

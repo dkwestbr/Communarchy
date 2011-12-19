@@ -66,7 +66,7 @@ public class PointView extends AbstractTemplateWrapper implements
 		}
 		
 		if(userStance == null) {
-			pMap.put(P_SELECTED_STANCE, " ");
+			pMap.put(P_SELECTED_STANCE, "selected-none");
 		} else {
 			pMap.put(P_SELECTED_STANCE, String.format("selected-%s", UserStance.getStanceUrlPath(userStance.getStance())));
 		}

@@ -8,16 +8,19 @@ import com.google.template.soy.data.SoyMapData;
 import communarchy.controllers.strategies.limits.VoteLimit;
 import communarchy.facts.PMSession;
 import communarchy.facts.actions.interfaces.IVote;
+import communarchy.facts.implementations.UserStance;
 import communarchy.facts.interfaces.IPointOfView;
 import communarchy.facts.interfaces.IUser;
 import communarchy.facts.mappers.UniqueEntityMapper;
 import communarchy.facts.queries.entity.GetVoteQuery;
+import communarchy.facts.queries.entity.UserStanceQuery;
 import communarchy.utils.exceptions.CommunarchyPersistenceException;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.arg.point.pov.nodes.AllowVote;
 import communarchy.vb.arg.point.pov.nodes.AlreadyVoted;
 import communarchy.vb.arg.point.pov.nodes.NoVotesRemaining;
+import communarchy.vb.arg.point.pov.nodes.VoteCountDisplay;
 
 @SuppressWarnings("rawtypes")
 public class GetVoteButtons extends AbstractTemplateWrapper implements
@@ -26,10 +29,11 @@ public class GetVoteButtons extends AbstractTemplateWrapper implements
 	private static GetVoteButtons INSTANCE;
 	private GetVoteButtons() {}
 	
-	public static final String P_VOTE_PARAMS = "voteParams";
-	public static final String P_IS_DISABLED = "isDisabled";
-	public static final String P_USER_IS_AUTHOR = "userIsAuthor";
-	public static final String P_NO_VOTES_REMAINING = "noVotesRemaining";
+	private static final String P_VOTE_PARAMS = "voteParams";
+	private static final String P_IS_DISABLED = "isDisabled";
+	private static final String P_USER_IS_AUTHOR = "userIsAuthor";
+	private static final String P_NO_VOTES_REMAINING = "noVotesRemaining";
+	private static final String P_NOT_SUPPORTED = "notSupported";
 	
 	public static GetVoteButtons get() {
 		if(INSTANCE == null) {
@@ -37,6 +41,7 @@ public class GetVoteButtons extends AbstractTemplateWrapper implements
 			INSTANCE.possiblePaths.add(AlreadyVoted.get());
 			INSTANCE.possiblePaths.add(NoVotesRemaining.get());
 			INSTANCE.possiblePaths.add(AllowVote.get());
+			INSTANCE.possiblePaths.add(VoteCountDisplay.get());
 		}
 		
 		return INSTANCE;
@@ -54,19 +59,32 @@ public class GetVoteButtons extends AbstractTemplateWrapper implements
 		SoyMapData pMap = new SoyMapData();
 		
 		try {
-			IVote vote = pmSession.getMapper(UniqueEntityMapper.class)
-					.selectUnique(new GetVoteQuery(scopedResource.getParentPointId(), scopedResource.getKey(), user.getUserId()));
-			if(vote != null) {
-				pMap.put(P_IS_DISABLED, " ");
+			UserStance userStance = null;
+			if(user.getUserId() != null) {
+				userStance = pmSession.getMapper(UniqueEntityMapper.class)
+						.selectUnique(new UserStanceQuery(scopedResource.getParentPointId(), user.getUserId(), null));
+			}
+			
+			
+			if(userStance == null || !userStance.getStance().equals(scopedResource.getStance())) {
+				pMap.put(P_NOT_SUPPORTED, " ");
 				pMap.put(P_VOTE_PARAMS, AlreadyVoted.get().getParams(pmSession, user, request, scopedResource));
-			} else if(user.getUserId().equals(scopedResource.getPosterId())) {
-				pMap.put(P_USER_IS_AUTHOR, " ");
-				pMap.put(P_VOTE_PARAMS, NoVotesRemaining.get().getParams(pmSession, user, request, scopedResource));
-			} else if(VoteLimit.AllowVote(pmSession, scopedResource.getKey(), user.getUserId())) {
-				pMap.put(P_NO_VOTES_REMAINING, " ");
-				pMap.put(P_VOTE_PARAMS, NoVotesRemaining.get().getParams(pmSession, user, request, scopedResource));
 			} else {
-				pMap.put(P_VOTE_PARAMS, AllowVote.get().getParams(pmSession, user, request, scopedResource));
+				IVote vote = pmSession.getMapper(UniqueEntityMapper.class)
+						.selectUnique(new GetVoteQuery(scopedResource.getParentPointId(), scopedResource.getKey(), user.getUserId()));
+				
+				if(vote != null) {
+					pMap.put(P_IS_DISABLED, " ");
+					pMap.put(P_VOTE_PARAMS, AlreadyVoted.get().getParams(pmSession, user, request, scopedResource));
+				} else if(user.getUserId().equals(scopedResource.getPosterId())) {
+					pMap.put(P_USER_IS_AUTHOR, " ");
+					pMap.put(P_VOTE_PARAMS, NoVotesRemaining.get().getParams(pmSession, user, request, scopedResource));
+				} else if(VoteLimit.AllowVote(pmSession, scopedResource.getKey(), user.getUserId())) {
+					pMap.put(P_NO_VOTES_REMAINING, " ");
+					pMap.put(P_VOTE_PARAMS, NoVotesRemaining.get().getParams(pmSession, user, request, scopedResource));
+				} else {
+					pMap.put(P_VOTE_PARAMS, AllowVote.get().getParams(pmSession, user, request, scopedResource));
+				}
 			}
 			
 		} catch (CommunarchyPersistenceException e) {

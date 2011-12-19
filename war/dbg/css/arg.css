@@ -300,92 +300,101 @@ tr {
 	vertical-align: top;
 }
 
-.selected-agree .upvote-active {
+.selected-agree .agree .upvote-active {
 	background-position: 28% 31%;
 }
 
-.selected-neutral .upvote-active {
+.selected-neutral .neutral .upvote-active {
 	background-position: 36% 31%;
 }
 
-.selected-disagree .upvote-active {
+.selected-disagree .disagree .upvote-active {
 	background-position: 45% 31%;
 }
 
-.selected-agree .upvote-active-nh {
+.selected-agree .agree .upvote-active-nh {
 	background-position: 28% 31%;
 }
 
-.selected-neutral .upvote-active-nh {
+.selected-neutral .neutral .upvote-active-nh {
 	background-position: 36% 31%;
 }
 
-.selected-disagree .upvote-active-nh {
+.selected-disagree .disagree .upvote-active-nh {
 	background-position: 45% 31%;
 }
 
-.selected-agree .upvote-inactive {
+.selected-none .agree .upvote-active,
+.selected-disagree .agree .upvote-active,
+.selected-neutral .agree .upvote-active,
+.selected-agree .agree .upvote-inactive {
 	background-position: 0% 50%;
 }
 
-.selected-neutral .upvote-inactive {
+.selected-none .neutral .upvote-active,
+.selected-agree .neutral .upvote-active,
+.selected-disagree .neutral .upvote-active,
+.selected-neutral .neutral .upvote-inactive {
 	background-position: 8% 31%;
 }
 
-.selected-disagree .upvote-inactive {
+.selected-none .disagree .upvote-active,
+.selected-agree .disagree .upvote-active,
+.selected-neutral .disagree .upvote-active,
+.selected-disagree .disagree .upvote-inactive {
 	background-position: 17% 6%;
 }
 
-.selected-agree .upvote-active:hover {
+.selected-agree .agree .upvote-active:hover {
 	cursor: pointer;
 	background-position: 0% 50%;
 }
 
-.selected-disagree .upvote-active:hover {
+.selected-disagree .disagree .upvote-active:hover {
 	cursor: pointer;
 	background-position: 17% 6%;
 }
 
-.selected-neutral .upvote-active:hover {
+.selected-neutral .neutral .upvote-active:hover {
 	cursor: pointer;
 	background-position: 8% 6%;
 }
 
-.selected-agree .reclaimvote-active {
+.selected-agree .agree .reclaimvote-active {
 	background-position: 83% 88%;
 }
 
-.selected-neutral .reclaimvote-active {
+.selected-neutral .neutral .reclaimvote-active {
 	background-position: 91% 31%;
 }
 
-.selected-disagree .reclaimvote-active {
+.selected-disagree .disagree .reclaimvote-active {
 	background-position: 100% 31%;
 }
 
-.selected-agree .reclaimvote-inactive {
+.selected-agree .agree .reclaimvote-inactive {
 	background-position: 55% 31%;
 }
 
-.selected-neutral .reclaimvote-inactive {
+.selected-neutral .neutral .reclaimvote-inactive {
 	background-position: 63% 31%;
 }
 
-.selected-disagree .reclaimvote-inactive {
+.selected-disagree .disagree .reclaimvote-inactive {
 	background-position: 72% 31%;
 }
 
-.selected-agree .reclaimvote-active:hover {
+.selected-agree .agree .reclaimvote-active:hover {
 	cursor: pointer;
 	background-position: 55% 88%;
 }
 
-.selected-disagree .reclaimvote-active:hover {
+.selected-disagree .disagree .reclaimvote-active:hover {
 	cursor: pointer;
 	background-position: 72% 31%;
 }
 
-.selected-neutral .reclaimvote-active:hover {
+.selected-neutral .neutral .reclaimvote-active:hover {
 	cursor: pointer;
 	background-position: 63% 6%;
 }

@@ -8,9 +8,12 @@
  *  @param isDisabled Flag used when a pov is disabled
  *  @param userIsAuthor Flag used when the user is the author of the pov
  *  @param noVotesRemaining Flag indicating no votes are left
+ *  @param notSupported Flag indicating that the user doesn't share this stance; so just display the vote count
  */
 {template .GetVoteButtons}
-{if $isDisabled}
+{if $notSupported}
+	{call communarchy.templates.html.arg.point.pov.nodes.VoteCountDisplay data="$voteParams" /}
+{elseif $isDisabled}
 	{call communarchy.templates.html.arg.point.pov.nodes.AlreadyVoted data="$voteParams" /}
 {elseif $noVotesRemaining or $userIsAuthor}
 	{call communarchy.templates.html.arg.point.pov.nodes.NoVotesRemaining data="$voteParams"/}

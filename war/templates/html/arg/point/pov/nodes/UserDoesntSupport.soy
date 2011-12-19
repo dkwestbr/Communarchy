@@ -5,24 +5,19 @@
  *
  *  @param id Id of the pov
  *  @param content The content of the pov
- *  @param povStats The stats of this pov
+ *  @param voteButtonParams Parameters for the vote button template
  */
 {template .UserDoesntSupport}
 <div class="pov pov-width">
 	<div class="pov-leaf">
 		<div id="pov-{$id}" class="pov-wrapper">
-			{$content}
-			/*
-			{call communarchy.templates.html.arg.point.pov.branches.GetPovContent}
-				{param povContent: $content /}
-			{/call}
-			*/
-		</div>
-		<div>
-			<div class="float-right">
-				{call .PovStats data="$povStats" /}
+			<div>{$content}</div>
+			<div>
+				<div class="float-left vote-wrapper">
+					{call communarchy.templates.html.arg.point.pov.branches.GetVoteButtons data="$voteButtonParams" /}
+				</div>
+				<div class="clear"></div>
 			</div>
-			<div class="clear"></div>
 		</div>
 	</div>
 </div>

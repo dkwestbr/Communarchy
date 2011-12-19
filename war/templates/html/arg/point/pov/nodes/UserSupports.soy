@@ -12,18 +12,13 @@
 	<div class="pov-leaf">
 		<div id="pov-{$id}" class="pov-wrapper">
 			<div>{$content}</div>
-			<div class="float-left vote-wrapper">
-				{call communarchy.templates.html.arg.point.pov.branches.GetVoteButtons data="$voteButtonParams" /}
+			<div>
+				<div class="float-left vote-wrapper">
+					{call communarchy.templates.html.arg.point.pov.branches.GetVoteButtons data="$voteButtonParams" /}
+				</div>
+				<div class="clear"></div>
 			</div>
 		</div>
-		/**
-		<div>
-			<div class="float-left">
-				{call .PovStats data="$povStats" /}
-			</div>
-			<div class="clear"></div>
-		</div>
-		**/
 	</div>
 </div>
 {/template}

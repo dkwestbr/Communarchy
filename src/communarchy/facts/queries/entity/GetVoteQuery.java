@@ -27,14 +27,18 @@ public class GetVoteQuery implements IEntityQuery<Vote> {
 		this.povId = povId;
 		this.userId = userId;
 		
-		this.memCacheKey = String.format("%s_%s_%s", GetVoteQuery.class.getName(), povId.toString(), userId.toString());
-		
 		this.checkInKeys = new ArrayList<String>();
+		
+		this.memCacheKey = String.format("%s_%s_%s", GetVoteQuery.class.getName(), povId.toString(), userId.toString());
 		this.checkInKeys.add(String.format("%s(%s_%s)", Vote.class.getName(), povId.toString(), userId.toString()));
 	}
 
 	@Override
 	public final String getMemcacheInnerKey() {
+		if(userId != null) {
+			
+		}
+		
 		return memCacheKey;
 	}
 

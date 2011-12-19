@@ -139,7 +139,6 @@ public class MemcacheWrapper {
 	}
 	
 	public void put(String key, Serializable value) {
-	
 		AsyncMemcacheService asyncCache = MemcacheServiceFactory.getAsyncMemcacheService();
 	    Future<Void> futureValue = asyncCache.put(key, value);
 		while(!futureValue.isDone()) {

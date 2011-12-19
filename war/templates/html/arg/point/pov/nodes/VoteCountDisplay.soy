@@ -1,0 +1,17 @@
+{namespace communarchy.templates.html.arg.point.pov.nodes}
+
+/**
+ *  How to render the vote buttons when user is allowed to cast a vote
+ *
+ *  @param upvoteParams parameters for rendering vote/up button
+ *  @param count votes cast
+ */
+{template .VoteCountDisplay}
+	<div>
+		<div class="disable-display-form">
+			{call communarchy.templates.html.arg.point.pov.nodes.UpvoteActive data="$upvoteParams" /}
+		</div>
+	</div>
+	<div class="vote-count">{$count}</div>
+	<div class="vote-bottom-empty"></div>
+{/template}
