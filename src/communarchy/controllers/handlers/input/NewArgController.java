@@ -65,7 +65,7 @@ public class NewArgController extends AbstractInputHandler {
 		
 		requiredFieldMap.put("title", new IUserInput() {
 			@Override
-			public int getMaxLength() { return 500; }
+			public int getMaxLength() { return 499; }
 
 			@Override
 			public int getMinLength() { return 20; }

@@ -14,11 +14,20 @@
  * @param inputSet
  * @param selectedStance
  * @param countHeaders
+ * @param authorParams Parameters for author of post
  */
 {template .PointView}
 <div class="point-container" id="point-{$id}">
     <div class="point-header">
-		<div class="point">{$point}</div>
+		<div class="point-content">
+			<div class="point">{$point}</div>
+			<div>
+				<div class="float-right author-wrapper">
+					{call communarchy.templates.html.global.nodes.UserWithRep data="$authorParams" /}
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
 	</div>
 	<div class="stance-count">
 		{call communarchy.templates.html.arg.point.branches.GetStanceCountHeaders data="$countHeaders" /}

@@ -15,4 +15,5 @@ public interface IPointOfView<T extends IEntity<T>> extends Serializable, IEntit
 	public String getPov();
 	public Text getRawPov();
 	public Date getUpdateDate();
+	public Date getCreatedDate();
 }

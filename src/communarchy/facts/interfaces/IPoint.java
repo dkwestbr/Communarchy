@@ -12,4 +12,5 @@ public interface IPoint<T extends IEntity<T>> extends Serializable, IEntity<T> {
 	public Key getParentId();
 	public Key getPosterId();
 	public Date getUpdateDate();
+	public Date getCreatedDate();
 }

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -47,6 +48,7 @@ public class PointOfView implements IPointOfView<PointOfView>, Serializable {
 	@Persistent
 	private Date updateDate;
 	
+	@NotPersistent
 	private List<String> checkOutKeys;
 	
 	public PointOfView(){}
@@ -128,5 +130,10 @@ public class PointOfView implements IPointOfView<PointOfView>, Serializable {
 		this.updateDate = updateValue.getUpdateDate();
 		this.pov = updateValue.getRawPov();
 		this.checkOutKeys = updateValue.getCheckOutKeys();
+	}
+
+	@Override
+	public Date getCreatedDate() {
+		return this.createDate;
 	}
 }

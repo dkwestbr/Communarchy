@@ -6,15 +6,19 @@
  *  @param id Id of the pov
  *  @param content The content of the pov
  *  @param voteButtonParams Parameters for the vote button template
+ *  @param authorParams Parameters for author of post
  */
 {template .UserDoesntSupport}
 <div class="pov pov-width">
 	<div class="pov-leaf">
 		<div id="pov-{$id}" class="pov-wrapper">
-			<div>{$content}</div>
+			<div class="pov-content-wrapper">{$content}</div>
 			<div>
 				<div class="float-left vote-wrapper">
 					{call communarchy.templates.html.arg.point.pov.branches.GetVoteButtons data="$voteButtonParams" /}
+				</div>
+				<div class="float-right author-wrapper">
+					{call communarchy.templates.html.global.nodes.UserWithRep data="$authorParams" /}
 				</div>
 				<div class="clear"></div>
 			</div>

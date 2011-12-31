@@ -139,6 +139,9 @@ public class MemcacheWrapper {
 	}
 	
 	public void put(String key, Serializable value) {
+		
+		return;
+		/*
 		AsyncMemcacheService asyncCache = MemcacheServiceFactory.getAsyncMemcacheService();
 	    Future<Void> futureValue = asyncCache.put(key, value);
 		while(!futureValue.isDone()) {
@@ -146,6 +149,7 @@ public class MemcacheWrapper {
 				break;
 			}
 		}
+		*/
 	}
 	
 	public void remove(String key) {

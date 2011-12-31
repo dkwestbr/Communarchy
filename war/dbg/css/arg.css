@@ -5,6 +5,9 @@
     padding-top: 15px;
     text-align: center;
     padding-bottom: 10px;
+    overflow: auto;
+	overflow-y: hidden;
+	-ms-overflow-y: hidden;
 }
 
 .arg-content {
@@ -12,6 +15,9 @@
 	padding-bottom: 10px;
     text-align: left;
     font-size: 20px;
+    overflow: auto;
+	overflow-y: hidden;
+	-ms-overflow-y: hidden;
 }
 
 .arg-btn-container {
@@ -78,6 +84,11 @@
 	
 }
 
+.point-content {
+	padding-bottom: 10px;
+	border-bottom: dashed 2px black;
+}
+
 .point-text-area {
 	width: 333px;
 	height: 250px;
@@ -109,6 +120,9 @@
 	padding-bottom: 15px;
 	padding-left: 10px;
 	padding-top: 10px;
+}
+
+.pov-content-wrapper {
 	overflow: auto;
 	overflow-y: hidden;
 	-ms-overflow-y: hidden;
@@ -173,6 +187,7 @@
 	padding-top: 10px;
 	padding-bottom: 10px;
 	color: #07C;
+	text-align: center;
 }
 
 .point-header {

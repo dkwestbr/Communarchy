@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -31,7 +32,7 @@ public class Argument implements IArgument<Argument>, Serializable {
 	private Key posterId;
 	
 	@Persistent
-	private String title;
+	private Text title;
 	
 	@Persistent
 	private Text content;
@@ -42,6 +43,7 @@ public class Argument implements IArgument<Argument>, Serializable {
 	@Persistent
 	private Date updateDate;
 	
+	@NotPersistent
 	private List<String> checkOutKeys;
 	
 	public Argument(){}
@@ -53,7 +55,7 @@ public class Argument implements IArgument<Argument>, Serializable {
 		}
 		
 		this.posterId = poster_id;
-		this.title = title;
+		this.title = new Text(title);
 		this.content = new Text(content);
 		this.createDate = new Date();
 		this.updateDate = createDate;
@@ -74,7 +76,7 @@ public class Argument implements IArgument<Argument>, Serializable {
 
 	@Override
 	public String getTitle() {
-		return title;
+		return title.getValue();
 	}
 
 	@Override
@@ -88,7 +90,7 @@ public class Argument implements IArgument<Argument>, Serializable {
 	}
 
 	@Override
-	public Date getPostDate() {
+	public Date getCreatedDate() {
 		return createDate;
 	}
 
@@ -99,7 +101,7 @@ public class Argument implements IArgument<Argument>, Serializable {
 
 	@Override
 	public String getWebFriendlyTitle() {
-		return title.replaceAll("[^A-Za-z0-9 ]", "").replaceAll(" ", "-");
+		return title.getValue().replaceAll("[^A-Za-z0-9 ]", "").replaceAll(" ", "-");
 	}
 
 	@Override
@@ -116,7 +118,11 @@ public class Argument implements IArgument<Argument>, Serializable {
 		return this.checkOutKeys;
 	}
 
-
+	@Override
+	public Text getRawTitle() {
+		return this.title;
+	}
+	
 	@Override
 	public Text getRawContent() {
 		return this.content;
@@ -126,7 +132,7 @@ public class Argument implements IArgument<Argument>, Serializable {
 	public void update(Argument updateValue) {
 		this.content = updateValue.getRawContent();
 		this.checkOutKeys = updateValue.getCheckOutKeys();
-		this.title = updateValue.getTitle();
+		this.title = updateValue.getRawTitle();
 		this.updateDate = updateValue.getUpdateDate();
 	}
 }

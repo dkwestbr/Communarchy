@@ -15,12 +15,14 @@ import communarchy.facts.PMSession;
 import communarchy.facts.actions.Vote;
 import communarchy.facts.implementations.ApplicationUser;
 import communarchy.facts.implementations.Point;
+import communarchy.facts.implementations.PointOfView;
 import communarchy.facts.implementations.Stance;
 import communarchy.facts.implementations.UserStance;
 import communarchy.facts.mappers.BasicMapper;
 import communarchy.facts.mappers.CountMapper;
 import communarchy.facts.mappers.QueryMapper;
 import communarchy.facts.mappers.UniqueEntityMapper;
+import communarchy.facts.queries.entity.GetRepCountShard;
 import communarchy.facts.queries.entity.GetStanceCountShard;
 import communarchy.facts.queries.entity.GetVoteCountShard;
 import communarchy.facts.queries.entity.UserStanceQuery;
@@ -68,7 +70,8 @@ public class TakeStanceHandler extends AbstractActionHandler<Point> {
 				try {
 					tx.begin();
 					existingStance = pmSession.getMapper(UniqueEntityMapper.class).insertUnique(query);
-					pmSession.getMapper(CountMapper.class).increment(new GetStanceCountShard(existingStance.getPoint(), existingStance.getStance()));
+					pmSession.getMapper(CountMapper.class).increment(new GetStanceCountShard(existingStance.getPoint(), existingStance.getStance()), null);
+					pmSession.getMapper(CountMapper.class).increment(new GetRepCountShard(resource.getPosterId()), Stance.getRepForStance(existingStance.getStance()));
 					tx.commit();
 				} finally {
 					if(tx.isActive()) {
@@ -88,10 +91,10 @@ public class TakeStanceHandler extends AbstractActionHandler<Point> {
 				boolean isSuccesful = false;
 				try {
 					tx.begin();
-					pmSession.getMapper(CountMapper.class).decrement(new GetStanceCountShard(existingStance.getPoint(), existingStance.getStance()));
+					pmSession.getMapper(CountMapper.class).decrement(new GetStanceCountShard(existingStance.getPoint(), existingStance.getStance()), null);
+					pmSession.getMapper(CountMapper.class).decrement(new GetRepCountShard(resource.getPosterId()), Stance.getRepForStance(existingStance.getStance()));
 					existingStance.setStance(Stance.getStanceAsId(command));
 					pmSession.getMapper(UniqueEntityMapper.class).updateUnique(query, existingStance);
-					pmSession.getMapper(CountMapper.class).increment(new GetStanceCountShard(existingStance.getPoint(), existingStance.getStance()));
 					tx.commit();
 				} finally {
 					if(tx.isActive()) {
@@ -102,16 +105,36 @@ public class TakeStanceHandler extends AbstractActionHandler<Point> {
 				}
 				
 				if(isSuccesful == true) {
-					for(Vote deleteMe : votes) {
-						tx = pmSession.getPM().currentTransaction();
-						try {
-							tx.begin();
-							pmSession.getMapper(CountMapper.class).decrement(new GetVoteCountShard(deleteMe.getPovKey()));
-							pmSession.getMapper(BasicMapper.class).delete(deleteMe);
-							tx.commit();
-						} finally {
-							if(tx.isActive()) {
-								tx.rollback();
+					try {
+						tx.begin();
+						pmSession.getMapper(CountMapper.class).increment(new GetStanceCountShard(existingStance.getPoint(), existingStance.getStance()), null);
+						pmSession.getMapper(CountMapper.class).increment(new GetRepCountShard(resource.getPosterId()), Stance.getRepForStance(existingStance.getStance()));
+						tx.commit();
+					} finally {
+						if(tx.isActive()) {
+							tx.rollback();
+						} else {
+							isSuccesful = true;
+						}
+					}
+					
+					if(isSuccesful == true) {
+						for(Vote deleteMe : votes) {
+							tx = pmSession.getPM().currentTransaction();
+							try {
+								tx.begin();
+								pmSession.getMapper(CountMapper.class).decrement(new GetVoteCountShard(deleteMe.getPovKey()), null);
+								pmSession.getMapper(CountMapper.class).decrement(new GetRepCountShard(
+																					pmSession.getMapper(BasicMapper.class)
+																						.select(PointOfView.class, deleteMe.getPovKey())
+																						.getPosterId()
+																				), 1);
+								pmSession.getMapper(BasicMapper.class).delete(deleteMe);
+								tx.commit();
+							} finally {
+								if(tx.isActive()) {
+									tx.rollback();
+								}
 							}
 						}
 					}

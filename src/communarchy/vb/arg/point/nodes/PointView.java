@@ -1,5 +1,8 @@
 package communarchy.vb.arg.point.nodes;
 
+import java.util.Calendar;
+import java.util.Locale;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.google.template.soy.data.SoyMapData;
@@ -17,6 +20,8 @@ import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.arg.point.branches.GetStanceCountHeaders;
 import communarchy.vb.arg.point.pov.branches.GetPovViewInput;
 import communarchy.vb.arg.point.pov.nodes.PovColumn;
+import communarchy.vb.global.nodes.UserWithRep;
+import communarchy.vb.utils.displayformatting.numbers.NumberFormatter;
 
 public class PointView extends AbstractTemplateWrapper implements
 		IResourceTemplateWrapper<Point> {
@@ -30,6 +35,7 @@ public class PointView extends AbstractTemplateWrapper implements
 			INSTANCE.possiblePaths.add(PovColumn.get());
 			INSTANCE.possiblePaths.add(GetPovViewInput.get());
 			INSTANCE.possiblePaths.add(GetStanceCountHeaders.get());
+			INSTANCE.possiblePaths.add(UserWithRep.get());
 		}
 		
 		return INSTANCE;
@@ -46,6 +52,7 @@ public class PointView extends AbstractTemplateWrapper implements
 	private static final String P_INPUT_SET = "inputSet";
 	private static final String P_SELECTED_STANCE = "selectedStance";
 	private static final String P_COUNT_HEADERS = "countHeaders";
+	private static final String P_AUTHOR_PARAMS = "authorParams";
 	
 	@Override
 	public SoyMapData getParams(PMSession pmSession, IUser user, HttpServletRequest request,
@@ -54,6 +61,11 @@ public class PointView extends AbstractTemplateWrapper implements
 		SoyMapData pMap = new SoyMapData();
 		pMap.put(P_ID, String.format("%d", scopedResource.getKey().getId()));
 		pMap.put(P_POINT, scopedResource.getPoint());
+		
+		Locale clientLocale = request.getLocale();  
+		Calendar calendar = Calendar.getInstance(clientLocale);
+		String action = String.format("%s %s", "posted", NumberFormatter.DisplayTime(scopedResource.getCreatedDate(), calendar.getTimeZone()));
+		pMap.put(P_AUTHOR_PARAMS, UserWithRep.get().getParams(pmSession, user, request, scopedResource.getPosterId(), action));
 		
 		IUserStance userStance = null;
 		if(scopedResource != null && scopedResource.getKey() != null

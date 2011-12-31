@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 
 import communarchy.facts.implementations.ApplicationUser;
@@ -16,6 +17,7 @@ public class UserCounter extends AbstractCounter<UserCounter> {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	@NotPersistent
 	private List<String> checkOutKeys;
 	
 	public UserCounter(int shardNum) {

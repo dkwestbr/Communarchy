@@ -19,6 +19,7 @@ import communarchy.facts.interfaces.IPoint;
 import communarchy.facts.mappers.BasicMapper;
 import communarchy.facts.mappers.CountMapper;
 import communarchy.facts.mappers.UniqueEntityMapper;
+import communarchy.facts.queries.entity.GetRepCountShard;
 import communarchy.facts.queries.entity.GetVoteCountShard;
 import communarchy.facts.queries.entity.GetVoteQuery;
 import communarchy.facts.queries.entity.IEntityQuery;
@@ -49,7 +50,8 @@ public class PovVoteHandler extends AbstractActionHandler<PointOfView> {
 					try {
 						tx.begin();
 						pmSession.getMapper(UniqueEntityMapper.class).insertUnique(voteExistsQuery);
-						pmSession.getMapper(CountMapper.class).increment(new GetVoteCountShard(resource.getKey()));
+						pmSession.getMapper(CountMapper.class).increment(new GetVoteCountShard(resource.getKey()), null);
+						pmSession.getMapper(CountMapper.class).increment(new GetRepCountShard(resource.getPosterId()), 1);
 						tx.commit();
 					} finally {
 						if(tx.isActive()) {
@@ -62,7 +64,8 @@ public class PovVoteHandler extends AbstractActionHandler<PointOfView> {
 				try {
 					tx.begin();
 					pmSession.getMapper(UniqueEntityMapper.class).deleteUnique(voteExistsQuery);
-					pmSession.getMapper(CountMapper.class).decrement(new GetVoteCountShard(resource.getKey()));
+					pmSession.getMapper(CountMapper.class).decrement(new GetVoteCountShard(resource.getKey()), null);
+					pmSession.getMapper(CountMapper.class).decrement(new GetRepCountShard(resource.getPosterId()), 1);
 					tx.commit();
 				} finally {
 					if(tx.isActive()) {

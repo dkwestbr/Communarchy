@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import com.google.appengine.api.datastore.Key;
@@ -19,6 +20,7 @@ public class VoteCounter extends AbstractCounter<VoteCounter> {
 	@Persistent
 	private Key povKey;
 	
+	@NotPersistent
 	private List<String> checkOutKeys;
 	
 	public VoteCounter(Key povKey, Integer shardNum) {

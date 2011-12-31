@@ -1,0 +1,26 @@
+{namespace communarchy.templates.html.global.nodes}
+
+/**
+ *  How to render account management when user is
+ *  authenticated.
+ *
+ *  @param signatureAction describes what action this signature represents
+ *  @param userHref Url which will go the the user's account page
+ *  @param rep The amount of rep a user has
+ *  @param userDisplayName The user's display name
+ */
+{template .UserWithRep}
+	<div class="signature-action">
+		{$signatureAction}
+	</div>
+	<div>
+		<div class="signature-wrapper float-right">
+			<div class="user float-left">
+				<a class="user-text" href="{$userHref}">{$userDisplayName}</a>
+			</div>
+			<div class="float-left rep-text">{$rep}</div>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+{/template}

@@ -154,3 +154,26 @@ body {
 	padding-top: 2px;
 	cursor: pointer;
 }
+
+.rep-text {
+	padding-left: 5px;
+	padding-top: 3px;
+	font-size: 20px;
+}
+
+.author-wrapper {
+	padding-right: 5px;
+	padding-top: 14px;
+	padding-left: 5px;
+	margin-right: 5px;
+	margin-left: 5px;
+	margin-top: 14px;
+	background-color: #F8F8FF;
+}
+
+.signature-action {
+	font-size: 12px;
+}
+
+.signature-wrapper {
+}

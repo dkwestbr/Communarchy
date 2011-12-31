@@ -10,7 +10,7 @@ import communarchy.utils.exceptions.CommunarchyPersistenceException;
 
 public class CountMapper extends AbstractMapper<CountMapper> {
 	
-	public <U extends AbstractCounter<U>, V extends IEntityQuery<U>> void increment(V query) throws CommunarchyPersistenceException {
+	public <U extends AbstractCounter<U>, V extends IEntityQuery<U>> void increment(V query, Integer amount) throws CommunarchyPersistenceException {
 		if(query == null) {
 			throw new CommunarchyPersistenceException("Shard query may not be null");
 		}
@@ -20,11 +20,11 @@ public class CountMapper extends AbstractMapper<CountMapper> {
 			shard = pmSession.getMapper(UniqueEntityMapper.class).insertUnique(query);
 		}
 		
-		shard.increment();
+		shard.increment(amount, pmSession);
 		shard = pmSession.getMapper(UniqueEntityMapper.class).updateUnique(query, shard);
 	}
 	
-	public <U extends AbstractCounter<U>, V extends IEntityQuery<U>> void decrement(V query) throws CommunarchyPersistenceException {
+	public <U extends AbstractCounter<U>, V extends IEntityQuery<U>> void decrement(V query, Integer amount) throws CommunarchyPersistenceException {
 		if(query == null) {
 			throw new CommunarchyPersistenceException("Shard query may not be null");
 		}
@@ -34,7 +34,7 @@ public class CountMapper extends AbstractMapper<CountMapper> {
 			shard = pmSession.getMapper(UniqueEntityMapper.class).insertUnique(query);
 		}
 		
-		shard.decrement();
+		shard.decrement(amount, pmSession);
 		shard = pmSession.getMapper(UniqueEntityMapper.class).updateUnique(query, shard);
 	}
 	

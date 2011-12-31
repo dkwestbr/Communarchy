@@ -77,9 +77,9 @@ public class LogIn extends HttpServlet {
 			GetUserByName query = new GetUserByName(userName);
 			
 			ApplicationUser user = mapper.selectUnique(query);
-			if(user == null) {
+			if(user == null && userName != null && userName.length() > 0) {
 				user = mapper.insertUnique(query);
-				pmSession.getMapper(CountMapper.class).increment(new GetUserCountShard());
+				pmSession.getMapper(CountMapper.class).increment(new GetUserCountShard(), null);
 				request.getSession().removeAttribute(IHttpSessionConstants.LOGIN_MESSAGE);
 			}
 			

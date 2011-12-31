@@ -10,9 +10,10 @@ public interface IArgument<T extends IEntity<T>> extends Serializable, IEntity<T
 	public Key getArgId();
 	public Key getPosterId();
 	public String getTitle();
+	public Text getRawTitle();
 	public String getWebFriendlyTitle();
 	public String getContent();
 	public Text getRawContent();
-	public Date getPostDate();
+	public Date getCreatedDate();
 	public Date getUpdateDate();
 }

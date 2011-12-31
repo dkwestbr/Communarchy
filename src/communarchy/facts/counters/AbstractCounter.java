@@ -10,6 +10,7 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
 
+import communarchy.facts.PMSession;
 import communarchy.facts.interfaces.ICounter;
 import communarchy.facts.interfaces.IEntity;
 
@@ -47,12 +48,20 @@ public abstract class AbstractCounter<U> implements ICounter, IEntity<U> {
 		return count;
 	}
 	
-	public void increment() {
-		++count;
+	public void increment(Integer amount, PMSession pmSession) {
+		if(amount == null) {
+			++count;
+		} else {
+			count += amount;
+		}
 	}
 	
-	public void decrement() {
-		--count;
+	public void decrement(Integer amount, PMSession pmSession) {
+		if(amount == null) {
+			--count;
+		} else {
+			count -= amount;
+		}
 	}
 	
 	@Override

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -34,6 +35,7 @@ public class UserStance extends Stance implements IUserStance, IEntity<UserStanc
 	@Persistent
 	private Integer stance;
 	
+	@NotPersistent
 	private List<String> checkOutKeys;
 	
 	public UserStance(Key user, Key point, Integer stance) {

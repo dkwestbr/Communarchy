@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -38,6 +39,7 @@ public class Point implements IPoint<Point>, Serializable {
 	@Persistent
 	private Date updateDate;
 	
+	@NotPersistent
 	private List<String> checkOutKeys;
 	
 	public Point(){}
@@ -108,5 +110,10 @@ public class Point implements IPoint<Point>, Serializable {
 		this.point = updateValue.getRawPoint();
 		this.updateDate = updateValue.getUpdateDate();
 		this.checkOutKeys = updateValue.getCheckOutKeys();
+	}
+
+	@Override
+	public Date getCreatedDate() {
+		return this.createDate;
 	}
 }

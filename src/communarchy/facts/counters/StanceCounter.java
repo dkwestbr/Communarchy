@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import com.google.appengine.api.datastore.Key;
@@ -24,6 +25,7 @@ public class StanceCounter extends AbstractCounter<StanceCounter> {
 	@Persistent
 	private Integer stance;
 	
+	@NotPersistent
 	private List<String> checkOutKeys;
 	
 	public StanceCounter(IStance resource, Integer shardNum) {

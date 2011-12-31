@@ -66,6 +66,16 @@ public class Stance implements IStance {
 			return STANCE_DISAGREE_STRING;
 		}
 	}
+	
+	public static int getRepForStance(int id) {
+		if(id == STANCE_AGREE) {
+			return 3;
+		} else if (id == STANCE_NEUTRAL) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
 
 	public static int getStanceAsId(String id) {
 		if(id.equals(STANCE_AGREE_URL)) {

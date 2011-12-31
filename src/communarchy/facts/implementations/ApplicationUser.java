@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -36,6 +37,7 @@ public class ApplicationUser implements IUser, Serializable, IEntity<Application
 	@Persistent
 	private String href;
 	
+	@NotPersistent
 	private List<String> checkOutKeys;
 	
 	private String TEMPL_HREF_KEY = "href";
