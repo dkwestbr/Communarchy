@@ -1,0 +1,26 @@
+{namespace communarchy.templates.html.main.branches}
+
+/**
+ *  Controller to get vote buttons
+ *
+ *  @param upvoted Already upvoted
+ *  @param downvoted Already downvoted
+ *  @param upvoteParams Parameters for upvote button
+ *  @param voteCountParams Parameters for display of the number of votes for the argument
+ *  @param downvoteParams Parameters for downvote button
+ */
+{template .GetArgVoteButtons}
+	{if $upvoted}
+		{call communarchy.templates.html.main.nodes.UpvoteInactive data="$upvoteParams" /}
+		{call communarchy.templates.html.main.nodes.ArgVoteCount data="$voteCountParams" /}
+		{call communarchy.templates.html.main.nodes.DownvoteActive data="$downvoteParams" /}
+	{elseif $downvoted}
+		{call communarchy.templates.html.main.nodes.UpvoteActive data="$upvoteParams" /}
+		{call communarchy.templates.html.main.nodes.ArgVoteCount data="$voteCountParams" /}
+		{call communarchy.templates.html.main.nodes.DownvoteInactive data="$downvoteParams" /}
+	{else}
+		{call communarchy.templates.html.main.nodes.UpvoteActive data="$upvoteParams" /}
+		{call communarchy.templates.html.main.nodes.ArgVoteCount data="$voteCountParams" /}
+		{call communarchy.templates.html.main.nodes.DownvoteActive data="$downvoteParams" /}
+	{/if}
+{/template}

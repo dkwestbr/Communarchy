@@ -1,0 +1,16 @@
+{namespace communarchy.templates.html.main.nodes}
+
+/**
+ *  Downvote stuff
+ *
+ *  @param downvoteAction Action to downvote this thing
+ */
+{template .DownvoteInactive}
+<div class="downvote-arg-wrapper">
+	<form method="post" action="{$downvoteAction}">
+		<div>
+			<input class="downvote-arg-inactive" disabled="disabled" type="submit"></input>
+		</div>
+	</form>
+</div>
+{/template}

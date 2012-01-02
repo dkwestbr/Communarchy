@@ -103,6 +103,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/point/pov/new/*</url-pattern>
 	</servlet-mapping>
 	<servlet>
+		<servlet-name>ArgVoteHandler</servlet-name>
+		<servlet-class>communarchy.controllers.handlers.actions.ArgVoteHandler</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ArgVoteHandler</servlet-name>
+		<url-pattern>/arg/vote/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>PovVoteHandler</servlet-name>
 		<servlet-class>communarchy.controllers.handlers.actions.PovVoteHandler</servlet-class>
 	</servlet>

@@ -43,6 +43,9 @@ public class Argument implements IArgument<Argument>, Serializable {
 	@Persistent
 	private Date updateDate;
 	
+	@Persistent
+	private Integer votes;
+	
 	@NotPersistent
 	private List<String> checkOutKeys;
 	
@@ -54,6 +57,7 @@ public class Argument implements IArgument<Argument>, Serializable {
 					+ Key.class.getCanonicalName() + " must not be null");
 		}
 		
+		this.votes = 0;
 		this.posterId = poster_id;
 		this.title = new Text(title);
 		this.content = new Text(content);
@@ -134,5 +138,29 @@ public class Argument implements IArgument<Argument>, Serializable {
 		this.checkOutKeys = updateValue.getCheckOutKeys();
 		this.title = updateValue.getRawTitle();
 		this.updateDate = updateValue.getUpdateDate();
+		this.votes = updateValue.getVotes();
+	}
+
+	@Override
+	public int getVotes() {
+		return votes == null ? 0 : votes;
+	}
+
+	@Override
+	public void upVote() {
+		if(votes == null) {
+			votes = 0;
+		} 
+		
+		++votes;
+	}
+
+	@Override
+	public void downVote() {
+		if(votes == null) {
+			votes = 0;
+		}
+		
+		--votes;
 	}
 }

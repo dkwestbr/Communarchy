@@ -13,6 +13,7 @@ import communarchy.facts.queries.list.ArgFeedQuery;
 import communarchy.facts.results.PageSet;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IParamBuilder;
+import communarchy.vb.main.nodes.ArgFeedElement;
 
 public class GetArgFeed extends AbstractTemplateWrapper implements IParamBuilder {
 

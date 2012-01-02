@@ -90,7 +90,7 @@ public class MainRoot extends AbstractTemplateWrapper implements IRootTemplate, 
 		if(STYLES == null) {
 			STYLES = new SoyListData();
 			STYLES.add(new SoyMapData("styleSheet", "/dbg/css/global.css"));
-			STYLES.add(new SoyMapData("styleSheet", "/dbg/css/newarg.css"));
+			STYLES.add(new SoyMapData("styleSheet", "/dbg/css/main.css"));
 		}
 		
 		return STYLES;

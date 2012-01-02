@@ -44,7 +44,7 @@ public class ArgFeedQuery implements IPagedQuery<Argument> {
 	public List<Argument> runListQuery(PMSession pmSession) {
         Query query = pmSession.getPM().newQuery(Argument.class);
         query.setRange(0, NUM_ARGS);
-        query.setOrdering("createDate desc");
+        query.setOrdering("votes desc");
         
         if(startCursor != null) {
         	Map<String, Object> extensionMap = new HashMap<String, Object>();

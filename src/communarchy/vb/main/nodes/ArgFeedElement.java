@@ -1,4 +1,7 @@
-package communarchy.vb.main.branches;
+package communarchy.vb.main.nodes;
+
+import java.util.Calendar;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,6 +12,9 @@ import communarchy.facts.implementations.Argument;
 import communarchy.facts.interfaces.IUser;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
+import communarchy.vb.global.nodes.UserWithRep;
+import communarchy.vb.main.branches.GetArgVoteButtons;
+import communarchy.vb.utils.displayformatting.numbers.NumberFormatter;
 
 public class ArgFeedElement extends AbstractTemplateWrapper implements
 		IResourceTemplateWrapper<Argument> {
@@ -19,6 +25,8 @@ public class ArgFeedElement extends AbstractTemplateWrapper implements
 	public static ArgFeedElement get() {
 		if(INSTANCE == null) {
 			INSTANCE = new ArgFeedElement();
+			INSTANCE.possiblePaths.add(UserWithRep.get());
+			INSTANCE.possiblePaths.add(GetArgVoteButtons.get());
 		}
 		
 		return INSTANCE;
@@ -29,9 +37,11 @@ public class ArgFeedElement extends AbstractTemplateWrapper implements
 		return "./templates/html/main/nodes/ArgFeedElement.soy";
 	}
 	
-	public static final String P_ID = "id";
-	public static final String P_TITLE = "title";
-	public static final String P_HREF = "href";
+	private static final String P_ID = "id";
+	private static final String P_TITLE = "title";
+	private static final String P_HREF = "href";
+	private static final String P_VOTE_BUTTON_PARAMS = "voteButtonParams";
+	private static final String P_AUTHOR_PARAMS = "authorParams";
 
 	@Override
 	public SoyMapData getParams(PMSession pmSession, IUser user,
@@ -42,6 +52,13 @@ public class ArgFeedElement extends AbstractTemplateWrapper implements
 		pMap.put(P_ID, Long.toString(scopedResource.getArgId().getId()));
 		pMap.put(P_TITLE, scopedResource.getTitle());
 		pMap.put(P_HREF, String.format("/arg/%s/%s", scopedResource.getArgId().getId(), scopedResource.getWebFriendlyTitle()));
+		
+		Locale clientLocale = request.getLocale();  
+		Calendar calendar = Calendar.getInstance(clientLocale);
+		String action = String.format("%s %s", "posted", NumberFormatter.DisplayTime(scopedResource.getCreatedDate(), calendar.getTimeZone()));
+		pMap.put(P_AUTHOR_PARAMS, UserWithRep.get().getParams(pmSession, user, request, scopedResource.getPosterId(), action));
+		
+		pMap.put(P_VOTE_BUTTON_PARAMS, GetArgVoteButtons.get().getParams(pmSession, user, request, scopedResource));
 		
 		return pMap;
 	}

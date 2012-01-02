@@ -20,6 +20,18 @@ public class NumberFormatter {
 		return df.format(number);
 	}
 	
+	public static String VoteNumber(Integer votes) {
+		
+		String displayNumber = "";
+		if(votes < 1000) {
+			displayNumber = String.valueOf(votes);
+		} else {
+			displayNumber = String.format("%.1fk", votes / 1000); 
+		}
+		
+		return displayNumber;
+	}
+	
 	private static final long SECOND_IN_MILLIS = 1000;
 	private static final long MINUTE_IN_MILLIS = SECOND_IN_MILLIS * 60;
 	private static final long HOUR_IN_MILLIS = MINUTE_IN_MILLIS * 60;

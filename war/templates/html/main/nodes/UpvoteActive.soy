@@ -1,0 +1,16 @@
+{namespace communarchy.templates.html.main.nodes}
+
+/**
+ *  Upvote stuff
+ *
+ *  @param upvoteAction Action to upvote this thing
+ */
+{template .UpvoteActive}
+<div class="upvote-arg-wrapper">
+	<form method="post" action="{$upvoteAction}">
+		<div>
+			<input class="upvote-arg" type="submit"></input>
+		</div>
+	</form>
+</div>
+{/template}

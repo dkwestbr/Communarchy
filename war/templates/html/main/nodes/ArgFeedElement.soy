@@ -6,9 +6,23 @@
  *  @param id Id for argument contained in this element
  *  @param title The title of the argument in this element
  *  @param href The url to visit the argument within this element
+ *  @param authorParams Parameters for author of post
+ *  @param voteButtonParams Paremeters for vote buttons
  */
 {template .ArgFeedElement}
-	<div id="argument-{$id}">
-		<a href="{$href}" class="arg-feed-el">{$title}</a>
+	<div id="argument-{$id}" class="arg-feed-element">
+		<div class="arg-feed-element-wrapper">
+			<div class="float-left">
+				{call communarchy.templates.html.main.branches.GetArgVoteButtons data="$voteButtonParams" /}
+			</div>
+			<div class="float-left arg-feed-link-wrapper">
+				<div>{$title}</div>
+				<a href="{$href}"><span class="arg-feed-link"></span></a>
+			</div>
+			<div class="float-right author-wrapper">
+				{call communarchy.templates.html.global.nodes.UserWithRep data="$authorParams" /}
+			</div>
+			<div class="clear"></div>
+		</div>
 	</div>
 {/template}

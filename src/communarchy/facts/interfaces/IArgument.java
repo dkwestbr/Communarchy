@@ -16,4 +16,7 @@ public interface IArgument<T extends IEntity<T>> extends Serializable, IEntity<T
 	public Text getRawContent();
 	public Date getCreatedDate();
 	public Date getUpdateDate();
+	public int getVotes();
+	public void upVote();
+	public void downVote();
 }
