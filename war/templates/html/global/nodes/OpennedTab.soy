@@ -1,0 +1,14 @@
+{namespace communarchy.templates.html.global.nodes}
+
+/**
+ *  Tab in focus
+ *
+ *  @param tabName name of the current tab
+ *  @param tabAction action of the current tab
+ */
+{template .OpennedTab}
+<div class="tab-closed float-left">
+	<div class="tab-label-openned">{$tabName}</div>
+	<a class="tab-openned-link" href="{$tabAction}"><span class="tab-openned-span"></span></a>
+</div>
+{/template}

@@ -1,0 +1,25 @@
+{namespace communarchy.templates.html.global.branches}
+
+/**
+ *  When user input is invalid, this is the template used to
+ *  structure error messages that are displayed to them.
+ *
+ *  @param tabs List of errors found during validation
+ *  @param tabBorderEndParams Parameters for border
+ *  @param tabBorderSpacerParams Parameters for border
+ */
+{template .GetFolderTabs}
+	{call communarchy.templates.html.global.nodes.TabBorderEnd data="$tabBorderEndParams" /}
+	{foreach $tab in $tabs}
+		{if $tab.isOpenned}
+			{call communarchy.templates.html.global.nodes.OpennedTab data="$tab" /}
+		{else}
+			{call communarchy.templates.html.global.nodes.ClosedTab data="$tab" /}
+		{/if}
+		{if not isLast($tab)}
+			{call communarchy.templates.html.global.nodes.TabBorderSpacer data="$tabBorderSpacerParams" /}
+		{/if}
+	{/foreach}
+	{call communarchy.templates.html.global.nodes.TabBorderEnd data="$tabBorderEndParams" /}
+	{call communarchy.templates.html.global.nodes.Clear /}
+{/template}
