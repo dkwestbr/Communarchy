@@ -23,7 +23,7 @@ import communarchy.vb.main.MainRoot;
 public class Main extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private static final String PAGE = "page";
+	private static final String sort = "sort";
 	
 	private static SoyTofu mainTmpl = null;
 
@@ -42,12 +42,16 @@ public class Main extends HttpServlet {
 		
 		try {
 			IUser user = (IUser) session.getAttribute(IHttpSessionConstants.USER_SESSION_KEY);
-			String scopedResource = request.getParameter(PAGE);
+			String scopedResource = request.getParameter(sort);
+			scopedResource = scopedResource == null ? "Ranked" : scopedResource;
 			
-			SoyMapData templateParams = MainRoot.get().getParams(pmSession, user, request, scopedResource);
-			
-			response.getWriter().write(mainTmpl.render(MainRoot.get().getRenderTarget(), templateParams, null));
-			response.flushBuffer();
+			if(scopedResource.equals("Ranked")) {
+				SoyMapData templateParams = MainRoot.get().getParams(pmSession, user, request, scopedResource);
+				response.getWriter().write(mainTmpl.render(MainRoot.get().getRenderTarget(), templateParams, null));
+				response.flushBuffer();
+			} else {
+				response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			}
 		} catch (Exception e) {
 			getServletContext().log("In " + Main.class.getCanonicalName() + ":", e);
 			response.sendError(HttpURLConnection.HTTP_INTERNAL_ERROR);

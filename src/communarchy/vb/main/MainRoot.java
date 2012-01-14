@@ -1,6 +1,8 @@
 package communarchy.vb.main;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +19,7 @@ import communarchy.utils.constants.IHttpSessionConstants;
 import communarchy.vb.AbstractTemplateWrapper;
 import communarchy.vb.IResourceTemplateWrapper;
 import communarchy.vb.IRootTemplate;
+import communarchy.vb.global.branches.GetFolderTabs;
 import communarchy.vb.global.branches.HeaderWrapper;
 import communarchy.vb.global.nodes.NavigationBarWrapper;
 import communarchy.vb.main.branches.GetArgFeed;
@@ -40,6 +43,7 @@ public class MainRoot extends AbstractTemplateWrapper implements IRootTemplate, 
 			INSTANCE.possiblePaths.add(NavigationBarWrapper.get());
 			INSTANCE.possiblePaths.add(HeaderWrapper.get());
 			INSTANCE.possiblePaths.add(GetArgFeed.get());
+			INSTANCE.possiblePaths.add(GetFolderTabs.get());
 		}
 		
 		return INSTANCE;
@@ -58,7 +62,11 @@ public class MainRoot extends AbstractTemplateWrapper implements IRootTemplate, 
 	private static String PARAM_KEY_ARGBAR = "argBarData";
 	private static String PARAM_KEY_VIEW = "args";
 	private static String PARAM_KEY_HEADER = "headerParams";
+	private static String PARAM_FOLDER_TAB = "folderTabsParams";
 
+	// TURN THIS INTO A MAP!!!!!!!!!!!!!
+	private static List<String> TABS = Arrays.asList("Ranked", "Newest");
+	
 	@Override
 	public SoyMapData getParams(PMSession pmSession, IUser user,
 			HttpServletRequest request, String scopedResource) {
@@ -66,8 +74,15 @@ public class MainRoot extends AbstractTemplateWrapper implements IRootTemplate, 
 		SoyMapData pMap = new SoyMapData();
 		
 		pMap.put(PARAM_KEY_ARGBAR, NavigationBarWrapper.get().getParams(pmSession, user, request));
-		pMap.put(PARAM_KEY_VIEW, GetArgFeed.get().getParams(pmSession, user, request));
+		pMap.put(PARAM_KEY_VIEW, GetArgFeed.get().getParams(pmSession, user, request, scopedResource));
 		pMap.put(PARAM_KEY_HEADER, HeaderWrapper.get().getParams(MainRoot.class));
+		
+		String opennedTab = request.getParameter("sort");
+		if(opennedTab == null || !TABS.contains(opennedTab)) {
+			opennedTab = "Ranked";
+		}
+		
+		pMap.put(PARAM_FOLDER_TAB, GetFolderTabs.get().getParams(pmSession, user, request, TABS, opennedTab));
 		
 		return pMap;
 	}

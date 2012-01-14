@@ -6,6 +6,7 @@
  *  @param headerParams param map for header
  *  @param argBarData param map for argBarData
  *  @param args this is why i hate mandotory commefweefnts, or not...whatefwae fafw e you.
+ *  @param folderTabsParams Parameters for the folder tabs
  */
 {template .Root autoescape="false"}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
@@ -20,6 +21,9 @@
 		<div class="main-container">
 			<div>
 				<div id="ArgPanel" class="content-container">
+					<div class="arg-feed-tabs">
+						{call communarchy.templates.html.global.branches.GetFolderTabs data="$folderTabsParams" /}
+					</div>
 					<div id="dynamic-arg-div">
 						<div class="args-append-point">
 							<div class="arg-feed-wrapper">

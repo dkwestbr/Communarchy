@@ -14,10 +14,10 @@ import com.google.appengine.api.datastore.Cursor;
 import communarchy.facts.PMSession;
 import communarchy.facts.implementations.Argument;
 
-public class ArgFeedQuery implements IPagedQuery<Argument> {
+public class GetRankedArguments implements IPagedQuery<Argument> {
 
 	@SuppressWarnings("unused")
-	private ArgFeedQuery() {}
+	private GetRankedArguments() {}
 	
 	private static final int NUM_ARGS = 20;
 	private String startCursor;
@@ -26,10 +26,10 @@ public class ArgFeedQuery implements IPagedQuery<Argument> {
 	
 	private List<String> checkInKeys;
 	
-	public ArgFeedQuery(String startCursor) {
+	public GetRankedArguments(String startCursor) {
 		this.startCursor = startCursor;
 		
-		this.memcacheKey = String.format("%s_%s", ArgFeedQuery.class.getName(), startCursor);
+		this.memcacheKey = String.format("%s_%s", GetRankedArguments.class.getName(), startCursor);
 		this.checkInKeys = new ArrayList<String>();
 		this.checkInKeys.add(Argument.class.getName());
 	}
